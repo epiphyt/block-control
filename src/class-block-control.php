@@ -8,7 +8,6 @@ use function file_exists;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
-use function strpos;
 use function wp_enqueue_script;
 
 /**
