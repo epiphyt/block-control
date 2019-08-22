@@ -5,8 +5,10 @@ use function add_action;
 use function add_filter;
 use function dirname;
 use function file_exists;
+use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
+use function strpos;
 use function wp_enqueue_script;
 
 /**
@@ -93,6 +95,36 @@ class Block_Control {
 	 * @param	bool		$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
+	private function hide_logged_in( $attr, $value ) {
+		if ( $attr === 'login_status' && $value === 'logged-out' && is_user_logged_in() ) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Test if the content should be hidden by its attributes.
+	 * 
+	 * @param	string		$attr The attribute name
+	 * @param	bool		$value The attribute value
+	 * @return	bool True if the content should be hidden, false otherwise
+	 */
+	private function hide_logged_out( $attr, $value ) {
+		if ( $attr === 'login_status' && $value === 'logged-in' && ! is_user_logged_in() ) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Test if the content should be hidden by its attributes.
+	 * 
+	 * @param	string		$attr The attribute name
+	 * @param	bool		$value The attribute value
+	 * @return	bool True if the content should be hidden, false otherwise
+	 */
 	private function hide_mobile( $attr, $value ) {
 		if ( $attr === 'hide_mobile' && $value === true && $this->mobile_detect->isMobile() ) {
 			return true;
@@ -145,6 +177,11 @@ class Block_Control {
 		// set default content
 		$content = '';
 		
+		// if there are no attributes, the block should be displayed
+		if ( empty( $block['attrs'] ) ) {
+			$content = $block_content;
+		}
+		
 		// iterate through all block attributes
 		foreach ( $block['attrs'] as $attr => $value ) {
 			if ( $this->hide_desktop( $attr, $value ) ) {
@@ -156,6 +193,14 @@ class Block_Control {
 			}
 			
 			if ( $this->hide_tablet( $attr, $value ) ) {
+				break;
+			}
+			
+			if ( $this->hide_logged_in( $attr, $value ) ) {
+				break;
+			}
+			
+			if ( $this->hide_logged_out( $attr, $value ) ) {
 				break;
 			}
 			

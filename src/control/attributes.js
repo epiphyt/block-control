@@ -22,6 +22,10 @@ const addControlAttribute = ( settings ) => {
 			default: false,
 			type: 'boolean',
 		},
+		login_status: {
+			default: 'none',
+			type: 'string',
+		},
 	} );
 	
 	return settings;
