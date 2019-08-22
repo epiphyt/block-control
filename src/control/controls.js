@@ -30,6 +30,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				<InspectorControls>
 					<PanelBody
 						title={ __( 'Visibility', 'block-control' ) }
+						initialOpen={ false }
 					>
 						<ToggleControl
 							label={ __( 'Hide on mobile devices', 'block-control' ) }
