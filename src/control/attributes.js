@@ -10,19 +10,19 @@ const { addFilter } = wp.hooks;
 
 const addControlAttribute = ( settings ) => {
 	settings.attributes = assign( settings.attributes, {
-		hide_desktop: {
+		hideDesktop: {
 			default: false,
 			type: 'boolean',
 		},
-		hide_mobile: {
+		hideMobile: {
 			default: false,
 			type: 'boolean',
 		},
-		hide_tablet: {
+		hideTablet: {
 			default: false,
 			type: 'boolean',
 		},
-		login_status: {
+		loginStatus: {
 			default: 'none',
 			type: 'string',
 		},
@@ -35,26 +35,26 @@ addFilter( 'blocks.registerBlockType', 'block-control/attributes', addControlAtt
 
 const addCustomClasses = ( props, blockType, attributes ) => {
 	const {
-		hide_desktop,
-		hide_mobile,
-		hide_tablet,
-		login_status,
+		hideDesktop,
+		hideMobile,
+		hideTablet,
+		loginStatus,
 	} = attributes;
 	let classNames = ( typeof props.className === 'undefined' || ! props.className ) ? '' : props.className + ' ';
 	
-	if ( hide_desktop === true ) {
+	if ( hideDesktop === true ) {
 		classNames += 'block-control-hide-desktop ';
 	}
 	
-	if ( hide_mobile === true ) {
+	if ( hideMobile === true ) {
 		classNames += 'block-control-hide-mobile ';
 	}
 	
-	if ( hide_tablet === true ) {
+	if ( hideTablet === true ) {
 		classNames += 'block-control-hide-tablet ';
 	}
 	
-	switch ( login_status ) {
+	switch ( loginStatus ) {
 		case 'logged-in':
 			classNames += 'block-control-hide-logged-out ';
 			break;

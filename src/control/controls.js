@@ -15,10 +15,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 		const {
 			attributes: {
-				hide_desktop,
-				hide_mobile,
-				hide_tablet,
-				login_status,
+				hideDesktop,
+				hideMobile,
+				hideTablet,
+				loginStatus,
 			},
 			setAttributes,
 		} = props;
@@ -34,31 +34,31 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					>
 						<ToggleControl
 							label={ __( 'Hide on smartphones', 'block-control' ) }
-							value={ hide_mobile }
-							checked={ !! hide_mobile }
-							onChange={ ( value ) => setAttributes( { hide_mobile: value } ) }
+							value={ hideMobile }
+							checked={ !! hideMobile }
+							onChange={ ( value ) => setAttributes( { hideMobile: value } ) }
 						/>
 						<ToggleControl
 							label={ __( 'Hide on tablets', 'block-control' ) }
-							value={ hide_tablet }
-							checked={ !! hide_tablet }
-							onChange={ ( value ) => setAttributes( { hide_tablet: value } ) }
+							value={ hideTablet }
+							checked={ !! hideTablet }
+							onChange={ ( value ) => setAttributes( { hideTablet: value } ) }
 						/>
 						<ToggleControl
 							label={ __( 'Hide on desktops', 'block-control' ) }
-							value={ hide_desktop }
-							checked={ !! hide_desktop }
-							onChange={ ( value ) => setAttributes( { hide_desktop: value } ) }
+							value={ hideDesktop }
+							checked={ !! hideDesktop }
+							onChange={ ( value ) => setAttributes( { hideDesktop: value } ) }
 						/>
 						<RadioControl
 							label={ __( 'Login status', 'block-control' ) }
-							selected={ login_status }
+							selected={ loginStatus }
 							options={ [
 								{ label: __( 'Show for all users', 'block-control' ), value: 'none' },
 								{ label: __( 'Show for logged in users', 'block-control' ), value: 'logged-in' },
 								{ label: __( 'Show for logged out users', 'block-control' ), value: 'logged-out' },
 							] }
-							onChange={ ( value ) => setAttributes( { login_status: value } ) }
+							onChange={ ( value ) => setAttributes( { loginStatus: value } ) }
 						/>
 					</PanelBody>
 				</InspectorControls>

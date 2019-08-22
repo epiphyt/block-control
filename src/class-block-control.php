@@ -81,7 +81,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_desktop( $attr, $value ) {
-		if ( $attr === 'hide_desktop' && $value === true && ! $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
+		if ( $attr === 'hideDesktop' && $value === true && ! $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
 			return true;
 		}
 		
@@ -96,7 +96,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_logged_in( $attr, $value ) {
-		if ( $attr === 'login_status' && $value === 'logged-out' && is_user_logged_in() ) {
+		if ( $attr === 'loginStatus' && $value === 'logged-out' && is_user_logged_in() ) {
 			return true;
 		}
 		
@@ -111,7 +111,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_logged_out( $attr, $value ) {
-		if ( $attr === 'login_status' && $value === 'logged-in' && ! is_user_logged_in() ) {
+		if ( $attr === 'loginStatus' && $value === 'logged-in' && ! is_user_logged_in() ) {
 			return true;
 		}
 		
@@ -126,7 +126,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_mobile( $attr, $value ) {
-		if ( $attr === 'hide_mobile' && $value === true && $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
+		if ( $attr === 'hideMobile' && $value === true && $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
 			return true;
 		}
 		
@@ -141,7 +141,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_tablet( $attr, $value ) {
-		if ( $attr === 'hide_tablet' && $value === true && $this->mobile_detect->isTablet() ) {
+		if ( $attr === 'hideTablet' && $value === true && $this->mobile_detect->isTablet() ) {
 			return true;
 		}
 		
