@@ -33,7 +33,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						initialOpen={ false }
 					>
 						<ToggleControl
-							label={ __( 'Hide on mobile devices', 'block-control' ) }
+							label={ __( 'Hide on smartphones', 'block-control' ) }
 							value={ hide_mobile }
 							checked={ !! hide_mobile }
 							onChange={ ( value ) => setAttributes( { hide_mobile: value } ) }
