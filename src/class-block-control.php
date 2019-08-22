@@ -126,7 +126,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_mobile( $attr, $value ) {
-		if ( $attr === 'hide_mobile' && $value === true && $this->mobile_detect->isMobile() ) {
+		if ( $attr === 'hide_mobile' && $value === true && $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
 			return true;
 		}
 		
@@ -176,6 +176,8 @@ class Block_Control {
 	public function toggle_blocks( $block_content, $block ) {
 		// set default content
 		$content = '';
+		// set default visibility
+		$is_hidden = false;
 		
 		// if there are no attributes, the block should be displayed
 		if ( empty( $block['attrs'] ) ) {
@@ -185,25 +187,32 @@ class Block_Control {
 		// iterate through all block attributes
 		foreach ( $block['attrs'] as $attr => $value ) {
 			if ( $this->hide_desktop( $attr, $value ) ) {
+				$is_hidden = true;
 				break;
 			}
 			
 			if ( $this->hide_mobile( $attr, $value ) ) {
+				$is_hidden = true;
 				break;
 			}
 			
 			if ( $this->hide_tablet( $attr, $value ) ) {
+				$is_hidden = true;
 				break;
 			}
 			
 			if ( $this->hide_logged_in( $attr, $value ) ) {
+				$is_hidden = true;
 				break;
 			}
 			
 			if ( $this->hide_logged_out( $attr, $value ) ) {
+				$is_hidden = true;
 				break;
 			}
-			
+		}
+		
+		if ( ! $is_hidden ) {
 			// get the block content to output it
 			$content = $block_content;
 		}
