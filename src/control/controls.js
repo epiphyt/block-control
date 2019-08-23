@@ -5,7 +5,7 @@ const { createHigherOrderComponent } = wp.compose;
 const { __experimentalGetSettings, dateI18n } = wp.date;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.editor;
-const { Button, Dashicon, DateTimePicker, Dropdown, PanelBody, RadioControl, ToggleControl, Tooltip } = wp.components;
+const { Button, CheckboxControl, Dashicon, DateTimePicker, Dropdown, PanelBody, RadioControl, ToggleControl, Tooltip } = wp.components;
 const { addFilter } = wp.hooks;
 const { __ } = wp.i18n;
 
@@ -21,6 +21,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hideByDateStart,
 				hideDesktop,
 				hideMobile,
+				hideRoles,
 				hideTablet,
 				loginStatus,
 			},
@@ -35,6 +36,15 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				.replace( /\\\\/g, '' ) // Replace "//" with empty strings
 				.split( '' ).reverse().join( '' ) // Reverse the string and test for "a" not followed by a slash
 		);
+		// change the value if you click on a checkbox of the user role hide checkboxes
+		const onChangeHideRoles = ( role, value ) => {
+			// make sure the value gets updated correctly
+			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
+			let newValue = JSON.parse( JSON.stringify( hideRoles ) );
+			newValue[ role ] = value;
+			
+			setAttributes( { hideRoles: newValue } );
+		}
 		
 		return (
 			<Fragment>
@@ -155,6 +165,18 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									) }
 								/> }
 							</div>
+						</div>
+						
+						<div className="block-control-control-area">
+							{ Object.keys( blockControlStore.roles ).map( ( role, index ) => {
+								return ( <CheckboxControl
+									label={ blockControlStore.roles[ role ] }
+									heading={ index === 0 && __( 'Hide for user roles:', 'block-control' ) || '' }
+									checked={ hideRoles[ role ] }
+									value={ role }
+									onChange={ ( value ) => onChangeHideRoles( role, value ) }
+								/> );
+							} ) }
 						</div>
 					</PanelBody>
 				</InspectorControls>

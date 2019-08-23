@@ -27,6 +27,10 @@ const addControlAttribute = ( settings ) => {
 			default: false,
 			type: 'boolean',
 		},
+		hideRoles: {
+			default: {},
+			type: 'object',
+		},
 		hideTablet: {
 			default: false,
 			type: 'boolean',
@@ -46,6 +50,7 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 	const {
 		hideDesktop,
 		hideMobile,
+		hideRoles,
 		hideTablet,
 		loginStatus,
 	} = attributes;
@@ -71,6 +76,12 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 			classNames += 'block-control-hide-logged-in ';
 			break;
 	}
+	
+	Object.keys( blockControlStore.roles ).map( ( role ) => {
+		if ( hideRoles[ role ] === true ) {
+			classNames += 'block-control-hide-' + role + ' ';
+		}
+	} );
 	
 	if ( classNames.length ) {
 		return Object.assign( props, { className: classNames.trim() } );

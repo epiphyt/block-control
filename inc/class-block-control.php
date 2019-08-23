@@ -8,6 +8,7 @@ use function add_filter;
 use function dirname;
 use function file_exists;
 use function get_option;
+use function in_array;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
@@ -15,6 +16,8 @@ use function substr;
 use function time;
 use function wp_enqueue_script;
 use function wp_enqueue_style;
+use function wp_get_current_user;
+use function wp_localize_script;
 
 /**
  * The main Block Control class.
@@ -77,6 +80,25 @@ class Block_Control {
 	public function editor_assets() {
 		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), [ 'wp-edit-blocks' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) );
 		wp_enqueue_script( 'block-control-editor', plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), true );
+		wp_localize_script( 'block-control-editor', 'blockControlStore', [
+			'roles' => $this->get_roles(),
+		] );
+	}
+	
+	/**
+	 * Get all user roles.
+	 * 
+	 * @return	array A list of all roles
+	 */
+	public function get_roles() {
+		global $wp_roles;
+		$roles = [];
+		
+		foreach ( $wp_roles->roles as $key => $role ) {
+			$roles[ $key ] = $role['name'];
+		}
+		
+		return $roles;
 	}
 	
 	/**
@@ -134,6 +156,31 @@ class Block_Control {
 	private function hide_mobile( $attr, $value ) {
 		if ( $attr === 'hideMobile' && $value === true && $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
 			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Test if the content should be hidden by its attributes.
+	 * 
+	 * @param	array	$value The attribute value
+	 * @return	bool True if the content should be hidden, false otherwise
+	 */
+	private function hide_roles( $value ) {
+		// logged-out users don't have any role
+		if ( ! is_user_logged_in() ) return false;
+		
+		// get the user object
+		$user = wp_get_current_user();
+		// get all roles of the user
+		$roles = ( array ) $user->roles;
+		
+		foreach ( $value as $role => $is_active ) {
+			// check if the user has a role that should be hidden
+			if ( $is_active && in_array( $role, $roles, true ) ) {
+				return true;
+			}
 		}
 		
 		return false;
@@ -234,6 +281,11 @@ class Block_Control {
 					$is_hidden = true;
 					break;
 				}
+			}
+			
+			if ( $attr === 'hideRoles' && $this->hide_roles( $value ) ) {
+				$is_hidden = true;
+				break;
 			}
 		}
 		
