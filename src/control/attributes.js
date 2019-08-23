@@ -48,6 +48,7 @@ addFilter( 'blocks.registerBlockType', 'block-control/attributes', addControlAtt
 
 const addCustomClasses = ( props, blockType, attributes ) => {
 	const {
+		hideByDate,
 		hideDesktop,
 		hideMobile,
 		hideRoles,
@@ -77,8 +78,12 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 			break;
 	}
 	
+	if ( hideByDate === true ) {
+		classNames += 'block-control-hide-by-date ';
+	}
+	
 	Object.keys( blockControlStore.roles ).map( ( role ) => {
-		if ( hideRoles[ role ] === true ) {
+		if ( typeof hideRoles !== 'undefined' && hideRoles[ role ] === true ) {
 			classNames += 'block-control-hide-' + role + ' ';
 		}
 	} );
