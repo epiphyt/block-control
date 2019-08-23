@@ -2,9 +2,6 @@
  * Block settings for Block Control.
  */
 
-import './style.scss';
-import './editor.scss';
-
 import assign from 'lodash.assign';
 const { addFilter } = wp.hooks;
 

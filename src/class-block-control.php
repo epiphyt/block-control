@@ -9,6 +9,7 @@ use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
 use function wp_enqueue_script;
+use function wp_enqueue_style;
 
 /**
  * The main Block Control class.
@@ -47,7 +48,7 @@ class Block_Control {
 	 * Initialize functions.
 	 */
 	public function init() {
-		add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ] );
+		add_action( 'init', [ $this, 'editor_assets' ] );
 		add_action( 'init', [ $this, 'load_textdomain' ], 0 );
 		add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 	}
@@ -69,6 +70,7 @@ class Block_Control {
 	 * Add the editor assets.
 	 */
 	public function editor_assets() {
+		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), [ 'wp-edit-blocks' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) );
 		wp_enqueue_script( 'block-control-editor', plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), true );
 	}
 	

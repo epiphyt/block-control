@@ -32,34 +32,39 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						title={ __( 'Visibility', 'block-control' ) }
 						initialOpen={ false }
 					>
-						<ToggleControl
-							label={ __( 'Hide on smartphones', 'block-control' ) }
-							value={ hideMobile }
-							checked={ !! hideMobile }
-							onChange={ ( value ) => setAttributes( { hideMobile: value } ) }
-						/>
-						<ToggleControl
-							label={ __( 'Hide on tablets', 'block-control' ) }
-							value={ hideTablet }
-							checked={ !! hideTablet }
-							onChange={ ( value ) => setAttributes( { hideTablet: value } ) }
-						/>
-						<ToggleControl
-							label={ __( 'Hide on desktops', 'block-control' ) }
-							value={ hideDesktop }
-							checked={ !! hideDesktop }
-							onChange={ ( value ) => setAttributes( { hideDesktop: value } ) }
-						/>
-						<RadioControl
-							label={ __( 'Login status', 'block-control' ) }
-							selected={ loginStatus }
-							options={ [
-								{ label: __( 'Show for all users', 'block-control' ), value: 'none' },
-								{ label: __( 'Show for logged in users', 'block-control' ), value: 'logged-in' },
-								{ label: __( 'Show for logged out users', 'block-control' ), value: 'logged-out' },
-							] }
-							onChange={ ( value ) => setAttributes( { loginStatus: value } ) }
-						/>
+						<div className="block-control-control-area">
+							<ToggleControl
+								label={ __( 'Hide on smartphones', 'block-control' ) }
+								value={ hideMobile }
+								checked={ !! hideMobile }
+								onChange={ ( value ) => setAttributes( { hideMobile: value } ) }
+							/>
+							<ToggleControl
+								label={ __( 'Hide on tablets', 'block-control' ) }
+								value={ hideTablet }
+								checked={ !! hideTablet }
+								onChange={ ( value ) => setAttributes( { hideTablet: value } ) }
+							/>
+							<ToggleControl
+								label={ __( 'Hide on desktops', 'block-control' ) }
+								value={ hideDesktop }
+								checked={ !! hideDesktop }
+								onChange={ ( value ) => setAttributes( { hideDesktop: value } ) }
+							/>
+						</div>
+						
+						<div className="block-control-control-area">
+							<RadioControl
+								label={ __( 'Login status', 'block-control' ) }
+								selected={ loginStatus }
+								options={ [
+									{ label: __( 'Show for all users', 'block-control' ), value: 'none' },
+									{ label: __( 'Show for logged in users', 'block-control' ), value: 'logged-in' },
+									{ label: __( 'Show for logged out users', 'block-control' ), value: 'logged-out' },
+								] }
+								onChange={ ( value ) => setAttributes( { loginStatus: value } ) }
+							/>
+						</div>
 					</PanelBody>
 				</InspectorControls>
 			</Fragment>
