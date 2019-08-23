@@ -1,14 +1,20 @@
 <?php
 namespace epiphyt\Block_Control;
+use DateTime;
+use DateTimeZone;
 use Mobile_Detect;
 use function add_action;
 use function add_filter;
 use function dirname;
 use function file_exists;
+use function get_option;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
+use function substr;
+use function time;
 use function wp_enqueue_script;
+use function wp_enqueue_style;
 
 /**
  * The main Block Control class.
@@ -47,7 +53,7 @@ class Block_Control {
 	 * Initialize functions.
 	 */
 	public function init() {
-		add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ] );
+		add_action( 'init', [ $this, 'editor_assets' ] );
 		add_action( 'init', [ $this, 'load_textdomain' ], 0 );
 		add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 	}
@@ -69,6 +75,7 @@ class Block_Control {
 	 * Add the editor assets.
 	 */
 	public function editor_assets() {
+		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), [ 'wp-edit-blocks' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) );
 		wp_enqueue_script( 'block-control-editor', plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), true );
 	}
 	
@@ -177,6 +184,7 @@ class Block_Control {
 		$content = '';
 		// set default visibility
 		$is_hidden = false;
+		$hide_by_date = false;
 		
 		// if there are no attributes, the block should be displayed
 		if ( empty( $block['attrs'] ) ) {
@@ -209,6 +217,24 @@ class Block_Control {
 				$is_hidden = true;
 				break;
 			}
+			
+			if ( $attr === 'hideByDate' && $value === true ) {
+				$hide_by_date = true;
+			}
+			
+			if ( $hide_by_date && $attr === 'hideByDateStart' ) {
+				if ( time() < $this->strtotime( $value ) ) {
+					$is_hidden = true;
+					break;
+				}
+			}
+			
+			if ( $hide_by_date && $attr === 'hideByDateEnd' ) {
+				if ( time() >= $this->strtotime( $value ) ) {
+					$is_hidden = true;
+					break;
+				}
+			}
 		}
 		
 		if ( ! $is_hidden ) {
@@ -217,5 +243,40 @@ class Block_Control {
 		}
 		
 		return $content;
+	}
+	
+	/**
+	 * A custom strtotime() function that takes the WordPress timezone settings
+	 * into account.
+	 * 
+	 * @see		https://mediarealm.com.au/articles/wordpress-timezones-strtotime-date-functions/
+	 * 
+	 * @param	string		$str The string to pass
+	 * @return	int A timestamp
+	 * @throws	\Exception
+	 */
+	public function strtotime( $str ) {
+		$tz_string = get_option( 'timezone_string' );
+		$tz_offset = get_option( 'gmt_offset', 0 );
+		
+		if ( ! empty( $tz_string ) ) {
+			// if site timezone option string exists, use it
+			$timezone = $tz_string;
+		}
+		else if ( $tz_offset == 0 ) {
+			// get UTC offset, if it isn’t set then return UTC
+			$timezone = 'UTC';
+		}
+		else {
+			$timezone = $tz_offset;
+			
+			if ( substr( $tz_offset, 0, 1 ) !== '-' && substr( $tz_offset, 0, 1 ) !== '+' && substr( $tz_offset, 0, 1 ) !== 'U' ) {
+				$timezone = "+" . $tz_offset;
+			}
+		}
+		
+		$datetime = new DateTime( $str, new DateTimeZone( $timezone ) );
+		
+		return (int) $datetime->format( 'U' );
 	}
 }

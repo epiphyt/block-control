@@ -1,0 +1,29 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+.block-control-date {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	min-height: 25px; // make sure the reset icon fits
+	
+	&:empty {
+		min-height: 0;
+	}
+}
+
+.block-control-date-label {
+	flex: 1 1 auto;
+}
+
+.block-control-date-reset {
+	color: #6c7781;
+	transform: translateY(-8%);
+}
+
+.block-control-datetime-picker {
+	padding: 10px;
+}

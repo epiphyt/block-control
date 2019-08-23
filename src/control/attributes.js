@@ -2,14 +2,23 @@
  * Block settings for Block Control.
  */
 
-import './style.scss';
-import './editor.scss';
-
 import assign from 'lodash.assign';
 const { addFilter } = wp.hooks;
 
 const addControlAttribute = ( settings ) => {
 	settings.attributes = assign( settings.attributes, {
+		hideByDate: {
+			default: false,
+			type: 'boolean',
+		},
+		hideByDateEnd: {
+			default: '',
+			type: 'string',
+		},
+		hideByDateStart: {
+			default: '',
+			type: 'string',
+		},
 		hideDesktop: {
 			default: false,
 			type: 'boolean',
