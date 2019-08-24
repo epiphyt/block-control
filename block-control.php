@@ -44,7 +44,7 @@ if ( wp_doing_ajax() ) return;
  * 
  * @param	string		$class The class name of the auto-loaded class
  */
-spl_autoload_register( function( string $class ) {
+spl_autoload_register( function( $class ) {
 	$namespace = strtolower( __NAMESPACE__ . '\\' );
 	$path = explode( '\\', $class );
 	$filename = str_replace( '_', '-', strtolower( array_pop( $path ) ) );
