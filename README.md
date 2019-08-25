@@ -4,14 +4,14 @@ Tags: gutenberg, block, conditional
 Requires at least: 5.0
 Tested up to: 5.2
 Requires PHP: 5.6
-License: GPL3
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
+License: GPL2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Block Control allows you to take control of all the blocks on your website. Tailor a unique experience for your visitors.
 
 == Description ==
 
-Have you ever used WordPress' new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We've been in this situation, that's why we came up with _Block Control_. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that's of course true for both WordPress' default blocks and blocks added by third-party plugins.
+Have you ever used WordPress’ new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We’ve been in this situation, that’s why we came up with _Block Control_. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that’s of course true for both WordPress’ default blocks and blocks added by third-party plugins.
 
 == Installation ==
 
