@@ -16,7 +16,7 @@ upload_zip_updateserver:
 
     script:
         - cd deploy-script
-        - ./deploy.sh -u $SSH_USER_PRODUCTION -d $DEPLOY_PATH -h $DEPLOY_SERVER -z $PROJECT_NAME
+        - ./deploy.sh -u $SSH_USER_PRODUCTION -d $DEPLOY_PATH -h $DEPLOY_SERVER -z $PROJECT_NAME --gutenberg-block
 
     only:
         - tags
@@ -33,7 +33,7 @@ upload_zip_updateserver_dev:
 
     script:
         - cd deploy-script
-        - ./deploy.sh -u $SSH_USER_PRODUCTION -d $DEPLOY_PATH -h $DEPLOY_SERVER -z ${PROJECT_NAME}-dev
+        - ./deploy.sh -u $SSH_USER_PRODUCTION -d $DEPLOY_PATH -h $DEPLOY_SERVER -z ${PROJECT_NAME}-dev --gutenberg-block
 
     variables:
         DEPLOY_PATH: /var/www/wp-update-server/packages
@@ -47,7 +47,7 @@ upload_zip_product:
 
     script:
         - cd deploy-script
-        - ./deploy.sh -u $SSH_USER_PRODUCTION -d $DEPLOY_PATH -h $DEPLOY_SERVER -z $PROJECT_NAME
+        - ./deploy.sh -u $SSH_USER_PRODUCTION -d $DEPLOY_PATH -h $DEPLOY_SERVER -z $PROJECT_NAME --gutenberg-block
 
     only:
         - tags
@@ -64,7 +64,7 @@ wd50_northstar:
 
     script:
         - cd deploy-script
-        - ./deploy.sh -u $SSH_RH_USER_TEST -d $DEPLOY_PATH -h $DEPLOY_SERVER
+        - ./deploy.sh -u $SSH_RH_USER_TEST -d $DEPLOY_PATH -h $DEPLOY_SERVER --gutenberg-block
 
     only:
         - master
