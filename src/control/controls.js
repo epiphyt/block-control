@@ -18,20 +18,33 @@ const { __ } = wp.i18n;
 const isActive = ( props ) => {
 	const {
 		attributes: {
+			hideByDate,
+			hideByDateEnd,
+			hideByDateStart,
 			hideDesktop,
 			hideMobile,
+			hideRoles,
 			hideTablet,
 			loginStatus,
 		},
 	} = props;
 	
 	if (
-		hideDesktop
+		( hideByDate && ( hideByDateStart || hideByDateEnd ) )
+		|| hideDesktop
 		|| hideMobile
 		|| hideTablet
 		|| loginStatus !== 'none'
 	) {
 		return true;
+	}
+	
+	if ( typeof hideRoles !== 'undefined' ) {
+		for ( let role in hideRoles ) {
+			if ( hideRoles[ role ] === true ) {
+				return true;
+			}
+		}
 	}
 	
 	return false;
