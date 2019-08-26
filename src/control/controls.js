@@ -4,9 +4,37 @@
 const { createHigherOrderComponent } = wp.compose;
 const { Fragment } = wp.element;
 const { InspectorControls } = wp.editor;
-const { PanelBody, RadioControl, ToggleControl } = wp.components;
+const { Dashicon, IconButton, PanelBody, RadioControl, ToggleControl, Tooltip } = wp.components;
 const { addFilter } = wp.hooks;
 const { __ } = wp.i18n;
+
+/**
+ * Check if Block Control has an active filter.
+ * 
+ * @param	{object}	props The block properties
+ * @return	{boolean} True if a filter is active, false otherwise
+ */
+const isActive = ( props ) => {
+	const {
+		attributes: {
+			hideDesktop,
+			hideMobile,
+			hideTablet,
+			loginStatus,
+		},
+	} = props;
+	
+	if (
+		hideDesktop
+		|| hideMobile
+		|| hideTablet
+		|| loginStatus !== 'none'
+	) {
+		return true;
+	}
+	
+	return false;
+};
 
 /**
  * Create HOC to add our controls to inspector controls of block.
@@ -30,6 +58,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				<InspectorControls>
 					<PanelBody
 						title={ __( 'Visibility', 'block-control' ) }
+						icon={ isActive( props ) ? <Dashicon icon="visibility" /> : null }
 						initialOpen={ false }
 					>
 						<div className="block-control-control-area">
@@ -67,6 +96,16 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						</div>
 					</PanelBody>
 				</InspectorControls>
+				
+				{ isActive( props ) ? <Tooltip
+					aria-label={ __( 'Block Control active', 'block-control' ) }
+					text={ __( 'Block Control active', 'block-control' ) }
+				>
+					<IconButton
+						className="block-control-dashicon"
+						icon="visibility"
+					/>
+				</Tooltip> : '' }
 			</Fragment>
 		);
 	};
