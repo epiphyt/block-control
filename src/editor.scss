@@ -16,6 +16,42 @@
 	}
 }
 
+.block-control-dashicon {
+	background-color: #fff !important;
+	border-radius: 0;
+	box-shadow: none !important;
+	color: #555d66;
+	cursor: default;
+	opacity: 0;
+	padding: 5px;
+	position: absolute;
+	right: 0;
+	text-shadow: 0 0 3px 2px #fff;
+	top: -28px;
+	transition: top .1s linear;
+	z-index: 10;
+	
+	> svg {
+		margin-right: 0 !important;
+		opacity: 0;
+	}
+	
+	.wp-block:hover &,
+	&:focus {
+		opacity: 1;
+		
+		> svg {
+			opacity: .5;
+		}
+	}
+	
+	.wp-block:not(.is-selected):hover &,
+	.is-hovered & {
+		top: 0;
+		transition: none;
+	}
+}
+
 .block-control-date {
 	display: flex;
 	flex-wrap: wrap;
