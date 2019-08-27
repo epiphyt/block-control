@@ -14,7 +14,7 @@ upload_svn:
 
     script:
         - cd deploy-script
-        - ./deploy.sh --svn https://plugins.svn.wordpress.org/block-control
+        - ./deploy.sh --svn https://plugins.svn.wordpress.org/block-control --gutenberg
 
     only:
         - tags
