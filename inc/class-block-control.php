@@ -16,7 +16,7 @@ use function wp_enqueue_style;
  * 
  * @author	Epiphyt
  * @license	GPL2 <https://www.gnu.org/licenses/gpl-2.0.html>
- * @version	0.1
+ * @version	1.0.0
  */
 class Block_Control {
 	/**

@@ -1,7 +1,7 @@
 === Block Control ===
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional
-Requires at least: 5.0
+Requires at least: 5.2
 Tested up to: 5.2
 Requires PHP: 5.6
 License: GPL2
@@ -34,7 +34,7 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 
 == Changelog ==
 
-= 0.1 =
+= 1.0.0 =
 * Initial release
 
 == Upgrade Notice ==
