@@ -22,7 +22,7 @@ Have you ever used WordPress’ new block editor Gutenberg and wished for a way 
 
 == Frequently Asked Questions ==
 
-= How do I use _Block Control_? =
+= How do I use Block Control? =
 
 After you install and activate _Block Control_, you will find a new panel “Visibility” added to every blocks right hand side sidebar. Open the panel to choose a condition for the display of a given block.
 
@@ -33,6 +33,9 @@ Conditional blocks configured this way will only be displayed under certain circ
 We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugin shop from southern Germany.
 
 == Changelog ==
+
+= 1.0.1 =
+* We fixed the internationalization for all strings
 
 = 1.0.0 =
 * Initial release

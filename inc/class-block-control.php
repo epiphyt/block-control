@@ -8,15 +8,17 @@ use function file_exists;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
+use function plugin_dir_path;
 use function wp_enqueue_script;
 use function wp_enqueue_style;
+use function wp_set_script_translations;
 
 /**
  * The main Block Control class.
  * 
  * @author	Epiphyt
  * @license	GPL2 <https://www.gnu.org/licenses/gpl-2.0.html>
- * @version	1.0.0
+ * @version	1.0.1
  */
 class Block_Control {
 	/**
@@ -49,6 +51,7 @@ class Block_Control {
 	 */
 	public function init() {
 		add_action( 'init', [ $this, 'editor_assets' ] );
+		add_action( 'init', [ $this, 'load_script_translations' ] );
 		add_action( 'init', [ $this, 'load_textdomain' ], 0 );
 		add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 	}
@@ -147,6 +150,15 @@ class Block_Control {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Load translations for scripts.
+	 * 
+	 * @since	1.0.1
+	 */
+	public function load_script_translations() {
+		wp_set_script_translations( 'block-control-editor', 'block-control', plugin_dir_path( $this->plugin_file ) . 'languages' );
 	}
 	
 	/**
