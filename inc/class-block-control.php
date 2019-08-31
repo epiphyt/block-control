@@ -5,10 +5,12 @@ use function add_action;
 use function add_filter;
 use function dirname;
 use function file_exists;
+use function filemtime;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
 use function plugin_dir_path;
+use function plugins_url;
 use function wp_enqueue_script;
 use function wp_enqueue_style;
 use function wp_set_script_translations;
@@ -73,6 +75,10 @@ class Block_Control {
 	 * Add the editor assets.
 	 */
 	public function editor_assets() {
+		if ( ! is_admin() ) {
+			return;
+		}
+		
 		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), [ 'wp-edit-blocks' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) );
 		wp_enqueue_script( 'block-control-editor', plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), [ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ], filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), true );
 	}
