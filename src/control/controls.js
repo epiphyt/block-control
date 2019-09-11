@@ -97,7 +97,8 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						icon={ isActive( props ) ? <Dashicon icon="visibility" /> : null }
 						initialOpen={ false }
 					>
-						<div className="block-control-control-area">
+						<div className="block-control-control-area block-control-device-area">
+							<span className="components-base-control__label">{ __( 'Hide device types', 'block-control' ) }</span>
 							<ToggleControl
 								label={ __( 'Hide on smartphones', 'block-control' ) }
 								value={ hideMobile }
@@ -120,7 +121,8 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						
 						<div className="block-control-control-area">
 							<RadioControl
-								label={ __( 'Login status', 'block-control' ) }
+								className="block-control-login-status"
+								label={ __( 'Hide by login status', 'block-control' ) }
 								selected={ loginStatus }
 								options={ [
 									{ label: __( 'Show for all users', 'block-control' ), value: 'none' },
@@ -133,6 +135,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						
 						<div className="block-control-control-area">
 							<ToggleControl
+								className="block-control-hide-by-date"
 								label={ __( 'Hide by date', 'block-control' ) }
 								value={ hideByDate }
 								checked={ !! hideByDate }
@@ -158,7 +161,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 											aria-expanded={ isOpen }
 											className="components-button is-link"
 										>
-											{ hideByDateStart && dateI18n( settings.formats.datetime, hideByDateStart ) || __( 'Set date', 'block-control' ) }
+											{ hideByDateStart && dateI18n( settings.formats.datetimeAbbreviated, hideByDateStart ) || __( 'Set date', 'block-control' ) }
 										</Button>
 									) }
 									renderContent={ () => (
@@ -193,7 +196,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 											aria-expanded={ isOpen }
 											className="components-button is-link"
 										>
-											{ hideByDateEnd && dateI18n( settings.formats.datetime, hideByDateEnd ) || __( 'Set date', 'block-control' ) }
+											{ hideByDateEnd && dateI18n( settings.formats.datetimeAbbreviated, hideByDateEnd ) || __( 'Set date', 'block-control' ) }
 										</Button>
 									) }
 									renderContent={ () => (
@@ -209,11 +212,11 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							</div>
 						</div>
 						
-						<div className="block-control-control-area">
+						<div className="block-control-control-area block-control-control-hide-roles">
+							<span className="components-base-control__label">{ __( 'Hide for user roles', 'block-control' ) }</span>
 							{ Object.keys( blockControlStore.roles ).map( ( role, index ) => {
 								return ( <CheckboxControl
 									label={ blockControlStore.roles[ role ] }
-									heading={ index === 0 && __( 'Hide for user roles:', 'block-control' ) || '' }
 									checked={ hideRoles[ role ] }
 									value={ role }
 									onChange={ ( value ) => onChangeHideRoles( role, value ) }

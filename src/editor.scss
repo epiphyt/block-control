@@ -16,6 +16,17 @@
 	}
 }
 
+.edit-post-settings-sidebar__panel-block .components-panel__body .block-control-control-hide-roles {
+	> .components-base-control,
+	.components-base-control__label {
+		margin-bottom: 4px;
+	}
+	
+	.components-base-control__label {
+		display: block;
+	}
+}
+
 .block-control-dashicon {
 	background-color: #fff !important;
 	border-radius: 0;
@@ -75,4 +86,27 @@
 
 .block-control-datetime-picker {
 	padding: 10px;
+}
+
+.block-control-device-area {
+	.components-base-control__field {
+		margin-bottom: 8px;
+	}
+	
+	.components-base-control__label {
+		display: block;
+		margin-bottom: 8px;
+	}
+	
+	.edit-post-settings-sidebar__panel-block .components-panel__body & .components-base-control {
+		margin-bottom: 0;
+	}
+}
+
+.edit-post-settings-sidebar__panel-block .components-panel__body .components-base-control.block-control-hide-by-date {
+	margin-bottom: 4px;
+	
+	.components-base-control__field {
+		margin-bottom: 0;
+	}
 }
