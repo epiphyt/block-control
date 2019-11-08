@@ -28,6 +28,10 @@ After you install and activate _Block Control_, you will find a new panel “Vis
 
 Conditional blocks configured this way will only be displayed under certain circumstances chosen by you. Please note, these conditions will only take effect in the front end of your site, not inside the editor itself.
 
+= Does Block Control work with page caching plugins? =
+
+As Block Control removes content completely from the source code and not just hides it via CSS, it is mostly incompatible to any caching plugin because it may generate different HTML for every user.
+
 = Who are you folks? =
 
 We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugin shop from southern Germany.
