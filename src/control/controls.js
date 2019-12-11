@@ -24,7 +24,6 @@ const isActive = ( props ) => {
 			hideDesktop,
 			hideMobile,
 			hideRoles,
-			hideTablet,
 			loginStatus,
 		},
 	} = props;
@@ -33,7 +32,6 @@ const isActive = ( props ) => {
 		( hideByDate && ( hideByDateStart || hideByDateEnd ) )
 		|| hideDesktop
 		|| hideMobile
-		|| hideTablet
 		|| loginStatus !== 'none'
 	) {
 		return true;
@@ -63,7 +61,6 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hideDesktop,
 				hideMobile,
 				hideRoles,
-				hideTablet,
 				loginStatus,
 			},
 			setAttributes,
@@ -104,12 +101,6 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								value={ hideMobile }
 								checked={ !! hideMobile }
 								onChange={ ( value ) => setAttributes( { hideMobile: value } ) }
-							/>
-							<ToggleControl
-								label={ __( 'Hide on tablets', 'block-control' ) }
-								value={ hideTablet }
-								checked={ !! hideTablet }
-								onChange={ ( value ) => setAttributes( { hideTablet: value } ) }
 							/>
 							<ToggleControl
 								label={ __( 'Hide on desktops', 'block-control' ) }

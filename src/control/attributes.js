@@ -31,10 +31,6 @@ const addControlAttribute = ( settings ) => {
 			default: {},
 			type: 'object',
 		},
-		hideTablet: {
-			default: false,
-			type: 'boolean',
-		},
 		loginStatus: {
 			default: 'none',
 			type: 'string',
@@ -52,7 +48,6 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 		hideDesktop,
 		hideMobile,
 		hideRoles,
-		hideTablet,
 		loginStatus,
 	} = attributes;
 	let classNames = ( typeof props.className === 'undefined' || ! props.className ) ? '' : props.className + ' ';
@@ -63,10 +58,6 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 	
 	if ( hideMobile === true ) {
 		classNames += 'block-control-hide-mobile ';
-	}
-	
-	if ( hideTablet === true ) {
-		classNames += 'block-control-hide-tablet ';
 	}
 	
 	switch ( loginStatus ) {

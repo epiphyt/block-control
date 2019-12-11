@@ -38,6 +38,11 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 
 == Changelog ==
 
+= 1.0.2 =
+
+* We fixed a problem that may load multiple editor scripts in the frontend even if they are not needed there
+* We fixed a problem where Block Control options won’t be available for certain blocks
+
 = 1.0.1 =
 * We fixed the internationalization for all strings
 
