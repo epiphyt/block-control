@@ -91,7 +91,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_desktop( $attr, $value ) {
-		if ( $attr === 'hideDesktop' && $value === true && ! $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
+		if ( $attr === 'hideDesktop' && $value === true && ! $this->mobile_detect->isMobile() ) {
 			return true;
 		}
 		
@@ -136,22 +136,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	private function hide_mobile( $attr, $value ) {
-		if ( $attr === 'hideMobile' && $value === true && $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Test if the content should be hidden by its attributes.
-	 * 
-	 * @param	string		$attr The attribute name
-	 * @param	bool		$value The attribute value
-	 * @return	bool True if the content should be hidden, false otherwise
-	 */
-	private function hide_tablet( $attr, $value ) {
-		if ( $attr === 'hideTablet' && $value === true && $this->mobile_detect->isTablet() ) {
+		if ( $attr === 'hideMobile' && $value === true && $this->mobile_detect->isMobile() ) {
 			return true;
 		}
 		
@@ -211,11 +196,6 @@ class Block_Control {
 			}
 			
 			if ( $this->hide_mobile( $attr, $value ) ) {
-				$is_hidden = true;
-				break;
-			}
-			
-			if ( $this->hide_tablet( $attr, $value ) ) {
 				$is_hidden = true;
 				break;
 			}
