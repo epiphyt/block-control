@@ -36,6 +36,10 @@ As Block Control removes content completely from the source code and not just hi
 
 We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugin shop from southern Germany.
 
+= Contributing =
+
+You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
+
 == Changelog ==
 
 = 1.0.2 =
