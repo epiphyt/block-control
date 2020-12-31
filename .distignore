@@ -1,0 +1,11 @@
+.distignore
+.editorconfig
+.eslint*
+.git
+.github
+.gitignore
+node_modules/
+src/
+package.json
+package-lock.json
+.wordpress-org
