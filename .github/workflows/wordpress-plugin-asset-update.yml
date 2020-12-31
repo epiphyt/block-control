@@ -1,0 +1,21 @@
+name: Plugin asset/readme update
+on:
+  push:
+    branches:
+    - master
+jobs:
+  master:
+    name: Push to master
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Run npm build
+    - uses: bahmutov/npm-install@v1
+    - name: Run
+      run: npm run build
+    - name: WordPress.org plugin asset/readme update
+      uses: 10up/action-wordpress-plugin-asset-update@master
+      env:
+        README_NAME: README.md
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
