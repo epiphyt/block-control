@@ -208,7 +208,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							{ Object.keys( blockControlStore.roles ).map( ( role, index ) => {
 								return ( <CheckboxControl
 									label={ blockControlStore.roles[ role ] }
-									checked={ hideRoles[ role ] }
+									checked={ hideRoles ? hideRoles[ role ] : false }
 									value={ role }
 									onChange={ ( value ) => onChangeHideRoles( role, value ) }
 								/> );
