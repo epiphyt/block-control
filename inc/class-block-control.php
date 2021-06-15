@@ -200,7 +200,7 @@ class Block_Control {
 		
 		// if there are no attributes, the block should be displayed
 		if ( empty( $block['attrs'] ) ) {
-			$content = $block_content;
+			return $block_content;
 		}
 		
 		// iterate through all block attributes
