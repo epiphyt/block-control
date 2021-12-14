@@ -42,6 +42,9 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 
 == Changelog ==
 
+= 1.0.4 =
+* We fixed a problem with assets loading in the backend
+
 = 1.0.3 =
 * We fixed a problem while checking for block attributes
 
