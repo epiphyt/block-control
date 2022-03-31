@@ -3,9 +3,8 @@
  */
 const { createHigherOrderComponent } = wp.compose;
 const { __experimentalGetSettings, dateI18n } = wp.date;
-const { Fragment } = wp.element;
 const { InspectorControls } = wp.editor;
-const { Button, CheckboxControl, Dashicon, DateTimePicker, Dropdown, IconButton, PanelBody, RadioControl, ToggleControl, Tooltip } = wp.components;
+const { Button, CheckboxControl, Dashicon, DateTimePicker, Dropdown, PanelBody, RadioControl, ToggleControl, Tooltip } = wp.components;
 const { addFilter } = wp.hooks;
 const { __ } = wp.i18n;
 
@@ -113,191 +112,198 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			setAttributes( { hideRoles: newValue } );
 		};
 		
-		return (
-			<Fragment>
-				<BlockEdit { ...props } />
-				
-				<InspectorControls>
-					<PanelBody
-						title={ __( 'Visibility', 'block-control' ) }
-						icon={ isActive( props ) ? <Dashicon icon="visibility" /> : null }
-						initialOpen={ false }
-					>
-						<div className="block-control-control-area block-control-device-area">
-							<span className="components-base-control__label">{ __( 'Hide device types', 'block-control' ) }</span>
-							<ToggleControl
-								label={ __( 'Hide on smartphones', 'block-control' ) }
-								value={ hideMobile }
-								checked={ !! hideMobile }
-								onChange={ ( value ) => setAttributes( { hideMobile: value } ) }
-							/>
-							<ToggleControl
-								label={ __( 'Hide on desktops', 'block-control' ) }
-								value={ hideDesktop }
-								checked={ !! hideDesktop }
-								onChange={ ( value ) => setAttributes( { hideDesktop: value } ) }
-							/>
-						</div>
-						
-						<div className="block-control-control-area">
-							<RadioControl
-								className="block-control-login-status"
-								label={ __( 'Hide by login status', 'block-control' ) }
-								selected={ loginStatus }
-								options={ [
-									{ label: __( 'Show for all users', 'block-control' ), value: 'none' },
-									{ label: __( 'Show for logged in users', 'block-control' ), value: 'logged-in' },
-									{ label: __( 'Show for logged out users', 'block-control' ), value: 'logged-out' },
-								] }
-								onChange={ ( value ) => setAttributes( { loginStatus: value } ) }
-							/>
-						</div>
-						
-						<div className="block-control-control-area">
-							<ToggleControl
-								className="block-control-hide-by-date"
-								label={ __( 'Hide by date', 'block-control' ) }
-								value={ hideByDate }
-								checked={ !! hideByDate }
-								onChange={ ( value ) => setAttributes( { hideByDate: value } ) }
-							/>
-							{ hideByDate
-								? <div>
-									<div className="block-control-date">
-										<div className="block-control-date-label"> { __( 'Start date:', 'block-control' ) } </div>
-										{ hideByDateStart
-											? <Tooltip text={ __( 'Reset date', 'block-control' ) }>
-												<Button
-													onClick={ () => setAttributes( { hideByDateStart: '' } ) }
-												>
-													<Dashicon
-														className="block-control-date-reset"
-														icon="no-alt"
-													/>
-												</Button>
-											</Tooltip>
-											: null
-										}
-										<Dropdown
-											position="bottom right"
-											renderToggle={ ( { isOpen, onToggle } ) => (
-												<Button
-													onClick={ onToggle }
-													aria-expanded={ isOpen }
-													className="components-button is-link"
-												>
-													{ hideByDateStart
-														? dateI18n( settings.formats.datetimeAbbreviated, hideByDateStart )
-														: __( 'Set date', 'block-control' )
-													}
-												</Button>
-											) }
-											renderContent={ () => (
-												<div className="block-control-datetime-picker">
-													<DateTimePicker
-														currentDate={ hideByDateStart }
-														onChange={ ( value ) => setAttributes( { hideByDateStart: value } ) }
-														is12Hour={ is12HourTime }
-													/>
-												</div>
-											) }
-										/>
-									</div>
-									
-									<div className="block-control-help">{ __( 'The date where the block starts to be hidden.', 'block-control' ) }</div>
-									
-									<div className="block-control-date">
-										<div className="block-control-date-label"> { __( 'End date:', 'block-control' ) } </div>
-										{ hideByDateEnd
-											? <Tooltip text={ __( 'Reset date', 'block-control' ) }>
-												<Button
-													onClick={ () => setAttributes( { hideByDateEnd: '' } ) }
-												>
-													<Dashicon
-														className="block-control-date-reset"
-														icon="no-alt"
-													/>
-												</Button>
-											</Tooltip>
-											: null
-										}
-										<Dropdown
-											position="bottom right"
-											renderToggle={ ( { isOpen, onToggle } ) => (
-												<Button
-													onClick={ onToggle }
-													aria-expanded={ isOpen }
-													className="components-button is-link"
-												>
-													{ hideByDateEnd
-														? dateI18n( settings.formats.datetimeAbbreviated, hideByDateEnd )
-														: __( 'Set date', 'block-control' )
-													}
-												</Button>
-											) }
-											renderContent={ () => (
-												<div className="block-control-datetime-picker">
-													<DateTimePicker
-														currentDate={ hideByDateEnd }
-														onChange={ ( value ) => setAttributes( { hideByDateEnd: value } ) }
-														is12Hour={ is12HourTime }
-													/>
-												</div>
-											) }
-										/>
-									</div>
-									
-									<div className="block-control-help">{ __( 'The date where the block ends to be hidden.', 'block-control' ) }</div>
-								</div>
-								: null
-							}
-						</div>
-						
-						<div className="block-control-control-area block-control-control-hide-roles">
-							<span className="components-base-control__label">{ __( 'Hide for user roles', 'block-control' ) }</span>
-							
-							<div className="block-control-checkbox-select">
-								{ Object.keys( blockControlStore.roles ).map( ( role, index ) => {
-									return ( <CheckboxControl
-										key={ index }
-										label={ blockControlStore.roles[ role ] }
-										checked={ hideRoles ? hideRoles[ role ] : false }
-										value={ role }
-										onChange={ ( value ) => onChangeHideRoles( role, value ) }
-									/> );
-								} ) }
-							</div>
-						</div>
-						
-						<div className="block-control-control-area block-control-control-hide-conditional-tags">
-							<span className="components-base-control__label">{ __( 'Hide for specific page types', 'block-control' ) }</span>
-							
-							<div className="block-control-checkbox-select">
-								{ Object.keys( CONDITIONAL_TAGS ).map( ( tag, index ) => {
-									return ( <CheckboxControl
-										key={ index }
-										label={ CONDITIONAL_TAGS[ tag ] }
-										checked={ hideConditionalTags ? hideConditionalTags[ tag ] : false }
-										value={ tag }
-										onChange={ ( value ) => onChangeConditionalTags( tag, value ) }
-									/> );
-								} ) }
-							</div>
-						</div>
-					</PanelBody>
-				</InspectorControls>
-				
-				{ isActive( props ) ? <Tooltip
-					aria-label={ __( 'Block Control active', 'block-control' ) }
-					text={ __( 'Block Control active', 'block-control' ) }
+		const inner = <>
+			<BlockEdit{ ...props } />
+			
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Visibility', 'block-control' ) }
+					icon={ isActive( props ) ? <Dashicon icon="visibility" /> : null }
+					initialOpen={ false }
 				>
-					<IconButton
-						className="block-control-dashicon"
-						icon="visibility"
-					/>
-				</Tooltip> : '' }
-			</Fragment>
-		);
+					<div className="block-control-control-area block-control-device-area">
+						<span className="components-base-control__label">{ __( 'Hide device types', 'block-control' ) }</span>
+						<ToggleControl
+							label={ __( 'Hide on smartphones', 'block-control' ) }
+							value={ hideMobile }
+							checked={ !! hideMobile }
+							onChange={ ( value ) => setAttributes( { hideMobile: value } ) }
+						/>
+						<ToggleControl
+							label={ __( 'Hide on desktops', 'block-control' ) }
+							value={ hideDesktop }
+							checked={ !! hideDesktop }
+							onChange={ ( value ) => setAttributes( { hideDesktop: value } ) }
+						/>
+					</div>
+					
+					<div className="block-control-control-area">
+						<RadioControl
+							className="block-control-login-status"
+							label={ __( 'Hide by login status', 'block-control' ) }
+							selected={ loginStatus }
+							options={ [
+								{ label: __( 'Show for all users', 'block-control' ), value: 'none' },
+								{ label: __( 'Show for logged in users', 'block-control' ), value: 'logged-in' },
+								{ label: __( 'Show for logged out users', 'block-control' ), value: 'logged-out' },
+							] }
+							onChange={ ( value ) => setAttributes( { loginStatus: value } ) }
+						/>
+					</div>
+					
+					<div className="block-control-control-area">
+						<ToggleControl
+							className="block-control-hide-by-date"
+							label={ __( 'Hide by date', 'block-control' ) }
+							value={ hideByDate }
+							checked={ !! hideByDate }
+							onChange={ ( value ) => setAttributes( { hideByDate: value } ) }
+						/>
+						{ hideByDate
+							? <div>
+								<div className="block-control-date">
+									<div className="block-control-date-label">{ __( 'Hide date:', 'block-control' ) }</div>
+									{ hideByDateStart
+										? <Tooltip text={ __( 'Reset date', 'block-control' ) }>
+											<Button
+												onClick={ () => setAttributes( { hideByDateStart: '' } ) }
+											>
+												<Dashicon
+													className="block-control-date-reset"
+													icon="no-alt"
+												/>
+											</Button>
+										</Tooltip>
+										: null
+									}
+									<Dropdown
+										position="bottom right"
+										renderToggle={ ( { isOpen, onToggle } ) => (
+											<Button
+												onClick={ onToggle }
+												aria-expanded={ isOpen }
+												className="components-button is-link"
+											>
+												{ hideByDateStart
+													? dateI18n( settings.formats.datetimeAbbreviated, hideByDateStart )
+													: __( 'Set date', 'block-control' )
+												}
+											</Button>
+										) }
+										renderContent={ () => (
+											<div className="block-control-datetime-picker">
+												<DateTimePicker
+													currentDate={ hideByDateStart }
+													onChange={ ( value ) => setAttributes( { hideByDateStart: value } ) }
+													is12Hour={ is12HourTime }
+												/>
+											</div>
+										) }
+									/>
+								</div>
+								
+								<div className="block-control-help">{ __( 'The date where the block starts to be hidden.', 'block-control' ) }</div>
+								
+								<div className="block-control-date">
+									<div className="block-control-date-label">{ __( 'Display date:', 'block-control' ) }</div>
+									{ hideByDateEnd
+										? <Tooltip text={ __( 'Reset date', 'block-control' ) }>
+											<Button
+												onClick={ () => setAttributes( { hideByDateEnd: '' } ) }
+											>
+												<Dashicon
+													className="block-control-date-reset"
+													icon="no-alt"
+												/>
+											</Button>
+										</Tooltip>
+										: null
+									}
+									<Dropdown
+										position="bottom right"
+										renderToggle={ ( { isOpen, onToggle } ) => (
+											<Button
+												onClick={ onToggle }
+												aria-expanded={ isOpen }
+												className="components-button is-link"
+											>
+												{ hideByDateEnd
+													? dateI18n( settings.formats.datetimeAbbreviated, hideByDateEnd )
+													: __( 'Set date', 'block-control' )
+												}
+											</Button>
+										) }
+										renderContent={ () => (
+											<div className="block-control-datetime-picker">
+												<DateTimePicker
+													currentDate={ hideByDateEnd }
+													onChange={ ( value ) => setAttributes( { hideByDateEnd: value } ) }
+													is12Hour={ is12HourTime }
+												/>
+											</div>
+										) }
+									/>
+								</div>
+								
+								<div className="block-control-help">{ __( 'The date where the block ends to be hidden.', 'block-control' ) }</div>
+							</div>
+							: null
+						}
+					</div>
+					
+					<div className="block-control-control-area block-control-control-hide-roles">
+						<span className="components-base-control__label">{ __( 'Hide for user roles', 'block-control' ) }</span>
+						
+						<div className="block-control-checkbox-select">
+							{ Object.keys( blockControlStore.roles ).map( ( role, index ) => {
+								return ( <CheckboxControl
+									key={ index }
+									label={ blockControlStore.roles[ role ] }
+									checked={ hideRoles ? hideRoles[ role ] : false }
+									value={ role }
+									onChange={ ( value ) => onChangeHideRoles( role, value ) }
+								/> );
+							} ) }
+						</div>
+					</div>
+					
+					<div className="block-control-control-area block-control-control-hide-conditional-tags">
+						<span className="components-base-control__label">{ __( 'Hide for specific page types', 'block-control' ) }</span>
+						
+						<div className="block-control-checkbox-select">
+							{ Object.keys( CONDITIONAL_TAGS ).map( ( tag, index ) => {
+								return ( <CheckboxControl
+									key={ index }
+									label={ CONDITIONAL_TAGS[ tag ] }
+									checked={ hideConditionalTags ? hideConditionalTags[ tag ] : false }
+									value={ tag }
+									onChange={ ( value ) => onChangeConditionalTags( tag, value ) }
+								/> );
+							} ) }
+						</div>
+					</div>
+				</PanelBody>
+			</InspectorControls>
+		</>;
+		
+		if ( hideByDate && hideByDateStart ) {
+			const now = new Date();
+			const hideDateStart = new Date( hideByDateStart );
+			
+			// if block should be hidden
+			if ( now.getTime() >= hideDateStart.getTime() ) {
+				const hideDateEnd = new Date( hideByDateEnd );
+				
+				// if end date is reached
+				if ( hideByDateEnd && now.getTime() > hideDateEnd.getTime() ) {
+					return inner;
+				}
+				
+				return ( <div className="block-control-wrapper block-control-is-hidden by-date">{ inner }</div> );
+			}
+		}
+		
+		return inner;
 	};
 }, 'addControls' );
 

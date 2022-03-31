@@ -88,7 +88,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	min-height: 25px; // make sure the reset icon fits
+	min-height: 36px; // make sure the reset icon fits
 	
 	&:empty {
 		min-height: 0;
@@ -111,6 +111,19 @@
 	color: #757575;
 	font-size: 12px;
 	font-style: normal;
+}
+
+.block-control-is-hidden {
+	&.by-date {
+		> .wp-block {
+			opacity: .5;
+			
+			&.has-child-selected,
+			&.is-selected {
+				opacity: 1;
+			}
+		}
+	}
 }
 
 .block-control-device-area {
