@@ -16,15 +16,26 @@
 	}
 }
 
-.edit-post-settings-sidebar__panel-block .components-panel__body .block-control-control-hide-roles {
-	> .components-base-control,
-	.components-base-control__label {
-		margin-bottom: 4px;
+.interface-interface-skeleton__sidebar {
+	.block-control-control-hide-conditional-tags,
+	.block-control-control-hide-roles {
+		> .components-base-control__label {
+			margin-bottom: 8px;
+		}
+		
+		.block-control-checkbox-select > .components-base-control {
+			margin-bottom: 4px;
+		}
+		
+		.components-base-control__label {
+			display: block;
+		}
 	}
-	
-	.components-base-control__label {
-		display: block;
-	}
+}
+
+.block-control-checkbox-select {
+	max-height: 150px;
+	overflow: auto;
 }
 
 .block-control-dashicon {
@@ -64,7 +75,16 @@
 	}
 }
 
+.block-control-hide-by-date.block-control-hide-by-date { // needs identical specificity as .block-editor-block-inspector .components-base-control
+	margin-bottom: 0;
+	
+	.components-base-control__field {
+		margin-bottom: 0;
+	}
+}
+
 .block-control-date {
+	align-items: center;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -81,14 +101,23 @@
 
 .block-control-date-reset {
 	color: #6c7781;
-	transform: translateY(-8%);
 }
 
 .block-control-datetime-picker {
 	padding: 10px;
 }
 
+.block-control-help {
+	color: #757575;
+	font-size: 12px;
+	font-style: normal;
+}
+
 .block-control-device-area {
+	.components-base-control {
+		margin-bottom: 0;
+	}
+	
 	.components-base-control__field {
 		margin-bottom: 8px;
 	}
@@ -96,17 +125,5 @@
 	.components-base-control__label {
 		display: block;
 		margin-bottom: 8px;
-	}
-	
-	.edit-post-settings-sidebar__panel-block .components-panel__body & .components-base-control {
-		margin-bottom: 0;
-	}
-}
-
-.edit-post-settings-sidebar__panel-block .components-panel__body .components-base-control.block-control-hide-by-date {
-	margin-bottom: 4px;
-	
-	.components-base-control__field {
-		margin-bottom: 0;
 	}
 }

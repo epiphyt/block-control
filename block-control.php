@@ -61,6 +61,5 @@ spl_autoload_register( function( $class ) {
 	}
 } );
 
-$block_control = Block_Control::get_instance();
-$block_control->set_plugin_file( __FILE__ );
-$block_control->init();
+Block_Control::get_instance()->set_plugin_file( __FILE__ );
+Block_Control::get_instance()->init();

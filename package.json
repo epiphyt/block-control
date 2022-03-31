@@ -1,14 +1,13 @@
 {
-  "name": "block-control",
-  "version": "1.0.4",
-  "private": true,
-  "scripts": {
-    "start": "cgb-scripts start",
-    "build": "cgb-scripts build",
-    "eject": "cgb-scripts eject"
-  },
-  "dependencies": {
-    "cgb-scripts": "1.22.0",
-    "lodash.assign": "^4.2.0"
-  }
+	"name": "block-control",
+	"scripts": {
+		"start": "wp-scripts start",
+		"build": "wp-scripts build"
+	},
+	"dependencies": {
+		"lodash.assign": "^4.2.0"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^22.3.0"
+	}
 }
