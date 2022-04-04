@@ -94,6 +94,8 @@ class Block_Control {
 	/**
 	 * Get all user roles.
 	 * 
+	 * @since	1.1.0
+	 * 
 	 * @return	array A list of all roles
 	 */
 	public function get_roles() {
@@ -124,6 +126,8 @@ class Block_Control {
 	
 	/**
 	 * Check if the content should be hidden by a conditional tag.
+	 * 
+	 * @since	1.1.0
 	 * 
 	 * @param	array	$value The attribute value
 	 * @return	bool Whether the content should be hidden
@@ -276,6 +280,8 @@ class Block_Control {
 	
 	/**
 	 * Test if the content should be hidden by its attributes.
+	 * 
+	 * @since	1.1.0
 	 * 
 	 * @param	array	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
