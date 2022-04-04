@@ -9,7 +9,20 @@ use function dirname;
 use function file_exists;
 use function get_option;
 use function in_array;
-use function filemtime;
+use function is_404;
+use function is_archive;
+use function is_attachment;
+use function is_category;
+use function is_front_page;
+use function is_home;
+use function is_page;
+use function is_paged;
+use function is_search;
+use function is_single;
+use function is_singular;
+use function is_sticky;
+use function is_tag;
+use function is_tax;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
 use function plugin_basename;
@@ -107,6 +120,98 @@ class Block_Control {
 		}
 		
 		return $roles;
+	}
+	
+	/**
+	 * Check if the content should be hidden by a conditional tag.
+	 * 
+	 * @param	array	$value The attribute value
+	 * @return	bool Whether the content should be hidden
+	 */
+	public function hide_conditional_tags( array $value ) {
+		$hidden = false;
+		
+		foreach ( $value as $tag => $is_hidden ) {
+			switch ( $tag ) {
+				case 'is_home':
+					if ( $is_hidden && is_home() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_front_page':
+					if ( $is_hidden && is_front_page() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_single':
+					if ( $is_hidden && is_single() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_sticky':
+					if ( $is_hidden && is_sticky() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_page':
+					if ( $is_hidden && is_page() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_category':
+					if ( $is_hidden && is_category() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_tag':
+					if ( $is_hidden && is_tag() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_tax':
+					if ( $is_hidden && is_tax() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_archive':
+					if ( $is_hidden && is_archive() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_search':
+					if ( $is_hidden && is_search() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_404':
+					if ( $is_hidden && is_404() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_paged':
+					if ( $is_hidden && is_paged() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_attachment':
+					if ( $is_hidden && is_attachment() ) {
+						$hidden = true;
+					}
+					break;
+				case 'is_singular':
+					if ( $is_hidden && is_singular() ) {
+						$hidden = true;
+					}
+					break;
+			}
+			
+			// return early if at least one tag is true
+			if ( $hidden ) {
+				return $hidden;
+			}
+		}
+		
+		return $hidden;
 	}
 	
 	/**
@@ -273,6 +378,11 @@ class Block_Control {
 			}
 			
 			if ( $attr === 'hideRoles' && $this->hide_roles( $value ) ) {
+				$is_hidden = true;
+				break;
+			}
+			
+			if ( $attr === 'hideConditionalTags' && $this->hide_conditional_tags( $value ) ) {
 				$is_hidden = true;
 				break;
 			}

@@ -50,6 +50,7 @@ const isActive = ( props ) => {
 		|| hideDesktop
 		|| hideMobile
 		|| loginStatus !== 'none'
+		|| hideConditionalTags.length
 	) {
 		return true;
 	}
@@ -61,7 +62,6 @@ const isActive = ( props ) => {
 			}
 		}
 	}
-	// TODO: hideByConditionalTags
 	
 	return false;
 };
@@ -85,6 +85,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			setAttributes,
 		} = props;
 		const settings = __experimentalGetSettings();
+		
 		// To know if the current timezone is a 12 hour time with look for "a" in the time format
 		// We also make sure this a is not escaped by a "/"
 		const is12HourTime = /a(?!\\)/i.test(
@@ -93,7 +94,8 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				.replace( /\\\\/g, '' ) // Replace "//" with empty strings
 				.split( '' ).reverse().join( '' ) // Reverse the string and test for "a" not followed by a slash
 		);
-		// change the value if you click on a checkbox of the contitional tag hide checkboxes
+		
+		// change the value if you click on a checkbox of the conditional tag hide checkboxes
 		const onChangeConditionalTags = ( tag, value ) => {
 			// make sure the value gets updated correctly
 			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
@@ -102,6 +104,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			
 			setAttributes( { hideConditionalTags: newValue } );
 		};
+		
 		// change the value if you click on a checkbox of the user role hide checkboxes
 		const onChangeHideRoles = ( role, value ) => {
 			// make sure the value gets updated correctly

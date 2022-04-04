@@ -78,6 +78,10 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 		classNames += 'block-control-hide-by-date ';
 	}
 	
+	if ( hideConditionalTags.length ) {
+		classNames += 'block-control-hide-by-conditional-tag ';
+	}
+	
 	Object.keys( blockControlStore.roles ).map( ( role ) => {
 		if ( typeof hideRoles !== 'undefined' && hideRoles[ role ] === true ) {
 			classNames += 'block-control-hide-' + role + ' ';
