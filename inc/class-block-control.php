@@ -92,21 +92,6 @@ class Block_Control {
 	}
 	
 	/**
-	 * Add the editor assets.
-	 */
-	public function editor_assets() {
-		// automatically load dependencies and version
-		/** @noinspection PhpIncludeInspection */
-		$asset_file = include( plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php' );
-		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'build/index.css', dirname( __FILE__ ) ), [], $asset_file['version'] );
-		wp_enqueue_script( 'block-control-editor', plugins_url( '/build/index.js', dirname( __FILE__ ) ), $asset_file['dependencies'], $asset_file['version'], false );
-		wp_set_script_translations( 'block-control-editor', 'block-control', plugin_dir_path( __FILE__ ) . 'languages' );
-		wp_localize_script( 'block-control-editor', 'blockControlStore', [
-			'roles' => $this->get_roles(),
-		] );
-	}
-	
-	/**
 	 * Get all user roles.
 	 * 
 	 * @return	array A list of all roles
@@ -120,6 +105,21 @@ class Block_Control {
 		}
 		
 		return $roles;
+	}
+	
+	/**
+	 * Add the editor assets.
+	 */
+	public function editor_assets() {
+		// automatically load dependencies and version
+		/** @noinspection PhpIncludeInspection */
+		$asset_file = include( plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php' );
+		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'build/index.css', dirname( __FILE__ ) ), [], $asset_file['version'] );
+		wp_enqueue_script( 'block-control-editor', plugins_url( '/build/index.js', dirname( __FILE__ ) ), $asset_file['dependencies'], $asset_file['version'], false );
+		wp_set_script_translations( 'block-control-editor', 'block-control', plugin_dir_path( __FILE__ ) . 'languages' );
+		wp_localize_script( 'block-control-editor', 'blockControlStore', [
+			'roles' => $this->get_roles(),
+		] );
 	}
 	
 	/**
@@ -319,6 +319,41 @@ class Block_Control {
 	}
 	
 	/**
+	 * A custom strtotime() function that takes the WordPress timezone settings
+	 * into account.
+	 * 
+	 * @see		https://mediarealm.com.au/articles/wordpress-timezones-strtotime-date-functions/
+	 * 
+	 * @param	string		$str The string to pass
+	 * @return	int A timestamp
+	 * @throws	\Exception
+	 */
+	public function strtotime( $str ) {
+		$tz_string = get_option( 'timezone_string' );
+		$tz_offset = get_option( 'gmt_offset', 0 );
+		
+		if ( ! empty( $tz_string ) ) {
+			// if site timezone option string exists, use it
+			$timezone = $tz_string;
+		}
+		else if ( $tz_offset == 0 ) {
+			// get UTC offset, if it isn’t set then return UTC
+			$timezone = 'UTC';
+		}
+		else {
+			$timezone = $tz_offset;
+			
+			if ( substr( $tz_offset, 0, 1 ) !== '-' && substr( $tz_offset, 0, 1 ) !== '+' && substr( $tz_offset, 0, 1 ) !== 'U' ) {
+				$timezone = "+" . $tz_offset;
+			}
+		}
+		
+		$datetime = new DateTime( $str, new DateTimeZone( $timezone ) );
+		
+		return (int) $datetime->format( 'U' );
+	}
+	
+	/**
 	 * Display or hide a block.
 	 * 
 	 * @param	string		$block_content The block content about to be appended
@@ -394,40 +429,5 @@ class Block_Control {
 		}
 		
 		return $content;
-	}
-	
-	/**
-	 * A custom strtotime() function that takes the WordPress timezone settings
-	 * into account.
-	 * 
-	 * @see		https://mediarealm.com.au/articles/wordpress-timezones-strtotime-date-functions/
-	 * 
-	 * @param	string		$str The string to pass
-	 * @return	int A timestamp
-	 * @throws	\Exception
-	 */
-	public function strtotime( $str ) {
-		$tz_string = get_option( 'timezone_string' );
-		$tz_offset = get_option( 'gmt_offset', 0 );
-		
-		if ( ! empty( $tz_string ) ) {
-			// if site timezone option string exists, use it
-			$timezone = $tz_string;
-		}
-		else if ( $tz_offset == 0 ) {
-			// get UTC offset, if it isn’t set then return UTC
-			$timezone = 'UTC';
-		}
-		else {
-			$timezone = $tz_offset;
-			
-			if ( substr( $tz_offset, 0, 1 ) !== '-' && substr( $tz_offset, 0, 1 ) !== '+' && substr( $tz_offset, 0, 1 ) !== 'U' ) {
-				$timezone = "+" . $tz_offset;
-			}
-		}
-		
-		$datetime = new DateTime( $str, new DateTimeZone( $timezone ) );
-		
-		return (int) $datetime->format( 'U' );
 	}
 }
