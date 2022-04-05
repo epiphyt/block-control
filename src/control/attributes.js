@@ -31,6 +31,10 @@ const addControlAttribute = ( settings ) => {
 			default: false,
 			type: 'boolean',
 		},
+		hidePosts: {
+			default: {},
+			type: 'object',
+		},
 		hideRoles: {
 			default: {},
 			type: 'object',
@@ -52,6 +56,7 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 		hideConditionalTags,
 		hideDesktop,
 		hideMobile,
+		hidePosts,
 		hideRoles,
 		loginStatus,
 	} = attributes;
@@ -80,6 +85,10 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 	
 	if ( hideConditionalTags.length ) {
 		classNames += 'block-control-hide-by-conditional-tag ';
+	}
+	
+	if ( hidePosts.length ) {
+		classNames += 'block-control-hide-by-post ';
 	}
 	
 	Object.keys( blockControlStore.roles ).map( ( role ) => {

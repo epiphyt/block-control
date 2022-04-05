@@ -3,11 +3,17 @@ namespace epiphyt\Block_Control;
 use DateTime;
 use DateTimeZone;
 use Mobile_Detect;
+use WP_Post;
 use function add_action;
 use function add_filter;
+use function apply_filters;
 use function dirname;
 use function file_exists;
 use function get_option;
+use function get_post;
+use function get_post_type_object;
+use function get_post_types;
+use function get_posts;
 use function in_array;
 use function is_404;
 use function is_archive;
@@ -45,6 +51,26 @@ use function wp_set_script_translations;
  */
 class Block_Control {
 	/**
+	 * @since	1.1.0
+	 * @var		string[] List of ignored custom post types
+	 */
+	private $ignored_post_types = [
+		'attachment',
+		'custom_css',
+		'customize_changeset',
+		'epi_embed',
+		'nav_menu_item',
+		'oembed_cache',
+		'revision',
+		'user_request',
+		'wp_block',
+		'wp_global_styles',
+		'wp_navigation',
+		'wp_template',
+		'wp_template_part',
+	];
+	
+	/**
 	 * @var		\epiphyt\Block_Control\Block_Control
 	 */
 	public static $instance;
@@ -79,6 +105,24 @@ class Block_Control {
 	}
 	
 	/**
+	 * Get a list of ignored post types.
+	 * 
+	 * @since	1.1.0
+	 * 
+	 * @return	array The list of ignored post types
+	 */
+	public function get_ignored_post_types() {
+		/**
+		 * Filter the ignored post type list.
+		 * 
+		 * @param	array	$ignored_post_types The current ignored post type list
+		 */
+		$post_types = apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
+		
+		return $post_types;
+	}
+	
+	/**
 	 * Get a unique instance of the class.
 	 * 
 	 * @return	\epiphyt\Block_Control\Block_Control
@@ -89,6 +133,40 @@ class Block_Control {
 		}
 		
 		return self::$instance;
+	}
+	
+	/**
+	 * Get all posts of all post types that are available for the block editor.
+	 * 
+	 * @since	1.1.0
+	 * 
+	 * @return	array A list of posts within a list of post types
+	 */
+	public function get_posts() {
+		$posts = [];
+		
+		foreach ( get_post_types() as $post_type ) {
+			if ( in_array( $post_type, $this->get_ignored_post_types(), true ) ) {
+				continue;
+			}
+			
+			$post_type_object = get_post_type_object( $post_type );
+			
+			// ignore post types that are not available in the block editor
+			if ( empty( $post_type_object->show_in_rest ) ) {
+				continue;
+			}
+			
+			$posts[ $post_type ] = [
+				'items' => get_posts( [
+					'numberposts' => -1,
+					'post_type' => $post_type,
+				] ),
+				'title' => $post_type_object->labels->name,
+			];
+		}
+		
+		return $posts;
 	}
 	
 	/**
@@ -120,6 +198,7 @@ class Block_Control {
 		wp_enqueue_script( 'block-control-editor', plugins_url( '/build/index.js', dirname( __FILE__ ) ), $asset_file['dependencies'], $asset_file['version'], false );
 		wp_set_script_translations( 'block-control-editor', 'block-control', plugin_dir_path( __FILE__ ) . 'languages' );
 		wp_localize_script( 'block-control-editor', 'blockControlStore', [
+			'posts' => $this->get_posts(),
 			'roles' => $this->get_roles(),
 		] );
 	}
@@ -279,6 +358,32 @@ class Block_Control {
 	}
 	
 	/**
+	 * Test if the content should be hidden by the post.
+	 * 
+	 * @since	1.1.0
+	 * 
+	 * @param	array	$value The attribute value
+	 * @return	bool Whether the content should be hidden
+	 */
+	public function hide_post( $value ) {
+		$post = get_post();
+		
+		if ( ! $post instanceof WP_Post ) {
+			return false;
+		}
+		
+		if ( empty( $value[ $post->post_type ] ) ) {
+			return false;
+		}
+		
+		if ( isset( $value[ $post->post_type ][ $post->ID ] ) ) {
+			return (bool) $value[ $post->post_type ][ $post->ID ];
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Test if the content should be hidden by its attributes.
 	 * 
 	 * @since	1.1.0
@@ -424,6 +529,11 @@ class Block_Control {
 			}
 			
 			if ( $attr === 'hideConditionalTags' && $this->hide_conditional_tags( $value ) ) {
+				$is_hidden = true;
+				break;
+			}
+			
+			if ( $attr === 'hidePosts' && $this->hide_post( $value ) ) {
 				$is_hidden = true;
 				break;
 			}

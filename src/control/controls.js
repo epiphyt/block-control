@@ -2,11 +2,12 @@
  * Block controls for Block Control.
  */
 const { createHigherOrderComponent } = wp.compose;
+const { select } = wp.data;
 const { __experimentalGetSettings, dateI18n } = wp.date;
 const { InspectorControls } = wp.editor;
 const { Button, CheckboxControl, Dashicon, DateTimePicker, Dropdown, PanelBody, RadioControl, ToggleControl, Tooltip } = wp.components;
 const { addFilter } = wp.hooks;
-const { __ } = wp.i18n;
+const { __, sprintf } = wp.i18n;
 
 const CONDITIONAL_TAGS = {
 	is_home: __( 'Blog page', 'block-control' ),
@@ -40,6 +41,7 @@ const isActive = ( props ) => {
 			hideConditionalTags,
 			hideDesktop,
 			hideMobile,
+			hidePosts,
 			hideRoles,
 			loginStatus,
 		},
@@ -51,6 +53,7 @@ const isActive = ( props ) => {
 		|| hideMobile
 		|| loginStatus !== 'none'
 		|| hideConditionalTags.length
+		|| hidePosts.length
 	) {
 		return true;
 	}
@@ -79,11 +82,13 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hideByDateStart,
 				hideDesktop,
 				hideMobile,
+				hidePosts,
 				hideRoles,
 				loginStatus,
 			},
 			setAttributes,
 		} = props;
+		const postType = select( 'core/editor' ).getCurrentPostType();
 		const settings = __experimentalGetSettings();
 		
 		// To know if the current timezone is a 12 hour time with look for "a" in the time format
@@ -103,6 +108,61 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			newValue[ tag ] = value;
 			
 			setAttributes( { hideConditionalTags: newValue } );
+		};
+		
+		// change the value if you click on a checkbox of a posts hide checkboxes
+		const onChangePosts = ( id, type, value ) => {
+			// make sure the value gets updated correctly
+			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
+			let newValue = JSON.parse( JSON.stringify( hidePosts ) );
+			
+			if ( typeof newValue[ type ] === 'undefined' ) {
+				newValue[ type ] = {};
+			}
+			
+			newValue[ type ][ id ] = value;
+			
+			if ( ! value ) {
+				newValue[ type ]['all'] = value;
+			}
+			else {
+				let notProgressedItem;
+				
+				blockControlStore.posts[ type ]['items'].map( ( item ) => {
+					if (
+						typeof newValue[ type ][ item.ID ] === 'undefined'
+						|| newValue[ type ][ item.ID ] === false
+					) {
+						notProgressedItem = item;
+					}
+					
+					return null;
+				} );
+				
+				newValue[ type ][ 'all' ] = ! notProgressedItem;
+			}
+			
+			setAttributes( { hidePosts: newValue } );
+		};
+		
+		// change the value if you click on the 'all' checkbox of a posts hide checkboxes
+		const onChangePostsAll = ( id, type, value ) => {
+			// make sure the value gets updated correctly
+			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
+			let newValue = JSON.parse( JSON.stringify( hidePosts ) );
+			
+			if ( typeof newValue[ type ] === 'undefined' ) {
+				newValue[ type ] = { all: value };
+			}
+			else {
+				newValue[ type ]['all'] = value;
+			}
+			
+			blockControlStore.posts[ type ]['items'].map( ( item ) => {
+				newValue[ type ][ item.ID ] = value;
+			} );
+			
+			setAttributes( { hidePosts: newValue } );
 		};
 		
 		// change the value if you click on a checkbox of the user role hide checkboxes
@@ -285,6 +345,41 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							} ) }
 						</div>
 					</div>
+					
+					{ Object.keys( blockControlStore.posts ).map( ( type, i ) => {
+						// display this post type only
+						// if we currently aren't in a specific post type
+						if ( postType && postType !== type ) {
+							return null;
+						}
+						
+						return (
+							<div className="block-control-control-area block-control-control-hide-posts" key={ type + i }>
+								{/* translators: plural post type title */}
+								<span className="components-base-control__label">{ sprintf( __( 'Hide %s', 'block-control' ), blockControlStore.posts[ type ]['title'] ) }</span>
+								
+								<div className="block-control-checkbox-select">
+									<CheckboxControl
+										key={ type + i + 'all' }
+										label={ __( 'All', 'block-control' ) }
+										checked={ hidePosts && hidePosts[ type ] && hidePosts[ type ]['all'] ? hidePosts[ type ]['all'] : false }
+										value="all"
+										onChange={ ( value ) => onChangePostsAll( 'all', type, value ) }
+									/>
+									
+									{ blockControlStore.posts[ type ]['items'].map( ( item, index ) => (
+										<CheckboxControl
+											key={ type + i + index }
+											label={ item.post_title }
+											checked={ hidePosts && hidePosts[ type ] && hidePosts[ type ][ item.ID ] ? hidePosts[ type ][ item.ID ] : ( hidePosts && hidePosts[ type ] && hidePosts[ type ]['all'] ? hidePosts[ type ]['all'] : false ) }
+											value={ item.ID }
+											onChange={ ( value ) => onChangePosts( item.ID, type, value ) }
+										/>
+									) ) }
+								</div>
+							</div>
+						)
+					} ) }
 				</PanelBody>
 			</InspectorControls>
 		</>;
