@@ -356,7 +356,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						return (
 							<div className="block-control-control-area block-control-control-hide-posts" key={ type + i }>
 								{/* translators: plural post type title */}
-								<span className="components-base-control__label">{ sprintf( __( 'Hide %s', 'block-control' ), blockControlStore.posts[ type ]['title'] ) }</span>
+								<span className="components-base-control__label">{ sprintf( __( 'Hide for post type "%s"', 'block-control' ), blockControlStore.posts[ type ]['title'] ) }</span>
 								
 								<div className="block-control-checkbox-select">
 									<CheckboxControl
