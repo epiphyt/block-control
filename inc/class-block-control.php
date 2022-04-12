@@ -31,6 +31,7 @@ use function is_tag;
 use function is_tax;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
+use function parse_blocks;
 use function plugin_basename;
 use function plugin_dir_path;
 use function plugins_url;
@@ -101,6 +102,7 @@ class Block_Control {
 	public function init() {
 		add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 0 );
 		add_action( 'init', [ $this, 'load_textdomain' ], 0 );
+		
 		add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 	}
 	

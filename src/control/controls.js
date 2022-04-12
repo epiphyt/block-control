@@ -86,10 +86,17 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hideRoles,
 				loginStatus,
 			},
+			name,
 			setAttributes,
 		} = props;
 		const postType = select( 'core/editor' ).getCurrentPostType();
 		const settings = __experimentalGetSettings();
+		
+		// ignore HTML block in widgets as their attributes are not stored
+		// see: https://github.com/WordPress/gutenberg/issues/33832
+		if ( postType === null && name === 'core/html' ) {
+			return ( <BlockEdit{ ...props } /> );
+		}
 		
 		// To know if the current timezone is a 12 hour time with look for "a" in the time format
 		// We also make sure this a is not escaped by a "/"
