@@ -31,7 +31,6 @@ use function is_tag;
 use function is_tax;
 use function is_user_logged_in;
 use function load_plugin_textdomain;
-use function parse_blocks;
 use function plugin_basename;
 use function plugin_dir_path;
 use function plugins_url;
