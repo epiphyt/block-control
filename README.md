@@ -2,7 +2,7 @@
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional
 Requires at least: 5.2
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,6 +12,14 @@ Block Control allows you to take control of all the blocks on your website. Tail
 == Description ==
 
 Have you ever used WordPress’ new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We’ve been in this situation, that’s why we came up with _Block Control_. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that’s of course true for both WordPress’ default blocks and blocks added by third-party plugins.
+
+You can hide blocks based on:
+* Device types (desktop, mobile)
+* Login status
+* Date (start and end date)
+* User roles
+* Page types
+* Posts of the current post type
 
 == Installation ==
 
@@ -32,6 +40,22 @@ Conditional blocks configured this way will only be displayed under certain circ
 
 As Block Control removes content completely from the source code and not just hides it via CSS, it is mostly incompatible to any caching plugin because it may generate different HTML for every user.
 
+= How to disable post type X from showing up? =
+
+Since version 1.1.0 you can hide blocks based on post type. Since you maybe have post types that don't make sense in this context, you can use the filter `block_control_ignored_post_types` to remove them.
+
+E.g. if your post type slug is called `my_post_type`, you can use it like this:
+
+```
+function my_filter_block_control_post_types( $post_types ) {
+	unset( $post_types['my_post_type'];
+	
+	return $post_types;
+}
+
+add_filter( 'block_control_ignored_post_types', 'my_filter_block_control_post_types' );
+```
+
 = Who are you folks? =
 
 We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugin shop from southern Germany.
@@ -41,6 +65,13 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
 
 == Changelog ==
+
+= 1.1.0 =
+* Since the originally planned Pro version will never be completed, we decided to merge its code into the free version of Block Control.
+* Hide blocks based on roles
+* Hide blocks based on dates
+* Hide blocks based on page types (`is_home`, `is_page`, etc.)
+* Hide blocks based on posts of the current post type (useful especially for reusable blocks)
 
 = 1.0.4 =
 * We fixed a problem with assets loading in the backend
@@ -60,3 +91,7 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 * Initial release
 
 == Upgrade Notice ==
+
+== Screenshots ==
+
+1. Block Control settings in the block's sidebar
