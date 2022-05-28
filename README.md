@@ -46,7 +46,7 @@ Since version 1.1.0 you can hide blocks based on post type. Since you maybe have
 
 E.g. if your post type slug is called `my_post_type`, you can use it like this:
 
-```
+`
 function my_filter_block_control_post_types( $post_types ) {
 	unset( $post_types['my_post_type'];
 	
@@ -54,7 +54,7 @@ function my_filter_block_control_post_types( $post_types ) {
 }
 
 add_filter( 'block_control_ignored_post_types', 'my_filter_block_control_post_types' );
-```
+`
 
 = Who are you folks? =
 
