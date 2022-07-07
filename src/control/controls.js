@@ -1,13 +1,23 @@
 /**
  * Block controls for Block Control.
  */
-const { createHigherOrderComponent } = wp.compose;
-const { select } = wp.data;
-const { __experimentalGetSettings, dateI18n } = wp.date;
-const { InspectorControls } = wp.editor;
-const { Button, CheckboxControl, Dashicon, DateTimePicker, Dropdown, PanelBody, RadioControl, ToggleControl, Tooltip } = wp.components;
-const { addFilter } = wp.hooks;
-const { __, sprintf } = wp.i18n;
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { select } from '@wordpress/data';
+import { __experimentalGetSettings, dateI18n } from '@wordpress/date';
+import { InspectorControls } from '@wordpress/block-editor';
+import {
+	Button,
+	CheckboxControl,
+	Dashicon,
+	DateTimePicker,
+	Dropdown,
+	PanelBody,
+	RadioControl,
+	ToggleControl,
+	Tooltip,
+} from '@wordpress/components';
+import { addFilter } from '@wordpress/hooks';
+import { __, sprintf } from '@wordpress/i18n';
 
 const CONDITIONAL_TAGS = {
 	is_home: __( 'Blog page', 'block-control' ),

@@ -3,7 +3,7 @@
  */
 
 import assign from 'lodash.assign';
-const { addFilter } = wp.hooks;
+import { addFilter } from '@wordpress/hooks';
 
 const addControlAttribute = ( settings ) => {
 	settings.attributes = assign( settings.attributes, {
