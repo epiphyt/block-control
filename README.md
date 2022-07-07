@@ -66,6 +66,9 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 
 == Changelog ==
 
+= 1.1.1 =
+* We fixed a dependency problem, which may result in preventing the settings panel to appear.
+
 = 1.1.0 =
 * Since the originally planned Pro version will never be completed, we decided to merge its code into the free version of Block Control.
 * Hide blocks based on roles
