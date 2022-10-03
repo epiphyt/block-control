@@ -99,12 +99,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			name,
 			setAttributes,
 		} = props;
-		const postType = select( 'core/editor' ).getCurrentPostType();
+		const postType = select( 'core/editor' )?.getCurrentPostType();
 		const settings = __experimentalGetSettings();
 		
 		// ignore HTML block in widgets as their attributes are not stored
 		// see: https://github.com/WordPress/gutenberg/issues/33832
-		if ( postType === null && name === 'core/html' ) {
+		if ( postType === undefined && name === 'core/html' ) {
 			return ( <BlockEdit{ ...props } /> );
 		}
 		
