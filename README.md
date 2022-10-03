@@ -66,6 +66,9 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 
 == Changelog ==
 
+= 1.1.2 =
+* We fixed a potential error in blocks in the widget area.
+
 = 1.1.1 =
 * We fixed a dependency problem, which may result in preventing the settings panel to appear.
 
