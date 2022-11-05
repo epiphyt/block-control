@@ -1,8 +1,8 @@
 === Block Control ===
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional
-Requires at least: 5.2
-Tested up to: 6.0
+Requires at least: 6.1
+Tested up to: 6.1
 Requires PHP: 5.6
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,9 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
 
 == Changelog ==
+
+= 1.1.3 =
+* We added full support for WordPress 6.1 (replaced a deprecated function).
 
 = 1.1.2 =
 * We fixed a potential error in blocks in the widget area.

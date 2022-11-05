@@ -3,7 +3,7 @@
  */
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
-import { __experimentalGetSettings, dateI18n } from '@wordpress/date';
+import { getSettings, dateI18n } from '@wordpress/date';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
@@ -100,7 +100,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			setAttributes,
 		} = props;
 		const postType = select( 'core/editor' )?.getCurrentPostType();
-		const settings = __experimentalGetSettings();
+		const settings = getSettings();
 		
 		// ignore HTML block in widgets as their attributes are not stored
 		// see: https://github.com/WordPress/gutenberg/issues/33832

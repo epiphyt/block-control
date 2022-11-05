@@ -6,8 +6,8 @@ on:
     tags-ignore:
       - '**'
 jobs:
-  master:
-    name: Push to master
+  main:
+    name: Asset update
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
     - name: Run
       run: npm run build
     - name: WordPress.org plugin asset/readme update
-      uses: 10up/action-wordpress-plugin-asset-update@master
+      uses: 10up/action-wordpress-plugin-asset-update@stable
       env:
         README_NAME: README.md
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
