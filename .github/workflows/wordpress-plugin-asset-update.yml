@@ -2,11 +2,11 @@ name: Plugin asset/readme update
 on:
   push:
     branches:
-      - main
+      - trunk
     tags-ignore:
       - '**'
 jobs:
-  main:
+  trunk:
     name: Asset update
     runs-on: ubuntu-latest
     steps:
