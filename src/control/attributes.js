@@ -5,7 +5,13 @@
 import assign from 'lodash.assign';
 import { addFilter } from '@wordpress/hooks';
 
+import { UNSUPPORTED_BLOCKS } from './unsupported-block';
+
 const addControlAttribute = ( settings ) => {
+	if ( UNSUPPORTED_BLOCKS.includes( settings.name ) ) {
+		return settings;
+	}
+	
 	settings.attributes = assign( settings.attributes, {
 		hideByDate: {
 			default: false,
@@ -51,6 +57,10 @@ const addControlAttribute = ( settings ) => {
 addFilter( 'blocks.registerBlockType', 'block-control/attributes', addControlAttribute );
 
 const addCustomClasses = ( props, blockType, attributes ) => {
+	if ( UNSUPPORTED_BLOCKS.includes( props.name ) ) {
+		return props;
+	}
+	
 	const {
 		hideByDate,
 		hideConditionalTags,

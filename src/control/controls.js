@@ -19,6 +19,8 @@ import {
 import { addFilter } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 
+import { UNSUPPORTED_BLOCKS } from './unsupported-block';
+
 const CONDITIONAL_TAGS = {
 	is_home: __( 'Blog page', 'block-control' ),
 	is_front_page: __( 'Front page', 'block-control' ),
@@ -99,6 +101,11 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			name,
 			setAttributes,
 		} = props;
+		
+		if ( UNSUPPORTED_BLOCKS.includes( name ) ) {
+			return ( <BlockEdit{ ...props } /> );
+		}
+		
 		const postType = select( 'core/editor' )?.getCurrentPostType();
 		const settings = getSettings();
 		
