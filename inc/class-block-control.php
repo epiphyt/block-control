@@ -193,8 +193,7 @@ class Block_Control {
 	 */
 	public function editor_assets() {
 		// automatically load dependencies and version
-		/** @noinspection PhpIncludeInspection */
-		$asset_file = include( plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php' );
+		$asset_file = include plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php';
 		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'build/index.css', dirname( __FILE__ ) ), [], $asset_file['version'] );
 		wp_enqueue_script( 'block-control-editor', plugins_url( '/build/index.js', dirname( __FILE__ ) ), $asset_file['dependencies'], $asset_file['version'], false );
 		wp_set_script_translations( 'block-control-editor', 'block-control', plugin_dir_path( __FILE__ ) . 'languages' );
@@ -448,7 +447,7 @@ class Block_Control {
 			// if site timezone option string exists, use it
 			$timezone = $tz_string;
 		}
-		else if ( $tz_offset == 0 ) {
+		else if ( (int) $tz_offset === 0 ) {
 			// get UTC offset, if it isn’t set then return UTC
 			$timezone = 'UTC';
 		}
@@ -456,7 +455,7 @@ class Block_Control {
 			$timezone = $tz_offset;
 			
 			if ( substr( $tz_offset, 0, 1 ) !== '-' && substr( $tz_offset, 0, 1 ) !== '+' && substr( $tz_offset, 0, 1 ) !== 'U' ) {
-				$timezone = "+" . $tz_offset;
+				$timezone = '+' . $tz_offset;
 			}
 		}
 		
