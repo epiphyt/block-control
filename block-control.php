@@ -14,7 +14,7 @@ Plugin Name:	Block Control
 Description:	Control the visibility of your Gutenberg blocks by conditions.
 Author:			Epiphyt
 Author URI:		https://epiph.yt
-Version:		1.1.4
+Version:		1.1.5
 License:		GPL2
 License URI:	https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:	block-control

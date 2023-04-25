@@ -2,7 +2,7 @@
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional
 Requires at least: 6.1
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 Tested up to: 6.2
 Requires PHP: 5.6
 License: GPL2
@@ -66,6 +66,10 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
 
 == Changelog ==
+
+= 1.1.5 =
+* We added a filter `blockControl.unsupportedBlocks` to filter the list of unsupported blocks.
+* We disabled _Block Control_ for the SimpleTOC block in order to display it properly in the backend.
 
 = 1.1.4 =
 * We disabled _Block Control_ for the Polylang language switcher in order to display it properly in the backend.
