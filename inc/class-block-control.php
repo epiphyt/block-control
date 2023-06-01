@@ -99,7 +99,7 @@ class Block_Control {
 	 * Initialize functions.
 	 */
 	public function init() {
-		add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 0 );
+		add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 100 );
 		add_action( 'init', [ $this, 'load_textdomain' ], 0 );
 		
 		add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
@@ -195,7 +195,7 @@ class Block_Control {
 		// automatically load dependencies and version
 		$asset_file = include plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php';
 		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'build/index.css', dirname( __FILE__ ) ), [], $asset_file['version'] );
-		wp_enqueue_script( 'block-control-editor', plugins_url( '/build/index.js', dirname( __FILE__ ) ), $asset_file['dependencies'], $asset_file['version'], false );
+		wp_enqueue_script( 'block-control-editor', plugins_url( '/build/index.js', dirname( __FILE__ ) ), $asset_file['dependencies'], $asset_file['version'] );
 		wp_set_script_translations( 'block-control-editor', 'block-control', plugin_dir_path( __FILE__ ) . 'languages' );
 		wp_localize_script( 'block-control-editor', 'blockControlStore', [
 			'posts' => $this->get_posts(),
