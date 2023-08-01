@@ -3,7 +3,7 @@ Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional
 Requires at least: 6.2
 Stable tag: 1.1.7
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 5.6
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
