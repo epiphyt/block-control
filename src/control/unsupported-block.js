@@ -9,8 +9,5 @@ import { applyFilters } from '@wordpress/hooks';
  */
 export const UNSUPPORTED_BLOCKS = applyFilters(
 	'blockControl.unsupportedBlocks',
-	[
-		'polylang/language-switcher',
-		'simpletoc/toc',
-	]
+	[]
 );

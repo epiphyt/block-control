@@ -2,59 +2,9 @@
  * Block settings for Block Control.
  */
 
-import assign from 'lodash.assign';
 import { addFilter } from '@wordpress/hooks';
 
 import { UNSUPPORTED_BLOCKS } from './unsupported-block';
-
-const addControlAttribute = ( settings ) => {
-	if ( UNSUPPORTED_BLOCKS.includes( settings.name ) ) {
-		return settings;
-	}
-	
-	settings.attributes = assign( settings.attributes, {
-		hideByDate: {
-			default: false,
-			type: 'boolean',
-		},
-		hideByDateEnd: {
-			default: '',
-			type: 'string',
-		},
-		hideByDateStart: {
-			default: '',
-			type: 'string',
-		},
-		hideConditionalTags: {
-			default: {},
-			type: 'object',
-		},
-		hideDesktop: {
-			default: false,
-			type: 'boolean',
-		},
-		hideMobile: {
-			default: false,
-			type: 'boolean',
-		},
-		hidePosts: {
-			default: {},
-			type: 'object',
-		},
-		hideRoles: {
-			default: {},
-			type: 'object',
-		},
-		loginStatus: {
-			default: 'none',
-			type: 'string',
-		},
-	} );
-	
-	return settings;
-}
-
-addFilter( 'blocks.registerBlockType', 'block-control/attributes', addControlAttribute );
 
 const addCustomClasses = ( props, blockType, attributes ) => {
 	if ( UNSUPPORTED_BLOCKS.includes( props.name ) ) {
@@ -93,11 +43,11 @@ const addCustomClasses = ( props, blockType, attributes ) => {
 		classNames += 'block-control-hide-by-date ';
 	}
 	
-	if ( hideConditionalTags.length ) {
+	if ( hideConditionalTags ) {
 		classNames += 'block-control-hide-by-conditional-tag ';
 	}
 	
-	if ( hidePosts.length ) {
+	if ( hidePosts ) {
 		classNames += 'block-control-hide-by-post ';
 	}
 	

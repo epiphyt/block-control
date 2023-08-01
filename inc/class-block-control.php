@@ -3,6 +3,7 @@ namespace epiphyt\Block_Control;
 use DateTime;
 use DateTimeZone;
 use Mobile_Detect;
+use stdClass;
 use WP_Post;
 use function add_action;
 use function add_filter;
@@ -101,7 +102,7 @@ class Block_Control {
 	public function init() {
 		add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 100 );
 		add_action( 'init', [ $this, 'load_textdomain' ], 0 );
-		
+		add_filter( 'register_block_type_args', [ $this, 'register_attributes' ] );
 		add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 	}
 	
@@ -416,6 +417,57 @@ class Block_Control {
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'block-control', false, dirname( plugin_basename( $this->plugin_file ) ) . '/languages' );
+	}
+	
+	/**
+	 * Register block attributes.
+	 * 
+	 * @since	1.1.7
+	 * 
+	 * @param	array	$args List of block arguments
+	 * @return	array Updated list of block arguments
+	 */
+	public function register_attributes( $args ) {
+		$args['attributes'] = \array_merge( $args['attributes'], [
+			'hideByDate' => [
+				'default' => false,
+				'type' => 'boolean',
+			],
+			'hideByDateEnd' => [
+				'default' => '',
+				'type' => 'string',
+			],
+			'hideByDateStart' => [
+				'default' => '',
+				'type' => 'string',
+			],
+			'hideConditionalTags' => [
+				'default' => new stdClass(),
+				'type' => 'object',
+			],
+			'hideDesktop' => [
+				'default' => false,
+				'type' => 'boolean',
+			],
+			'hideMobile' => [
+				'default' => false,
+				'type' => 'boolean',
+			],
+			'hidePosts' => [
+				'default' => new stdClass(),
+				'type' => 'object',
+			],
+			'hideRoles' => [
+				'default' => new stdClass(),
+				'type' => 'object',
+			],
+			'loginStatus' => [
+				'default' => 'none',
+				'type' => 'string',
+			],
+		] );
+		
+		return $args;
 	}
 	
 	/**

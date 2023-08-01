@@ -63,11 +63,27 @@ const isActive = ( props ) => {
 		( hideByDate && ( hideByDateStart || hideByDateEnd ) )
 		|| hideDesktop
 		|| hideMobile
-		|| loginStatus !== 'none'
-		|| hideConditionalTags.length
-		|| hidePosts.length
+		|| loginStatus && loginStatus !== 'none'
 	) {
 		return true;
+	}
+	
+	if ( typeof hideConditionalTags !== 'undefined' ) {
+		for ( const tag in hideConditionalTags ) {
+			if ( hideConditionalTags[ tag ] === true ) {
+				return true;
+			}
+		}
+	}
+	
+	if ( typeof hidePosts !== 'undefined' ) {
+		for ( const posts in hidePosts ) {
+			for ( const post in hidePosts[ posts ] ) {
+				if ( hidePosts[ posts ][ post ] === true ) {
+					return true;
+				}
+			}
+		}
 	}
 	
 	if ( typeof hideRoles !== 'undefined' ) {
@@ -128,7 +144,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 		const onChangeConditionalTags = ( tag, value ) => {
 			// make sure the value gets updated correctly
 			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
-			const newValue = JSON.parse( JSON.stringify( hideConditionalTags ) );
+			const newValue = hideConditionalTags ? JSON.parse( JSON.stringify( hideConditionalTags ) ) : {};
 			newValue[ tag ] = value;
 			
 			setAttributes( { hideConditionalTags: newValue } );
@@ -138,7 +154,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 		const onChangePosts = ( id, type, value ) => {
 			// make sure the value gets updated correctly
 			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
-			let newValue = JSON.parse( JSON.stringify( hidePosts ) );
+			let newValue = hidePosts ? JSON.parse( JSON.stringify( hidePosts ) ) : {};
 			
 			if ( typeof newValue[ type ] === 'undefined' ) {
 				newValue[ type ] = {};
@@ -173,7 +189,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 		const onChangePostsAll = ( id, type, value ) => {
 			// make sure the value gets updated correctly
 			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
-			let newValue = JSON.parse( JSON.stringify( hidePosts ) );
+			let newValue = hidePosts ? JSON.parse( JSON.stringify( hidePosts ) ) : {};
 			
 			if ( typeof newValue[ type ] === 'undefined' ) {
 				newValue[ type ] = { all: value };
@@ -193,7 +209,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 		const onChangeHideRoles = ( role, value ) => {
 			// make sure the value gets updated correctly
 			// @see https://stackoverflow.com/questions/56452438/update-a-specific-property-of-an-object-attribute-in-a-wordpress-gutenberg-block#comment99517264_56459084
-			let newValue = JSON.parse( JSON.stringify( hideRoles ) );
+			let newValue = hideRoles ? JSON.parse( JSON.stringify( hideRoles ) ) : {};
 			newValue[ role ] = value;
 			
 			setAttributes( { hideRoles: newValue } );
@@ -212,13 +228,13 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<span className="components-base-control__label">{ __( 'Hide device types', 'block-control' ) }</span>
 						<ToggleControl
 							label={ __( 'Hide on smartphones', 'block-control' ) }
-							value={ hideMobile }
+							value={ hideMobile || false }
 							checked={ !! hideMobile }
 							onChange={ ( value ) => setAttributes( { hideMobile: value } ) }
 						/>
 						<ToggleControl
 							label={ __( 'Hide on desktops', 'block-control' ) }
-							value={ hideDesktop }
+							value={ hideDesktop || false }
 							checked={ !! hideDesktop }
 							onChange={ ( value ) => setAttributes( { hideDesktop: value } ) }
 						/>
@@ -228,7 +244,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<RadioControl
 							className="block-control-login-status"
 							label={ __( 'Hide by login status', 'block-control' ) }
-							selected={ loginStatus }
+							selected={ loginStatus || 'none' }
 							options={ [
 								{ label: __( 'Show for all users', 'block-control' ), value: 'none' },
 								{ label: __( 'Show for logged in users', 'block-control' ), value: 'logged-in' },
@@ -242,7 +258,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						<ToggleControl
 							className="block-control-hide-by-date"
 							label={ __( 'Hide by date', 'block-control' ) }
-							value={ hideByDate }
+							value={ hideByDate || false }
 							checked={ !! hideByDate }
 							onChange={ ( value ) => setAttributes( { hideByDate: value } ) }
 						/>
@@ -264,7 +280,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 										: null
 									}
 									<Dropdown
-										position="bottom right"
+										popoverProps={ { placement: 'bottom-end' } }
 										renderToggle={ ( { isOpen, onToggle } ) => (
 											<Button
 												onClick={ onToggle }
@@ -307,7 +323,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 										: null
 									}
 									<Dropdown
-										position="bottom right"
+										popoverProps={ { placement: 'bottom-end' } }
 										renderToggle={ ( { isOpen, onToggle } ) => (
 											<Button
 												onClick={ onToggle }
@@ -346,7 +362,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								return ( <CheckboxControl
 									key={ index }
 									label={ blockControlStore.roles[ role ] }
-									checked={ hideRoles ? hideRoles[ role ] : false }
+									checked={ hideRoles && hideRoles[ role ] ? true : false }
 									value={ role }
 									onChange={ ( value ) => onChangeHideRoles( role, value ) }
 								/> );
@@ -362,7 +378,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								return ( <CheckboxControl
 									key={ index }
 									label={ CONDITIONAL_TAGS[ tag ] }
-									checked={ hideConditionalTags ? hideConditionalTags[ tag ] : false }
+									checked={ hideConditionalTags && hideConditionalTags[ tag ] ? true : false }
 									value={ tag }
 									onChange={ ( value ) => onChangeConditionalTags( tag, value ) }
 								/> );
