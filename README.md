@@ -2,7 +2,7 @@
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional
 Requires at least: 6.2
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 Tested up to: 6.3
 Requires PHP: 5.6
 License: GPL2
@@ -66,6 +66,9 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
 
 == Changelog ==
+
+= 1.1.9 =
+* We fixed a problem with some blocks no more saving the visibility settings.
 
 = 1.1.8 =
 * We fixed a problem with broken blocks after updating to version 1.1.7. The editor now doesn't contain any classes from _Block Control_ anymore.
