@@ -5,4 +5,5 @@
 import './style.scss';
 import './editor.scss';
 
-import './control/controls.js';
+import './control/attributes';
+import './control/controls';

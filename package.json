@@ -6,6 +6,7 @@
 	},
 	"devDependencies": {
 		"@wordpress/hooks": "^3.38.0",
-		"@wordpress/scripts": "^26.9.0"
+		"@wordpress/scripts": "^26.9.0",
+		"lodash.assign": "^4.2.0"
 	}
 }
