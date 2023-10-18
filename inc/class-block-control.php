@@ -564,14 +564,34 @@ class Block_Control {
 			if ( $hide_by_date && $attr === 'hideByDateStart' ) {
 				if ( time() > $this->strtotime( $value ) ) {
 					$is_hidden = true;
-					break;
+					
+					// check end date, too
+					if (
+						isset( $block['attrs']['hideByDateEnd'] )
+						&& time() <= $this->strtotime( $block['attrs']['hideByDateEnd'] )
+					) {
+						break;
+					}
+					else {
+						$is_hidden = false;
+					}
 				}
 			}
 			
 			if ( $hide_by_date && $attr === 'hideByDateEnd' ) {
 				if ( time() <= $this->strtotime( $value ) ) {
 					$is_hidden = true;
-					break;
+					
+					// check start date, too
+					if (
+						isset( $block['attrs']['hideByDateStart'] )
+						&& time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
+					) {
+						break;
+					}
+					else {
+						$is_hidden = false;
+					}
 				}
 			}
 			
