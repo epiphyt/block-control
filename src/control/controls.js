@@ -1,9 +1,6 @@
 /**
  * Block controls for Block Control.
  */
-import { createHigherOrderComponent } from '@wordpress/compose';
-import { select } from '@wordpress/data';
-import { getSettings, dateI18n } from '@wordpress/date';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
@@ -16,6 +13,9 @@ import {
 	ToggleControl,
 	Tooltip,
 } from '@wordpress/components';
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { select } from '@wordpress/data';
+import { getSettings, dateI18n } from '@wordpress/date';
 import { addFilter } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 
