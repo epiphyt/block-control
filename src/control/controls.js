@@ -17,6 +17,7 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
 import { getSettings, dateI18n } from '@wordpress/date';
 import { addFilter } from '@wordpress/hooks';
+import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
 import { UNSUPPORTED_BLOCKS } from './unsupported-block';
@@ -102,6 +103,7 @@ const isActive = ( props ) => {
  */
 const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
+		const [ isOpen, setIsOpen ] = useState( false );
 		const {
 			attributes: {
 				hideConditionalTags,
@@ -222,7 +224,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				<PanelBody
 					title={ __( 'Visibility', 'block-control' ) }
 					icon={ isActive( props ) ? <Dashicon icon="visibility" /> : null }
-					initialOpen={ false }
+					initialOpen={ isOpen }
 				>
 					<div className="block-control-control-area block-control-device-area">
 						<span className="components-base-control__label">{ __( 'Hide device types', 'block-control' ) }</span>
@@ -297,7 +299,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 											<div className="block-control-datetime-picker">
 												<DateTimePicker
 													currentDate={ hideByDateStart }
-													onChange={ ( value ) => setAttributes( { hideByDateStart: value } ) }
+													onChange={ ( value ) => {
+														setIsOpen( true );
+														setAttributes( { hideByDateStart: value } );
+													} }
 													is12Hour={ is12HourTime }
 												/>
 											</div>
@@ -340,7 +345,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 											<div className="block-control-datetime-picker">
 												<DateTimePicker
 													currentDate={ hideByDateEnd }
-													onChange={ ( value ) => setAttributes( { hideByDateEnd: value } ) }
+													onChange={ ( value ) => {
+														setIsOpen( true );
+														setAttributes( { hideByDateEnd: value } );
+													} }
 													is12Hour={ is12HourTime }
 												/>
 											</div>
