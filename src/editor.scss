@@ -1,3 +1,12 @@
+@import '~@wordpress/base-styles/colors';
+@import '~@wordpress/base-styles/colors.native';
+@import '~@wordpress/base-styles/variables';
+@import '~@wordpress/base-styles/mixins';
+@import '~@wordpress/base-styles/breakpoints';
+@import '~@wordpress/base-styles/animations';
+@import '~@wordpress/base-styles/z-index';
+@import '~@wordpress/base-styles/default-custom-properties';
+
 /**
  * #.# Editor Styles
  *
@@ -84,7 +93,11 @@
 	}
 }
 
-.block-control-date {
+.block-control__date {
+	margin-block-start: $grid-unit-10;
+}
+
+.block-control__date--value {
 	align-items: center;
 	display: flex;
 	flex-wrap: wrap;

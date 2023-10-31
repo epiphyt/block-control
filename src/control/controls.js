@@ -11,7 +11,6 @@ import {
 	PanelBody,
 	RadioControl,
 	ToggleControl,
-	Tooltip,
 } from '@wordpress/components';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
@@ -266,94 +265,96 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						/>
 						{ hideByDate
 							? <div>
-								<div className="block-control-date">
-									<div className="block-control-date-label">{ __( 'Hide date:', 'block-control' ) }</div>
-									{ hideByDateStart
-										? <Tooltip text={ __( 'Reset date', 'block-control' ) }>
-											<Button
+								<div className="block-control-date block-control__date">
+									<div className="block-control-date-label block-control__date--label">{ __( 'Hide date:', 'block-control' ) }</div>
+									
+									<div className="block-control__date--value">
+										<Dropdown
+											popoverProps={ { placement: 'bottom-end' } }
+											renderToggle={ ( { isOpen, onToggle } ) => (
+												<Button
+													onClick={ onToggle }
+													aria-expanded={ isOpen }
+													className="components-button is-link"
+												>
+													{ hideByDateStart
+														? dateI18n( settings.formats.datetimeAbbreviated, hideByDateStart )
+														: __( 'Set date', 'block-control' )
+													}
+												</Button>
+											) }
+											renderContent={ () => (
+												<div className="block-control-datetime-picker">
+													<DateTimePicker
+														currentDate={ hideByDateStart }
+														onChange={ ( value ) => {
+															setIsOpen( true );
+															setAttributes( { hideByDateStart: value } );
+														} }
+														is12Hour={ is12HourTime }
+													/>
+												</div>
+											) }
+										/>
+										{ hideByDateStart
+											? <Button
+												isDestructive={ true }
 												onClick={ () => setAttributes( { hideByDateStart: '' } ) }
+												size="compact"
+												variant="secondary"
 											>
-												<Dashicon
-													className="block-control-date-reset"
-													icon="no-alt"
-												/>
+												{ __( 'Remove', 'block-control' ) }
 											</Button>
-										</Tooltip>
-										: null
-									}
-									<Dropdown
-										popoverProps={ { placement: 'bottom-end' } }
-										renderToggle={ ( { isOpen, onToggle } ) => (
-											<Button
-												onClick={ onToggle }
-												aria-expanded={ isOpen }
-												className="components-button is-link"
-											>
-												{ hideByDateStart
-													? dateI18n( settings.formats.datetimeAbbreviated, hideByDateStart )
-													: __( 'Set date', 'block-control' )
-												}
-											</Button>
-										) }
-										renderContent={ () => (
-											<div className="block-control-datetime-picker">
-												<DateTimePicker
-													currentDate={ hideByDateStart }
-													onChange={ ( value ) => {
-														setIsOpen( true );
-														setAttributes( { hideByDateStart: value } );
-													} }
-													is12Hour={ is12HourTime }
-												/>
-											</div>
-										) }
-									/>
+											: null
+										}
+									</div>
 								</div>
 								
 								<div className="block-control-help">{ __( 'The date where the block starts to be hidden.', 'block-control' ) }</div>
 								
-								<div className="block-control-date">
-									<div className="block-control-date-label">{ __( 'Display date:', 'block-control' ) }</div>
-									{ hideByDateEnd
-										? <Tooltip text={ __( 'Reset date', 'block-control' ) }>
-											<Button
+								<div className="block-control-date block-control__date">
+									<div className="block-control-date-label block-control__date--label">{ __( 'Display date:', 'block-control' ) }</div>
+									
+									<div className="block-control__date--value">
+										<Dropdown
+											popoverProps={ { placement: 'bottom-end' } }
+											renderToggle={ ( { isOpen, onToggle } ) => (
+												<Button
+													onClick={ onToggle }
+													aria-expanded={ isOpen }
+													className="components-button is-link"
+												>
+													{ hideByDateEnd
+														? dateI18n( settings.formats.datetimeAbbreviated, hideByDateEnd )
+														: __( 'Set date', 'block-control' )
+													}
+												</Button>
+											) }
+											renderContent={ () => (
+												<div className="block-control-datetime-picker">
+													<DateTimePicker
+														currentDate={ hideByDateEnd }
+														onChange={ ( value ) => {
+															setIsOpen( true );
+															setAttributes( { hideByDateEnd: value } );
+														} }
+														is12Hour={ is12HourTime }
+													/>
+												</div>
+											) }
+										/>
+										{ hideByDateEnd
+											? <Button
+												isDestructive={ true }
 												onClick={ () => setAttributes( { hideByDateEnd: '' } ) }
+												size="compact"
+												variant="secondary"
 											>
-												<Dashicon
-													className="block-control-date-reset"
-													icon="no-alt"
-												/>
+												{ __( 'Remove', 'block-control' ) }
 											</Button>
-										</Tooltip>
-										: null
-									}
-									<Dropdown
-										popoverProps={ { placement: 'bottom-end' } }
-										renderToggle={ ( { isOpen, onToggle } ) => (
-											<Button
-												onClick={ onToggle }
-												aria-expanded={ isOpen }
-												className="components-button is-link"
-											>
-												{ hideByDateEnd
-													? dateI18n( settings.formats.datetimeAbbreviated, hideByDateEnd )
-													: __( 'Set date', 'block-control' )
-												}
-											</Button>
-										) }
-										renderContent={ () => (
-											<div className="block-control-datetime-picker">
-												<DateTimePicker
-													currentDate={ hideByDateEnd }
-													onChange={ ( value ) => {
-														setIsOpen( true );
-														setAttributes( { hideByDateEnd: value } );
-													} }
-													is12Hour={ is12HourTime }
-												/>
-											</div>
-										) }
-									/>
+											: null
+										}
+									</div>
 								</div>
 								
 								<div className="block-control-help">{ __( 'The date where the block ends to be hidden.', 'block-control' ) }</div>
