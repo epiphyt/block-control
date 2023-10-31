@@ -2,7 +2,7 @@
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional
 Requires at least: 6.2
-Stable tag: 1.1.9
+Stable tag: 1.1.10
 Tested up to: 6.3
 Requires PHP: 5.6
 License: GPL2
@@ -66,6 +66,10 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
 
 == Changelog ==
+
+= 1.1.10 =
+* We fixed the hide by date setting if both settings are in the future or both are in the past.
+* We improved the settings for hide by date for better accessibility and functionality.
 
 = 1.1.9 =
 * We fixed a problem with some blocks no more saving the visibility settings.
