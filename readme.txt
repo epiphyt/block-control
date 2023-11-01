@@ -15,6 +15,7 @@ Block Control allows you to take control of all the blocks on your website. Tail
 Have you ever used WordPress’ new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We’ve been in this situation, that’s why we came up with _Block Control_. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that’s of course true for both WordPress’ default blocks and blocks added by third-party plugins.
 
 You can hide blocks based on:
+
 * Device types (desktop, mobile)
 * Login status
 * Date (start and end date)
