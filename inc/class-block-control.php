@@ -567,8 +567,8 @@ class Block_Control {
 					
 					// check end date, too
 					if (
-						isset( $block['attrs']['hideByDateEnd'] )
-						&& time() <= $this->strtotime( $block['attrs']['hideByDateEnd'] )
+						! isset( $block['attrs']['hideByDateEnd'] )
+						|| time() <= $this->strtotime( $block['attrs']['hideByDateEnd'] )
 					) {
 						break;
 					}
@@ -584,8 +584,8 @@ class Block_Control {
 					
 					// check start date, too
 					if (
-						isset( $block['attrs']['hideByDateStart'] )
-						&& time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
+						! isset( $block['attrs']['hideByDateStart'] )
+						|| time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
 					) {
 						break;
 					}
