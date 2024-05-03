@@ -66,6 +66,10 @@ We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugi
 
 You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/block-control)
+
 == Changelog ==
 
 = 1.1.12 =
