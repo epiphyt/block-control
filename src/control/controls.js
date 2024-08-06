@@ -55,6 +55,7 @@ const isActive = ( props ) => {
 			hideMobile,
 			hidePosts,
 			hideRoles,
+			hideScreenReader,
 			loginStatus,
 		},
 	} = props;
@@ -63,6 +64,7 @@ const isActive = ( props ) => {
 		( hideByDate && ( hideByDateStart || hideByDateEnd ) )
 		|| hideDesktop
 		|| hideMobile
+		|| hideScreenReader
 		|| loginStatus && loginStatus !== 'none'
 	) {
 		return true;
@@ -113,6 +115,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hideMobile,
 				hidePosts,
 				hideRoles,
+				hideScreenReader,
 				loginStatus,
 			},
 			name,
@@ -238,6 +241,13 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							value={ hideDesktop || false }
 							checked={ !! hideDesktop }
 							onChange={ ( value ) => setAttributes( { hideDesktop: value } ) }
+						/>
+						<ToggleControl
+							checked={ !! hideScreenReader }
+							help={ __( 'Enabling this does not hide the content visually, but only for screen readers using screen reader functionality.', 'block-control' ) }
+							label={ __( 'Hide for screen readers', 'block-control' ) }
+							onChange={ ( hideScreenReader ) => setAttributes( { hideScreenReader } ) }
+							value={ hideScreenReader || false }
 						/>
 					</div>
 					

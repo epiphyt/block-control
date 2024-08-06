@@ -411,6 +411,17 @@ class Block_Control {
 		
 		return true;
 	}
+	/**
+	 * Test if the content should be hidden for screen readers.
+	 * 
+	 * @since	1.2.0
+	 * 
+	 * @param	array	$attributes Block attributes
+	 * @return	bool Whether the content should be hidden
+	 */
+	public static function hide_screen_reader( array $attributes ) {
+		return ! empty( $attributes['hideScreenReader'] );
+	}
 	
 	/**
 	 * Load translations.
@@ -460,6 +471,10 @@ class Block_Control {
 			'hideRoles' => [
 				'default' => new stdClass(),
 				'type' => 'object',
+			],
+			'hideScreenReader' => [
+				'default' => false,
+				'type' => 'boolean',
 			],
 			'loginStatus' => [
 				'default' => 'none',
@@ -628,6 +643,10 @@ class Block_Control {
 		if ( ! $is_hidden ) {
 			// get the block content to output it
 			$content = $block_content;
+		}
+		
+		if ( self::hide_screen_reader( $block['attrs'] ) ) {
+			$content = \preg_replace( '/^<([^\s>]+)/m', '<$1 aria-hidden="true"', $content );
 		}
 		
 		return $content;

@@ -46,6 +46,10 @@ const addControlAttribute = ( settings ) => {
 			default: {},
 			type: 'object',
 		},
+		hideScreenReader: {
+			default: false,
+			type: 'boolean',
+		},
 		loginStatus: {
 			default: 'none',
 			type: 'string',
