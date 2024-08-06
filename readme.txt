@@ -72,6 +72,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 1.2.0 =
+* We added the option to disable blocks for screen readers. That means that the block is still visible, but will be ignored by screen readers entirely.
+
 = 1.1.12 =
 * We fixed all variants of hide by date setting to be properly checked.
 
