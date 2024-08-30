@@ -65,6 +65,8 @@ class Block_Control {
 		'revision',
 		'user_request',
 		'wp_block',
+		'wp_font_face',
+		'wp_font_family',
 		'wp_global_styles',
 		'wp_navigation',
 		'wp_template',
