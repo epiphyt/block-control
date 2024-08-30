@@ -408,12 +408,13 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					{ Object.keys( blockControlStore.posts ).map( ( type, i ) => {
 						// display this post type only
 						// if we currently aren't in a specific post type
-						if ( postType && postType !== type ) {
+						// but display all post types for patterns
+						if ( postType && postType !== type && postType !== 'wp_block' ) {
 							return null;
 						}
 						
 						return (
-							<div className="block-control-control-area block-control-control-hide-posts" key={ type + i }>
+							<div className={ 'block-control-control-area block-control-control-hide-posts is-type-' + type } key={ type + i }>
 								{/* translators: plural post type title */}
 								<span className="components-base-control__label">{ sprintf( __( 'Hide for post type "%s"', 'block-control' ), blockControlStore.posts[ type ]['title'] ) }</span>
 								
