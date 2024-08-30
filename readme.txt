@@ -1,8 +1,8 @@
 === Block Control ===
 Contributors: epiphyt, kittmedia, krafit
-Tags: gutenberg, block, conditional
+Tags: gutenberg, block, conditional, visibility, block editor
 Requires at least: 6.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 Tested up to: 6.6
 Requires PHP: 5.6
 License: GPL2
@@ -71,6 +71,10 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/block-control)
 
 == Changelog ==
+
+= 1.3.0 =
+* We added the possibility to patterns to hide them by any post type available.
+* We extended the list of ignored post types with font families and font faces.
 
 = 1.2.0 =
 * We added the option to disable blocks for screen readers. That means that the block is still visible, but will be ignored by screen readers entirely.
