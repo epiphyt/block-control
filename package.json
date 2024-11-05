@@ -13,8 +13,10 @@
 		"@wordpress/hooks": "^3.44.0",
 		"@wordpress/i18n": "^4.44.0",
 		"@wordpress/icons": "^10.11.0",
+		"@wordpress/prettier-config": "^4.11.0",
 		"@wordpress/rich-text": "^7.11.0",
 		"@wordpress/scripts": "^26.15.0",
-		"lodash.assign": "^4.2.0"
+		"lodash.assign": "^4.2.0",
+		"prettier": "npm:wp-prettier@^3.0.3"
 	}
 }

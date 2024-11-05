@@ -7,7 +7,7 @@ const addControlAttribute = ( settings ) => {
 	if ( UNSUPPORTED_BLOCKS.includes( settings.name ) ) {
 		return settings;
 	}
-	
+
 	// don't add settings twice if they're already added via PHP
 	if ( typeof settings.attributes.hideByDate !== 'undefined' ) {
 		return settings;
@@ -57,6 +57,10 @@ const addControlAttribute = ( settings ) => {
 	} );
 
 	return settings;
-}
+};
 
-addFilter( 'blocks.registerBlockType', 'block-control/attributes', addControlAttribute );
+addFilter(
+	'blocks.registerBlockType',
+	'block-control/attributes',
+	addControlAttribute
+);

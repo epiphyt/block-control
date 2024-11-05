@@ -3,7 +3,11 @@ import { __ } from '@wordpress/i18n';
 import { unseen } from '@wordpress/icons';
 import { toggleFormat } from '@wordpress/rich-text';
 
-export default function FormattingToolbarButton( { isActive, onChange, value } ) {
+export default function FormattingToolbarButton( {
+	isActive,
+	onChange,
+	value,
+} ) {
 	return (
 		<RichTextToolbarButton
 			icon={ unseen }

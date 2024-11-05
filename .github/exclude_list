@@ -6,3 +6,5 @@ ruleset.xml
 webpack.config.js
 *scss/
 .git*
+.phpcs.xml
+.prettier*
