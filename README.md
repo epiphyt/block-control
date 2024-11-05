@@ -12,6 +12,8 @@ You can hide blocks based on:
 * Page types
 * Posts of the current post type
 
+Additionally, you can set an inline formatting to display certain text only for screen readers.
+
 ## Requirements
 
 PHP: 5.6<br>

@@ -547,6 +547,10 @@ class Block_Control {
 		$is_hidden = false;
 		$hide_by_date = false;
 		
+		if ( \str_contains( $block_content, 'class="block-control__screen-reader-text"' ) ) {
+			$block_content = \str_replace( 'class="block-control__screen-reader-text"', 'class="block-control__screen-reader-text screen-reader-text"', $block_content );
+		}
+		
 		// if there are no attributes, the block should be displayed
 		if ( empty( $block['attrs'] ) ) {
 			return $block_content;

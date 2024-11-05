@@ -12,6 +12,8 @@
 		"@wordpress/element": "^5.21.0",
 		"@wordpress/hooks": "^3.44.0",
 		"@wordpress/i18n": "^4.44.0",
+		"@wordpress/icons": "^10.11.0",
+		"@wordpress/rich-text": "^7.11.0",
 		"@wordpress/scripts": "^26.15.0",
 		"lodash.assign": "^4.2.0"
 	}

@@ -23,6 +23,8 @@ You can hide blocks based on:
 * Page types
 * Posts of the current post type
 
+Additionally, you can set an inline formatting to display certain text only for screen readers.
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/block-control` directory, or install the plugin through the WordPress plugins screen directly.
