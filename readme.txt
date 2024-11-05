@@ -3,7 +3,7 @@ Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional, visibility, block editor
 Requires at least: 6.2
 Stable tag: 1.3.0
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 5.6
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Block Control allows you to take control of all the blocks on your website. Tail
 
 == Description ==
 
-Have you ever used WordPress’ new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We’ve been in this situation, that’s why we came up with _Block Control_. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that’s of course true for both WordPress’ default blocks and blocks added by third-party plugins.
+Have you ever used WordPress’ new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We’ve been in this situation, that’s why we came up with Block Control. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that’s of course true for both WordPress’ default blocks and blocks added by third-party plugins.
 
 You can hide blocks based on:
 
@@ -29,14 +29,14 @@ Additionally, you can set an inline formatting to display certain text only for 
 
 1. Upload the plugin files to the `/wp-content/plugins/block-control` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Now you can use the “Visibility” panel, _Block Control_ adds to every block withing the Gutenberg editor.
+1. Now you can use the “Visibility” panel, Block Control adds to every block withing the Gutenberg editor.
 
 
 == Frequently Asked Questions ==
 
 = How do I use Block Control? =
 
-After you install and activate _Block Control_, you will find a new panel “Visibility” added to every blocks right hand side sidebar. Open the panel to choose a condition for the display of a given block.
+After you install and activate Block Control, you will find a new panel “Visibility” added to every blocks right hand side sidebar. Open the panel to choose a condition for the display of a given block.
 
 Conditional blocks configured this way will only be displayed under certain circumstances chosen by you. Please note, these conditions will only take effect in the front end of your site, not inside the editor itself.
 
@@ -62,7 +62,7 @@ add_filter( 'block_control_ignored_post_types', 'my_filter_block_control_post_ty
 
 = Who are you folks? =
 
-We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugin shop from southern Germany.
+We are [Epiph.yt](https://epiph.yt/en/), your friendly neighborhood WordPress plugin shop from southern Germany.
 
 = Contributing =
 
@@ -73,6 +73,9 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/block-control)
 
 == Changelog ==
+
+= 1.4.0 =
+* We added the possibility to hide inline text for everyone but screen readers.
 
 = 1.3.0 =
 * We added the possibility to patterns to hide them by any post type available.
@@ -95,7 +98,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * We fixed a problem with some blocks no more saving the visibility settings.
 
 = 1.1.8 =
-* We fixed a problem with broken blocks after updating to version 1.1.7. The editor now doesn't contain any classes from _Block Control_ anymore.
+* We fixed a problem with broken blocks after updating to version 1.1.7. The editor now doesn't contain any classes from Block Control anymore.
 
 = 1.1.7 =
 * We fixed compatibility with dynamic blocks.
@@ -105,10 +108,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 1.1.5 =
 * We added a filter `blockControl.unsupportedBlocks` to filter the list of unsupported blocks.
-* We disabled _Block Control_ for the SimpleTOC block in order to display it properly in the backend.
+* We disabled Block Control for the SimpleTOC block in order to display it properly in the backend.
 
 = 1.1.4 =
-* We disabled _Block Control_ for the Polylang language switcher in order to display it properly in the backend.
+* We disabled Block Control for the Polylang language switcher in order to display it properly in the backend.
 
 = 1.1.3 =
 * We added full support for WordPress 6.1 (replaced a deprecated function).

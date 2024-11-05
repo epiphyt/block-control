@@ -10,15 +10,18 @@ use function strtolower;
 use function wp_doing_ajax;
 
 /*
-Plugin Name:	Block Control
-Description:	Control the visibility of your Gutenberg blocks by conditions.
-Author:			Epiphyt
-Author URI:		https://epiph.yt
-Version:		1.3.0
-License:		GPL2
-License URI:	https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain:	block-control
-Domain Path:	/languages
+Plugin Name:		Block Control
+Description:		Control the visibility of your Gutenberg blocks by conditions.
+Version:			1.4.0
+Author URI:			https://epiph.yt/en/
+Author:				Epiphyt
+Domain Path:		/languages
+License URI:		https://www.gnu.org/licenses/gpl-2.0.html
+License:			GPL2
+Requires at least:	6.2
+Requires PHP:		5.6
+Tested up to:		6.7
+Text Domain:		block-control
 
 Block Control is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

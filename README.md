@@ -2,7 +2,7 @@
 
 Block Control allows you to take control of all the blocks on your website. Tailor a unique experience for your visitors.
 
-Have you ever used WordPress’ new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We’ve been in this situation, that’s why we came up with _Block Control_. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that’s of course true for both WordPress’ default blocks and blocks added by third-party plugins.
+Have you ever used WordPress’ new block editor Gutenberg and wished for a way to influence, when and to whom blocks are shown? We’ve been in this situation, that’s why we came up with Block Control. This nifty little plugin allows you to control, whether a block should be displayed under certain circumstances or not. And that’s of course true for both WordPress’ default blocks and blocks added by third-party plugins.
 
 You can hide blocks based on:
 * Device types (desktop, mobile, screen reader)
@@ -23,14 +23,14 @@ WordPress: 6.2
 
 1. Upload the plugin files to the `/wp-content/plugins/block-control` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Now you can use the “Visibility” panel, _Block Control_ adds to every block withing the Gutenberg editor.
+1. Now you can use the “Visibility” panel, Block Control adds to every block withing the Gutenberg editor.
 
 
 ## Frequently Asked Questions
 
 ### How do I use Block Control?
 
-After you install and activate _Block Control_, you will find a new panel “Visibility” added to every blocks right hand side sidebar. Open the panel to choose a condition for the display of a given block.
+After you install and activate Block Control, you will find a new panel “Visibility” added to every blocks right hand side sidebar. Open the panel to choose a condition for the display of a given block.
 
 Conditional blocks configured this way will only be displayed under certain circumstances chosen by you. Please note, these conditions will only take effect in the front end of your site, not inside the editor itself.
 
@@ -56,7 +56,7 @@ add_filter( 'block_control_ignored_post_types', 'my_filter_block_control_post_ty
 
 ### Who are you folks?
 
-We are [Epiph.yt](https://epiph.yt/), your friendly neighborhood WordPress plugin shop from southern Germany.
+We are [Epiph.yt](https://epiph.yt/en/), your friendly neighborhood WordPress plugin shop from southern Germany.
 
 ## License
 
