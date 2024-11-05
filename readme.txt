@@ -2,7 +2,7 @@
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional, visibility, block editor
 Requires at least: 6.2
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 Tested up to: 6.7
 Requires PHP: 5.6
 License: GPL2
