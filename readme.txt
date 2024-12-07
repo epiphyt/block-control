@@ -2,7 +2,7 @@
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional, visibility, block editor
 Requires at least: 6.2
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 Tested up to: 6.7
 Requires PHP: 5.6
 License: GPL2
@@ -73,6 +73,9 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/block-control)
 
 == Changelog ==
+
+= 1.4.1 =
+* We fixed displaying post type visibility settings inside the site editor.
 
 = 1.4.0 =
 * We added the possibility to hide inline text for everyone but screen readers.

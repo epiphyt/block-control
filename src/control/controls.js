@@ -589,6 +589,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								if (
 									postType &&
 									postType !== type &&
+									postType !== 'wp_template' &&
 									postType !== 'wp_block'
 								) {
 									return null;
