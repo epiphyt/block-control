@@ -1,48 +1,11 @@
 <?php
 namespace epiphyt\Block_Control;
+
 use DateTime;
 use DateTimeZone;
 use Mobile_Detect;
 use stdClass;
 use WP_Post;
-use function add_action;
-use function add_filter;
-use function apply_filters;
-use function dirname;
-use function file_exists;
-use function get_option;
-use function get_post;
-use function get_post_type_object;
-use function get_post_types;
-use function get_posts;
-use function in_array;
-use function is_404;
-use function is_archive;
-use function is_attachment;
-use function is_category;
-use function is_front_page;
-use function is_home;
-use function is_page;
-use function is_paged;
-use function is_search;
-use function is_single;
-use function is_singular;
-use function is_sticky;
-use function is_tag;
-use function is_tax;
-use function is_user_logged_in;
-use function load_plugin_textdomain;
-use function plugin_basename;
-use function plugin_dir_path;
-use function plugins_url;
-use function substr;
-use function time;
-use function translate_user_role;
-use function wp_enqueue_script;
-use function wp_enqueue_style;
-use function wp_get_current_user;
-use function wp_localize_script;
-use function wp_set_script_translations;
 
 /**
  * The main Block Control class.
@@ -50,7 +13,7 @@ use function wp_set_script_translations;
  * @author	Epiphyt
  * @license	GPL2 <https://www.gnu.org/licenses/gpl-2.0.html>
  */
-class Block_Control {
+final class Block_Control {
 	/**
 	 * @since	1.1.0
 	 * @var		string[] List of ignored custom post types
@@ -102,10 +65,10 @@ class Block_Control {
 	 * Initialize functions.
 	 */
 	public function init() {
-		add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 100 );
-		add_action( 'init', [ $this, 'load_textdomain' ], 0 );
-		add_filter( 'register_block_type_args', [ $this, 'register_attributes' ] );
-		add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
+		\add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 100 );
+		\add_action( 'init', [ $this, 'load_textdomain' ], 0 );
+		\add_filter( 'register_block_type_args', [ $this, 'register_attributes' ] );
+		\add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 	}
 	
 	/**
@@ -121,9 +84,7 @@ class Block_Control {
 		 * 
 		 * @param	array	$ignored_post_types The current ignored post type list
 		 */
-		$post_types = apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
-		
-		return $post_types;
+		return \apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
 	}
 	
 	/**
@@ -149,12 +110,12 @@ class Block_Control {
 	public function get_posts() {
 		$posts = [];
 		
-		foreach ( get_post_types() as $post_type ) {
-			if ( in_array( $post_type, $this->get_ignored_post_types(), true ) ) {
+		foreach ( \get_post_types() as $post_type ) {
+			if ( \in_array( $post_type, $this->get_ignored_post_types(), true ) ) {
 				continue;
 			}
 			
-			$post_type_object = get_post_type_object( $post_type );
+			$post_type_object = \get_post_type_object( $post_type );
 			
 			// ignore post types that are not available in the block editor
 			if ( empty( $post_type_object->show_in_rest ) ) {
@@ -162,7 +123,7 @@ class Block_Control {
 			}
 			
 			$posts[ $post_type ] = [
-				'items' => get_posts( [
+				'items' => \get_posts( [
 					'numberposts' => -1,
 					'post_type' => $post_type,
 				] ),
@@ -185,7 +146,7 @@ class Block_Control {
 		$roles = [];
 		
 		foreach ( $wp_roles->roles as $key => $role ) {
-			$roles[ $key ] = translate_user_role( $role['name'] );
+			$roles[ $key ] = \translate_user_role( $role['name'] );
 		}
 		
 		return $roles;
@@ -196,11 +157,11 @@ class Block_Control {
 	 */
 	public function editor_assets() {
 		// automatically load dependencies and version
-		$asset_file = include plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php';
-		wp_enqueue_style( 'block-control-editor-style', plugins_url( 'build/index.css', __DIR__ ), [], $asset_file['version'] );
-		wp_enqueue_script( 'block-control-editor', plugins_url( '/build/index.js', __DIR__ ), $asset_file['dependencies'], $asset_file['version'] );
-		wp_set_script_translations( 'block-control-editor', 'block-control', plugin_dir_path( __FILE__ ) . 'languages' );
-		wp_localize_script( 'block-control-editor', 'blockControlStore', [
+		$asset_file = include \plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php';
+		\wp_enqueue_style( 'block-control-editor-style', \plugins_url( 'build/index.css', __DIR__ ), [], $asset_file['version'] );
+		\wp_enqueue_script( 'block-control-editor', \plugins_url( '/build/index.js', __DIR__ ), $asset_file['dependencies'], $asset_file['version'] );
+		\wp_set_script_translations( 'block-control-editor', 'block-control', \plugin_dir_path( __FILE__ ) . 'languages' );
+		\wp_localize_script( 'block-control-editor', 'blockControlStore', [
 			'posts' => $this->get_posts(),
 			'roles' => $this->get_roles(),
 		] );
@@ -220,72 +181,72 @@ class Block_Control {
 		foreach ( $value as $tag => $is_hidden ) {
 			switch ( $tag ) {
 				case 'is_home':
-					if ( $is_hidden && is_home() ) {
+					if ( $is_hidden && \is_home() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_front_page':
-					if ( $is_hidden && is_front_page() ) {
+					if ( $is_hidden && \is_front_page() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_single':
-					if ( $is_hidden && is_single() ) {
+					if ( $is_hidden && \is_single() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_sticky':
-					if ( $is_hidden && is_sticky() ) {
+					if ( $is_hidden && \is_sticky() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_page':
-					if ( $is_hidden && is_page() ) {
+					if ( $is_hidden && \is_page() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_category':
-					if ( $is_hidden && is_category() ) {
+					if ( $is_hidden && \is_category() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_tag':
-					if ( $is_hidden && is_tag() ) {
+					if ( $is_hidden && \is_tag() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_tax':
-					if ( $is_hidden && is_tax() ) {
+					if ( $is_hidden && \is_tax() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_archive':
-					if ( $is_hidden && is_archive() ) {
+					if ( $is_hidden && \is_archive() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_search':
-					if ( $is_hidden && is_search() ) {
+					if ( $is_hidden && \is_search() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_404':
-					if ( $is_hidden && is_404() ) {
+					if ( $is_hidden && \is_404() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_paged':
-					if ( $is_hidden && is_paged() ) {
+					if ( $is_hidden && \is_paged() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_attachment':
-					if ( $is_hidden && is_attachment() ) {
+					if ( $is_hidden && \is_attachment() ) {
 						$hidden = true;
 					}
 					break;
 				case 'is_singular':
-					if ( $is_hidden && is_singular() ) {
+					if ( $is_hidden && \is_singular() ) {
 						$hidden = true;
 					}
 					break;
@@ -308,11 +269,12 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_desktop( $attr, $value ) {
-		if ( $attr === 'hideDesktop' && $value === true && ( ! $this->mobile_detect->isMobile() || $this->mobile_detect->isTablet() ) ) {
-			return true;
-		}
-		
-		return false;
+		return $attr === 'hideDesktop'
+			&& $value === true
+			&& (
+				! $this->mobile_detect->isMobile()
+				|| $this->mobile_detect->isTablet()
+			);
 	}
 	
 	/**
@@ -323,11 +285,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_logged_in( $attr, $value ) {
-		if ( $attr === 'loginStatus' && $value === 'logged-out' && is_user_logged_in() ) {
-			return true;
-		}
-		
-		return false;
+		return $attr === 'loginStatus' && $value === 'logged-out' && \is_user_logged_in();
 	}
 	
 	/**
@@ -338,11 +296,7 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_logged_out( $attr, $value ) {
-		if ( $attr === 'loginStatus' && $value === 'logged-in' && ! is_user_logged_in() ) {
-			return true;
-		}
-		
-		return false;
+		return $attr === 'loginStatus' && $value === 'logged-in' && ! \is_user_logged_in();
 	}
 	
 	/**
@@ -353,11 +307,10 @@ class Block_Control {
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_mobile( $attr, $value ) {
-		if ( $attr === 'hideMobile' && $value === true && $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ) {
-			return true;
-		}
-		
-		return false;
+		return $attr === 'hideMobile'
+			&& $value === true
+			&& $this->mobile_detect->isMobile()
+			&& ! $this->mobile_detect->isTablet();
 	}
 	
 	/**
@@ -368,8 +321,8 @@ class Block_Control {
 	 * @param	array	$value The attribute value
 	 * @return	bool Whether the content should be hidden
 	 */
-	public function hide_post( $value ) {
-		$post = get_post();
+	public function hide_post( array $value ) {
+		$post = \get_post();
 		
 		if ( ! $post instanceof WP_Post ) {
 			return false;
@@ -394,25 +347,26 @@ class Block_Control {
 	 * @param	array	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
-	public function hide_roles( $value ) {
+	public function hide_roles( array $value ) {
 		// logged-out users don't have any role
 		// check them via login status
-		if ( ! is_user_logged_in() || empty( $value ) ) {
+		if ( ! \is_user_logged_in() || empty( $value ) ) {
 			return false;
 		}
 		
 		// get the user object
-		$user = wp_get_current_user();
+		$user = \wp_get_current_user();
 		
 		foreach ( $value as $role => $is_hidden ) {
 			// check if the user has a role that should be hidden
-			if ( ! $is_hidden && in_array( $role, $user->roles, true ) ) {
+			if ( ! $is_hidden && \in_array( $role, $user->roles, true ) ) {
 				return false;
 			}
 		}
 		
 		return true;
 	}
+	
 	/**
 	 * Test if the content should be hidden for screen readers.
 	 * 
@@ -429,7 +383,7 @@ class Block_Control {
 	 * Load translations.
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'block-control', false, dirname( plugin_basename( $this->plugin_file ) ) . '/languages' );
+		\load_plugin_textdomain( 'block-control', false, \dirname( \plugin_basename( $this->plugin_file ) ) . '/languages' );
 	}
 	
 	/**
@@ -440,7 +394,7 @@ class Block_Control {
 	 * @param	array	$args List of block arguments
 	 * @return	array Updated list of block arguments
 	 */
-	public function register_attributes( $args ) {
+	public function register_attributes( array $args ) {
 		$args['attributes'] = \array_merge( $args['attributes'], [
 			'hideByDate' => [
 				'default' => false,
@@ -493,7 +447,7 @@ class Block_Control {
 	 * @param	string	$file The path to the file
 	 */
 	public function set_plugin_file( $file ) {
-		if ( file_exists( $file ) ) {
+		if ( \file_exists( $file ) ) {
 			$this->plugin_file = $file;
 		}
 	}
@@ -509,8 +463,8 @@ class Block_Control {
 	 * @throws	\Exception
 	 */
 	public function strtotime( $str ) {
-		$tz_string = get_option( 'timezone_string' );
-		$tz_offset = get_option( 'gmt_offset', 0 );
+		$tz_string = \get_option( 'timezone_string' );
+		$tz_offset = \get_option( 'gmt_offset', 0 );
 		
 		if ( ! empty( $tz_string ) ) {
 			// if site timezone option string exists, use it
@@ -523,7 +477,11 @@ class Block_Control {
 		else {
 			$timezone = $tz_offset;
 			
-			if ( substr( $tz_offset, 0, 1 ) !== '-' && substr( $tz_offset, 0, 1 ) !== '+' && substr( $tz_offset, 0, 1 ) !== 'U' ) {
+			if (
+				\substr( $tz_offset, 0, 1 ) !== '-'
+				&& \substr( $tz_offset, 0, 1 ) !== '+'
+				&& \substr( $tz_offset, 0, 1 ) !== 'U'
+			) {
 				$timezone = '+' . $tz_offset;
 			}
 		}
@@ -540,7 +498,7 @@ class Block_Control {
 	 * @param	array		$block The full block, including name and attributes
 	 * @return	string The updated block content
 	 */
-	public function toggle_blocks( $block_content, $block ) {
+	public function toggle_blocks( $block_content, array $block ) {
 		// set default content
 		$content = '';
 		// set default visibility
@@ -583,7 +541,7 @@ class Block_Control {
 			}
 			
 			if ( $hide_by_date && $attr === 'hideByDateStart' ) {
-				if ( time() > $this->strtotime( $value ) ) {
+				if ( \time() > $this->strtotime( $value ) ) {
 					$is_hidden = true;
 					
 					// check end date, too
@@ -591,11 +549,11 @@ class Block_Control {
 						! isset( $block['attrs']['hideByDateEnd'] )
 						|| (
 							$this->strtotime( $value ) > $this->strtotime( $block['attrs']['hideByDateEnd'] )
-							&& time() > $this->strtotime( $block['attrs']['hideByDateEnd'] )
+							&& \time() > $this->strtotime( $block['attrs']['hideByDateEnd'] )
 						)
 						|| (
 							$this->strtotime( $value ) <= $this->strtotime( $block['attrs']['hideByDateEnd'] )
-							&& time() < $this->strtotime( $block['attrs']['hideByDateEnd'] )
+							&& \time() < $this->strtotime( $block['attrs']['hideByDateEnd'] )
 						)
 					) {
 						break;
@@ -607,7 +565,7 @@ class Block_Control {
 			}
 			
 			if ( $hide_by_date && $attr === 'hideByDateEnd' ) {
-				if ( time() <= $this->strtotime( $value ) ) {
+				if ( \time() <= $this->strtotime( $value ) ) {
 					$is_hidden = true;
 					
 					// check start date, too
@@ -615,11 +573,11 @@ class Block_Control {
 						! isset( $block['attrs']['hideByDateStart'] )
 						|| (
 							$this->strtotime( $value ) > $this->strtotime( $block['attrs']['hideByDateStart'] )
-							&& time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
+							&& \time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
 						)
 						|| (
 							$this->strtotime( $value ) <= $this->strtotime( $block['attrs']['hideByDateStart'] )
-							&& time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
+							&& \time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
 						)
 					) {
 						break;
