@@ -632,6 +632,19 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 														  ]
 														: false
 												}
+												indeterminate={
+													hidePosts &&
+													hidePosts[ type ] &&
+													! hidePosts[ type ][
+														'all'
+													] &&
+													Object.values(
+														hidePosts[ type ]
+													).some(
+														( item ) =>
+															item === true
+													)
+												}
 												value="all"
 												onChange={ ( value ) =>
 													onChangePostsAll(

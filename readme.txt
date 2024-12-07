@@ -75,6 +75,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 1.4.1 =
+* We added an indeterminate visual display of the "All" checkbox, e.g. while selecting posts.
 * We fixed displaying post type visibility settings inside the site editor.
 
 = 1.4.0 =
