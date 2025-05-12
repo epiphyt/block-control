@@ -312,16 +312,15 @@ final class Block_Control {
 			&& $this->mobile_detect->isMobile()
 			&& ! $this->mobile_detect->isTablet();
 	}
-
+	
+	/**
+	 * Check, whether the content should be hidden by its attributes.
+	 * 
+	 * @param	array{first?: bool, last?: bool, odd?: bool, even?: bool, custom?: string[]}	$value Attribute value
+	 * @return	bool Whether the content should be hidden
+	 */
 	public static function hide_numbered_pages( array $value ) {
-		if (
-			! \is_home()
-			&& ! \is_archive()
-			&& ! \is_category()
-			&& ! \is_tag()
-			&& ! \is_tax()
-			&& ! \is_search()
-		) {
+		if ( ! \is_home() && ! \is_archive() && ! \is_category() && ! \is_tag() && ! \is_tax() && ! \is_search() ) {
 			return false;
 		}
 		
