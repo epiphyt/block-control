@@ -38,6 +38,10 @@ const addControlAttribute = ( settings ) => {
 			default: false,
 			type: 'boolean',
 		},
+		hideNumberedPages: {
+			default: {},
+			type: 'object',
+		},
 		hidePosts: {
 			default: {},
 			type: 'object',

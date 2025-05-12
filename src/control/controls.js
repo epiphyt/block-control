@@ -8,6 +8,7 @@ import {
 	Dashicon,
 	DateTimePicker,
 	Dropdown,
+	FormTokenField,
 	PanelBody,
 	RadioControl,
 	ToggleControl,
@@ -38,6 +39,14 @@ const CONDITIONAL_TAGS = {
 	is_singular: __( 'Any single post', 'block-control' ),
 };
 
+const NUMBERED_PAGES = {
+	first: __( 'First page', 'block-control' ),
+	last: __( 'Last page', 'block-control' ),
+	odd: __( 'Every odd page', 'block-control' ),
+	even: __( 'Every even page', 'block-control' ),
+	custom: __( 'Specific page(s)', 'block-control' ),
+};
+
 /**
  * Check if Block Control has an active filter.
  *
@@ -53,6 +62,7 @@ const isActive = ( props ) => {
 			hideConditionalTags,
 			hideDesktop,
 			hideMobile,
+			hideNumberedPages,
 			hidePosts,
 			hideRoles,
 			hideScreenReader,
@@ -73,6 +83,14 @@ const isActive = ( props ) => {
 	if ( typeof hideConditionalTags !== 'undefined' ) {
 		for ( const tag in hideConditionalTags ) {
 			if ( hideConditionalTags[ tag ] === true ) {
+				return true;
+			}
+		}
+	}
+
+	if ( typeof hideNumberedPages !== 'undefined' ) {
+		for ( const page in hideNumberedPages ) {
+			if ( !! hideNumberedPages[ page ] ) {
 				return true;
 			}
 		}
@@ -113,6 +131,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hideByDateStart,
 				hideDesktop,
 				hideMobile,
+				hideNumberedPages,
 				hidePosts,
 				hideRoles,
 				hideScreenReader,
@@ -697,6 +716,82 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								);
 							}
 						) }
+
+						<div className="block-control-control-area block-control-control-hide-numbered-pages">
+							<span className="components-base-control__label">
+								{ __(
+									'Hide on numbered pages',
+									'block-control'
+								) }
+							</span>
+
+							<div className="block-control-checkbox-select">
+								{ Object.keys( NUMBERED_PAGES ).map(
+									( page, index ) => {
+										return (
+											<CheckboxControl
+												key={ index }
+												label={ NUMBERED_PAGES[ page ] }
+												checked={
+													hideNumberedPages &&
+													hideNumberedPages[ page ]
+														? true
+														: false
+												}
+												value={ page }
+												onChange={ ( value ) => {
+													const newValue = {
+														[ page ]: value,
+													};
+
+													setAttributes( {
+														hideNumberedPages: {
+															...hideNumberedPages,
+															...newValue,
+														},
+													} );
+												} }
+											/>
+										);
+									}
+								) }
+							</div>
+
+							{ hideNumberedPages && hideNumberedPages.custom ? (
+								<FormTokenField
+									__experimentalValidateInput={ ( value ) => {
+										return (
+											Number.isInteger( value ) ||
+											( ! isNaN( value ) &&
+												! isNaN( parseFloat( value ) ) )
+										);
+									} }
+									label={ __(
+										'Page numbers',
+										'block-control'
+									) }
+									maxSuggestions={ 0 }
+									onChange={ ( newValue ) => {
+										const newCustom = { custom: newValue };
+										console.log( newCustom );
+										setAttributes( {
+											hideNumberedPages: {
+												...hideNumberedPages,
+												...newCustom,
+											},
+										} );
+									} }
+									suggestions={ [] }
+									value={
+										Array.isArray(
+											hideNumberedPages.custom
+										)
+											? hideNumberedPages.custom
+											: []
+									}
+								/>
+							) : null }
+						</div>
 					</PanelBody>
 				</InspectorControls>
 			</>

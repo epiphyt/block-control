@@ -312,6 +312,49 @@ final class Block_Control {
 			&& $this->mobile_detect->isMobile()
 			&& ! $this->mobile_detect->isTablet();
 	}
+
+	public static function hide_numbered_pages( array $value ) {
+		if (
+			! \is_home()
+			&& ! \is_archive()
+			&& ! \is_category()
+			&& ! \is_tag()
+			&& ! \is_tax()
+			&& ! \is_search()
+		) {
+			return false;
+		}
+		
+		/** @var \WP_Query $wp_query */
+		global $wp_query;
+		
+		$current_page = ! empty( $wp_query->query_vars['paged'] ) ? $wp_query->query_vars['paged'] : 1;
+		$last_page = ! empty( $wp_query->max_num_pages ) ? $wp_query->max_num_pages : 1;
+		
+		if ( ! empty( $value['first'] ) && $current_page === 1 ) {
+			return true;
+		}
+		
+		if ( ! empty( $value['last'] ) && $current_page === $last_page ) {
+			return true;
+		}
+		
+		if ( ! empty( $value['odd'] ) && $current_page % 2 !== 0 ) {
+			return true;
+		}
+		
+		if ( ! empty( $value['even'] ) && $current_page % 2 === 0 ) {
+			return true;
+		}
+		
+		if ( ! empty( $value['custom'] ) ) {
+			if ( \in_array( (string) $current_page, $value['custom'], true ) ) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Test if the content should be hidden by the post.
@@ -419,6 +462,10 @@ final class Block_Control {
 			'hideMobile' => [
 				'default' => false,
 				'type' => 'boolean',
+			],
+			'hideNumberedPages' => [
+				'default' => new stdClass(),
+				'type' => 'object',
 			],
 			'hidePosts' => [
 				'default' => new stdClass(),
@@ -594,6 +641,11 @@ final class Block_Control {
 			}
 			
 			if ( $attr === 'hideConditionalTags' && $this->hide_conditional_tags( $value ) ) {
+				$is_hidden = true;
+				break;
+			}
+			
+			if ( $attr === 'hideNumberedPages' && self::hide_numbered_pages( $value ) ) {
 				$is_hidden = true;
 				break;
 			}
