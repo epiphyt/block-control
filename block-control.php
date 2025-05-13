@@ -4,7 +4,7 @@ namespace epiphyt\Block_Control;
 /*
 Plugin Name:		Block Control
 Description:		Control the visibility of your Gutenberg blocks by conditions.
-Version:			1.4.1
+Version:			1.5.0
 Author URI:			https://epiph.yt/en/
 Author:				Epiphyt
 Domain Path:		/languages
@@ -12,7 +12,7 @@ License URI:		https://www.gnu.org/licenses/gpl-2.0.html
 License:			GPL2
 Requires at least:	6.2
 Requires PHP:		5.6
-Tested up to:		6.7
+Tested up to:		6.8
 Text Domain:		block-control
 
 Block Control is free software: you can redistribute it and/or modify
