@@ -623,7 +623,7 @@ final class Block_Control {
 						)
 						|| (
 							$this->strtotime( $value ) <= $this->strtotime( $block['attrs']['hideByDateStart'] )
-							&& \time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
+							&& \time() < $this->strtotime( $block['attrs']['hideByDateStart'] )
 						)
 					) {
 						break;

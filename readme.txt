@@ -2,8 +2,8 @@
 Contributors: epiphyt, kittmedia, krafit
 Tags: gutenberg, block, conditional, visibility, block editor
 Requires at least: 6.2
-Stable tag: 1.5.0
-Tested up to: 6.8
+Stable tag: 1.5.1
+Tested up to: 6.9
 Requires PHP: 5.6
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -74,6 +74,9 @@ You can contribute to the code on [GitHub](https://github.com/epiphyt/block-cont
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/block-control)
 
 == Changelog ==
+
+= 1.5.1 =
+* Fixed: A block with a start date to hide in the future and with an end date will now correctly be hidden between those two dates
 
 = 1.5.0 =
 * Added: Option to hide based on a numbered page (e.g. in archives)

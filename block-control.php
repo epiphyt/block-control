@@ -4,7 +4,7 @@ namespace epiphyt\Block_Control;
 /*
 Plugin Name:		Block Control
 Description:		Control the visibility of your Gutenberg blocks by conditions.
-Version:			1.5.0
+Version:			1.5.1
 Author URI:			https://epiph.yt/en/
 Author:				Epiphyt
 Domain Path:		/languages
@@ -12,7 +12,7 @@ License URI:		https://www.gnu.org/licenses/gpl-2.0.html
 License:			GPL2
 Requires at least:	6.2
 Requires PHP:		5.6
-Tested up to:		6.8
+Tested up to:		6.9
 Text Domain:		block-control
 
 Block Control is free software: you can redistribute it and/or modify
@@ -39,6 +39,11 @@ along with Block Control. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 	$namespace = \strtolower( __NAMESPACE__ . '\\' );
 	$path = \explode( '\\', $class_name );
 	$filename = \str_replace( '_', '-', \strtolower( \array_pop( $path ) ) );
+	
+	if ( \strpos( $class_name, __NAMESPACE__ ) !== 0 ) {
+		return;
+	}
+	
 	$class_name = \str_replace(
 		[ $namespace, '\\', '_' ],
 		[ '', '/', '-' ],
