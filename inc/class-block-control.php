@@ -366,6 +366,14 @@ final class Block_Control {
 	public function hide_post( array $value ) {
 		$post = \get_post();
 		
+		/**
+		 * Filter the post object that is used to determine whether it's hidden.
+		 * 
+		 * @param	?\WP_Post	$post Post object
+		 * @param	array 		$value The attribute value
+		 */
+		$post = \apply_filters( 'block_control_hide_post_object', $post, $value );
+		
 		if ( ! $post instanceof WP_Post ) {
 			return false;
 		}
