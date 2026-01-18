@@ -82,6 +82,8 @@ final class Block_Control {
 		/**
 		 * Filter the ignored post type list.
 		 * 
+		 * @since	1.1.0
+		 * 
 		 * @param	array	$ignored_post_types The current ignored post type list
 		 */
 		return \apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
