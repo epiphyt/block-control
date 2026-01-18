@@ -369,6 +369,8 @@ final class Block_Control {
 		/**
 		 * Filter the post object that is used to determine whether it's hidden.
 		 * 
+		 * @since	1.6.0
+		 * 
 		 * @param	?\WP_Post	$post Post object
 		 * @param	array 		$value The attribute value
 		 */
