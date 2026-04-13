@@ -26,6 +26,14 @@ You can hide blocks based on:
 
 Additionally, you can set an inline formatting to display certain text only for screen readers.
 
+= Contribution =
+
+Feel free to contribute. The code is available at [GitHub](https://github.com/epiphyt/block-control).
+
+= Documentation =
+
+You can find the documentation for BLock Control at [docs.epiph.yt](https://docs.epiph.yt/block-control/).
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/block-control` directory, or install the plugin through the WordPress plugins screen directly.
