@@ -30,6 +30,22 @@ along with Block Control. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
 \defined( 'ABSPATH' ) || exit;
 
+if ( ! \defined( 'EPI_BLOCK_CONTROL_BASE' ) ) {
+	if ( \file_exists( \WP_PLUGIN_DIR . '/block-control/' ) ) {
+		\define( 'EPI_BLOCK_CONTROL_BASE', \WP_PLUGIN_DIR . '/block-control/' );
+	}
+	else if ( \file_exists( \WPMU_PLUGIN_DIR . '/block-control/' ) ) {
+		\define( 'EPI_BLOCK_CONTROL_BASE', \WPMU_PLUGIN_DIR . '/block-control/' );
+	}
+	else {
+		\define( 'EPI_BLOCK_CONTROL_BASE', \plugin_dir_path( __FILE__ ) );
+	}
+}
+
+\define( 'EPI_BLOCK_CONTROL_FILE', \EPI_BLOCK_CONTROL_BASE . \basename( __FILE__ ) );
+\define( 'EPI_BLOCK_CONTROL_URL', \plugin_dir_url( \EPI_BLOCK_CONTROL_FILE ) );
+\define( 'EPI_BLOCK_CONTROL_VERSION', '1.6.0-dev' );
+
 /**
  * Autoload all necessary classes.
  * 

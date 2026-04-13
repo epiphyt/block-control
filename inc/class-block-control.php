@@ -69,6 +69,8 @@ final class Block_Control {
 		\add_action( 'init', [ $this, 'load_textdomain' ], 0 );
 		\add_filter( 'register_block_type_args', [ $this, 'register_attributes' ] );
 		\add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
+		
+		Admin::init();
 	}
 	
 	/**
