@@ -61,6 +61,7 @@ const isActive = ( props ) => {
 			hideByDateStart,
 			hideConditionalTags,
 			hideDesktop,
+			hideFeed,
 			hideMobile,
 			hideNumberedPages,
 			hidePosts,
@@ -73,6 +74,7 @@ const isActive = ( props ) => {
 	if (
 		( hideByDate && ( hideByDateStart || hideByDateEnd ) ) ||
 		hideDesktop ||
+		hideFeed ||
 		hideMobile ||
 		hideScreenReader ||
 		( loginStatus && loginStatus !== 'none' )
@@ -130,6 +132,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hideByDateEnd,
 				hideByDateStart,
 				hideDesktop,
+				hideFeed,
 				hideMobile,
 				hideNumberedPages,
 				hidePosts,
@@ -140,6 +143,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			name,
 			setAttributes,
 		} = props;
+		console.log( { hideFeed } );
 
 		if ( UNSUPPORTED_BLOCKS.includes( name ) ) {
 			return <BlockEdit { ...props } />;
@@ -598,6 +602,16 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									}
 								) }
 							</div>
+
+							<ToggleControl
+								className="block-control__hide-in-feed--toggle"
+								label={ __( 'Hide in feeds', 'block-control' ) }
+								value={ hideFeed || false }
+								checked={ !! hideFeed }
+								onChange={ ( value ) =>
+									setAttributes( { hideFeed: value } )
+								}
+							/>
 						</div>
 
 						{ Object.keys( blockControlStore.posts ).map(

@@ -34,6 +34,10 @@ const addControlAttribute = ( settings ) => {
 			default: false,
 			type: 'boolean',
 		},
+		hideFeed: {
+			default: false,
+			type: 'boolean',
+		},
 		hideMobile: {
 			default: false,
 			type: 'boolean',

@@ -282,6 +282,16 @@ final class Block_Control {
 	}
 	
 	/**
+	 * Check, whether the content should be hidden in feeds.
+	 * 
+	 * @param	bool	$value Block attribute value
+	 * @return	bool Whether the content should be hidden in feeds
+	 */
+	public static function hide_feed( $value ) {
+		return $value === true && \is_feed();
+	}
+	
+	/**
 	 * Test if the content should be hidden by its attributes.
 	 * 
 	 * @param	string		$attr The attribute name
@@ -472,6 +482,10 @@ final class Block_Control {
 				'default' => false,
 				'type' => 'boolean',
 			],
+			'hideFeed' => [
+				'default' => false,
+				'type' => 'boolean',
+			],
 			'hideMobile' => [
 				'default' => false,
 				'type' => 'boolean',
@@ -576,22 +590,17 @@ final class Block_Control {
 		
 		// iterate through all block attributes
 		foreach ( $block['attrs'] as $attr => $value ) {
-			if ( $this->hide_desktop( $attr, $value ) ) {
-				$is_hidden = true;
-				break;
-			}
-			
-			if ( $this->hide_mobile( $attr, $value ) ) {
-				$is_hidden = true;
-				break;
-			}
-			
-			if ( $this->hide_logged_in( $attr, $value ) ) {
-				$is_hidden = true;
-				break;
-			}
-			
-			if ( $this->hide_logged_out( $attr, $value ) ) {
+			if (
+				$this->hide_desktop( $attr, $value )
+				|| $this->hide_mobile( $attr, $value )
+				|| $this->hide_logged_in( $attr, $value )
+				|| $this->hide_logged_out( $attr, $value )
+				|| $attr === 'hideFeed' && self::hide_feed( $value )
+				|| $attr === 'hideRoles' && $this->hide_roles( $value )
+				|| $attr === 'hideConditionalTags' && $this->hide_conditional_tags( $value )
+				|| $attr === 'hideNumberedPages' && self::hide_numbered_pages( $value )
+				|| $attr === 'hidePosts' && $this->hide_post( $value )
+			) {
 				$is_hidden = true;
 				break;
 			}
@@ -646,26 +655,6 @@ final class Block_Control {
 						$is_hidden = false;
 					}
 				}
-			}
-			
-			if ( $attr === 'hideRoles' && $this->hide_roles( $value ) ) {
-				$is_hidden = true;
-				break;
-			}
-			
-			if ( $attr === 'hideConditionalTags' && $this->hide_conditional_tags( $value ) ) {
-				$is_hidden = true;
-				break;
-			}
-			
-			if ( $attr === 'hideNumberedPages' && self::hide_numbered_pages( $value ) ) {
-				$is_hidden = true;
-				break;
-			}
-			
-			if ( $attr === 'hidePosts' && $this->hide_post( $value ) ) {
-				$is_hidden = true;
-				break;
 			}
 		}
 		
