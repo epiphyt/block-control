@@ -1,0 +1,59 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.8/block.json",
+	"apiVersion": 3,
+	"name": "block-control/settings",
+	"title": "Block Control",
+	"textdomain": "block-control",
+	"attributes": {
+		"hideByDate": {
+			"default": false,
+			"type": "boolean"
+		},
+		"hideByDateEnd": {
+			"default": "",
+			"type": "string"
+		},
+		"hideByDateStart": {
+			"default": "",
+			"type": "string"
+		},
+		"hideConditionalTags": {
+			"default": {},
+			"type": "object"
+		},
+		"hideDesktop": {
+			"default": false,
+			"type": "boolean"
+		},
+		"hideFeed": {
+			"default": false,
+			"type": "boolean"
+		},
+		"hideMobile": {
+			"default": false,
+			"type": "boolean"
+		},
+		"hideNumberedPages": {
+			"default": {},
+			"type": "object"
+		},
+		"hidePosts": {
+			"default": {},
+			"type": "object"
+		},
+		"hideRoles": {
+			"default": {},
+			"type": "object"
+		},
+		"hideScreenReader": {
+			"default": false,
+			"type": "boolean"
+		},
+		"loginStatus": {
+			"default": "none",
+			"type": "string"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": [ "file:./index.css" ]
+}

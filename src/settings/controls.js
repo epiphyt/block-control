@@ -143,7 +143,6 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			name,
 			setAttributes,
 		} = props;
-		console.log( { hideFeed } );
 
 		if ( UNSUPPORTED_BLOCKS.includes( name ) ) {
 			return <BlockEdit { ...props } />;
@@ -196,11 +195,11 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			newValue[ type ][ id ] = value;
 
 			if ( ! value ) {
-				newValue[ type ][ 'all' ] = value;
+				newValue[ type ].all = value;
 			} else {
 				let notProgressedItem;
 
-				blockControlStore.posts[ type ][ 'items' ].map( ( item ) => {
+				blockControlStore.posts[ type ].items.map( ( item ) => {
 					if (
 						typeof newValue[ type ][ item.ID ] === 'undefined' ||
 						newValue[ type ][ item.ID ] === false
@@ -211,7 +210,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					return null;
 				} );
 
-				newValue[ type ][ 'all' ] = ! notProgressedItem;
+				newValue[ type ].all = ! notProgressedItem;
 			}
 
 			setAttributes( { hidePosts: newValue } );
@@ -228,10 +227,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			if ( typeof newValue[ type ] === 'undefined' ) {
 				newValue[ type ] = { all: value };
 			} else {
-				newValue[ type ][ 'all' ] = value;
+				newValue[ type ].all = value;
 			}
 
-			blockControlStore.posts[ type ][ 'items' ].map( ( item ) => {
+			blockControlStore.posts[ type ].items.map( ( item ) => {
 				newValue[ type ][ item.ID ] = value;
 			} );
 
@@ -643,9 +642,8 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 													'Hide for post type "%s"',
 													'block-control'
 												),
-												blockControlStore.posts[ type ][
-													'title'
-												]
+												blockControlStore.posts[ type ]
+													.title
 											) }
 										</span>
 
@@ -659,18 +657,14 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												checked={
 													hidePosts &&
 													hidePosts[ type ] &&
-													hidePosts[ type ][ 'all' ]
-														? hidePosts[ type ][
-																'all'
-														  ]
+													hidePosts[ type ].all
+														? hidePosts[ type ].all
 														: false
 												}
 												indeterminate={
 													hidePosts &&
 													hidePosts[ type ] &&
-													! hidePosts[ type ][
-														'all'
-													] &&
+													! hidePosts[ type ].all &&
 													Object.values(
 														hidePosts[ type ]
 													).some(
@@ -688,9 +682,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												}
 											/>
 
-											{ blockControlStore.posts[ type ][
-												'items'
-											].map( ( item, index ) => (
+											{ blockControlStore.posts[
+												type
+											].items.map( ( item, index ) => (
 												<CheckboxControl
 													key={ type + i + index }
 													label={ item.post_title }
@@ -707,12 +701,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 															  hidePosts[
 																	type
 															  ] &&
-															  hidePosts[ type ][
-																	'all'
-															  ]
-															? hidePosts[ type ][
-																	'all'
-															  ]
+															  hidePosts[ type ]
+																	.all
+															? hidePosts[ type ]
+																	.all
 															: false
 													}
 													value={ item.ID }
@@ -787,7 +779,6 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									maxSuggestions={ 0 }
 									onChange={ ( newValue ) => {
 										const newCustom = { custom: newValue };
-										console.log( newCustom );
 										setAttributes( {
 											hideNumberedPages: {
 												...hideNumberedPages,

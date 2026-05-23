@@ -1,0 +1,8 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.8/block.json",
+	"apiVersion": 3,
+	"name": "block-control/screen-reader-text",
+	"title": "Screen Reader Text",
+	"textdomain": "block-control",
+	"editorScript": "file:./index.js"
+}

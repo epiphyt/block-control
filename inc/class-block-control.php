@@ -66,7 +66,7 @@ final class Block_Control {
 	 */
 	public function init() {
 		\add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 100 );
-		\add_action( 'init', [ $this, 'load_textdomain' ], 0 );
+		\add_action( 'init', [ self::class, 'register_blocks' ] );
 		\add_filter( 'register_block_type_args', [ $this, 'register_attributes' ] );
 		\add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 		
@@ -126,11 +126,22 @@ final class Block_Control {
 				continue;
 			}
 			
+			$post_ids = \get_posts( [
+				'fields' => 'ids',
+				'numberposts' => -1,
+				'post_type' => $post_type,
+			] );
+			$post_map = [];
+			
+			foreach ( $post_ids as $post_id ) {
+				$post_map[] = [
+					'ID' => $post_id,
+					'post_title' => \get_post_field( 'post_title', $post_id ),
+				];
+			}
+			
 			$posts[ $post_type ] = [
-				'items' => \get_posts( [
-					'numberposts' => -1,
-					'post_type' => $post_type,
-				] ),
+				'items' => $post_map,
 				'title' => $post_type_object->labels->name,
 			];
 		}
@@ -160,12 +171,7 @@ final class Block_Control {
 	 * Add the editor assets.
 	 */
 	public function editor_assets() {
-		// automatically load dependencies and version
-		$asset_file = include \plugin_dir_path( $this->plugin_file ) . 'build/index.asset.php';
-		\wp_enqueue_style( 'block-control-editor-style', \plugins_url( 'build/index.css', __DIR__ ), [], $asset_file['version'] );
-		\wp_enqueue_script( 'block-control-editor', \plugins_url( '/build/index.js', __DIR__ ), $asset_file['dependencies'], $asset_file['version'] );
-		\wp_set_script_translations( 'block-control-editor', 'block-control', \plugin_dir_path( __FILE__ ) . 'languages' );
-		\wp_localize_script( 'block-control-editor', 'blockControlStore', [
+		\wp_localize_script( 'block-control-settings-editor-script', 'blockControlStore', [
 			'posts' => $this->get_posts(),
 			'roles' => $this->get_roles(),
 		] );
@@ -446,13 +452,6 @@ final class Block_Control {
 	}
 	
 	/**
-	 * Load translations.
-	 */
-	public function load_textdomain() {
-		\load_plugin_textdomain( 'block-control', false, \dirname( \plugin_basename( $this->plugin_file ) ) . '/languages' );
-	}
-	
-	/**
 	 * Register block attributes.
 	 * 
 	 * @since	1.1.7
@@ -513,6 +512,16 @@ final class Block_Control {
 		] );
 		
 		return $args;
+	}
+	
+	/**
+	 * Register blocks.
+	 */
+	public static function register_blocks() {
+		\wp_register_block_types_from_metadata_collection(
+			\EPI_BLOCK_CONTROL_BASE . 'build',
+			\EPI_BLOCK_CONTROL_BASE . 'build/blocks-manifest.php'
+		);
 	}
 	
 	/**
