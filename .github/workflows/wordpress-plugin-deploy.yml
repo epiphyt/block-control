@@ -11,7 +11,10 @@ jobs:
     permissions:
       contents: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
     # Run npm build
     - uses: bahmutov/npm-install@v1
     - name: npm build
@@ -24,14 +27,14 @@ jobs:
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
     # Create artifacts
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       with:
         name: ${{ github.event.repository.name }}.zip
         path: ${{ github.event.repository.name }}.zip
     # Create release
     - name: Create Release
       id: create_release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         files: ${{ github.event.repository.name }}.zip
         name: Release ${{ github.ref_name }}
