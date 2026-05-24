@@ -10,6 +10,7 @@ You can hide blocks based on:
 * Date (start and end date)
 * User roles
 * Page types
+* Feeds
 * Posts of the current post type
 
 Additionally, you can set an inline formatting to display certain text only for screen readers.
@@ -17,7 +18,7 @@ Additionally, you can set an inline formatting to display certain text only for 
 ## Requirements
 
 PHP: 5.6<br>
-WordPress: 6.2
+WordPress: 6.8
 
 ## Installation
 
