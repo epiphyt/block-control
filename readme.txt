@@ -33,7 +33,7 @@ Feel free to contribute. The code is available at [GitHub](https://github.com/ep
 
 = Documentation =
 
-You can find the documentation for BLock Control at [docs.epiph.yt](https://docs.epiph.yt/block-control/).
+You can find the documentation for Block Control at [docs.epiph.yt](https://docs.epiph.yt/block-control/).
 
 == Installation ==
 
@@ -73,10 +73,6 @@ add_filter( 'block_control_ignored_post_types', 'my_filter_block_control_post_ty
 = Who are you folks? =
 
 We are [Epiph.yt](https://epiph.yt/en/), your friendly neighborhood WordPress plugin shop from southern Germany.
-
-= Contributing =
-
-You can contribute to the code on [GitHub](https://github.com/epiphyt/block-control).
 
 = How can I report security bugs? =
 
