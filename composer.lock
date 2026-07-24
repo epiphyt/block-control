@@ -292,16 +292,16 @@
         },
         {
             "name": "epiphyt/coding-standard",
-            "version": "v1.0.0",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/epiphyt/coding-standard.git",
-                "reference": "371395fb72b99c5776a376cd355752c605898f74"
+                "reference": "2fa4aef262f2be14e7971b52c56de5f39a1cb874"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/epiphyt/coding-standard/zipball/371395fb72b99c5776a376cd355752c605898f74",
-                "reference": "371395fb72b99c5776a376cd355752c605898f74",
+                "url": "https://api.github.com/repos/epiphyt/coding-standard/zipball/2fa4aef262f2be14e7971b52c56de5f39a1cb874",
+                "reference": "2fa4aef262f2be14e7971b52c56de5f39a1cb874",
                 "shasum": ""
             },
             "require": {
@@ -320,9 +320,9 @@
             "description": "Epiphyt Coding Standard for PHP_CodeSniffer extends the WordPress Coding Standard by providing sniffs with additional checks.",
             "support": {
                 "issues": "https://github.com/epiphyt/coding-standard/issues",
-                "source": "https://github.com/epiphyt/coding-standard/tree/v1.0.0"
+                "source": "https://github.com/epiphyt/coding-standard/tree/v1.0.3"
             },
-            "time": "2026-07-24T19:44:41+00:00"
+            "time": "2026-07-24T20:32:46+00:00"
         },
         {
             "name": "fakerphp/faker",
