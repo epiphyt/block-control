@@ -26,7 +26,7 @@ jobs:
           php_version: 8.3
           path: inc/
           standard: .phpcs.xml
-          bootstrap: vendor/epiphyt/coding-standard/autoload.php
+          vendored_phpcs_path: vendor/bin/phpcs
   phpunit:
     runs-on: ubuntu-latest
     steps:
