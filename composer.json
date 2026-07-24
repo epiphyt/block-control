@@ -1,0 +1,35 @@
+{
+	"name": "epiphyt/block-control",
+	"description": "Control the visibility of your Gutenberg blocks by conditions.",
+	"type": "wordpress-plugin",
+	"homepage": "https://epiph.yt/en/",
+	"license": "GPL-2.0-only",
+	"require": {
+		"php": "^5.6|^7.4|^8.0"
+	},
+	"support": {
+		"email": "hey.composer@epiph.yt",
+		"docs": "https://docs.epiph.yt/block-control/"
+	},
+	"authors": [
+		{
+			"name": "Matthias Kittsteiner",
+			"email": "matze.composer@epiph.yt",
+			"homepage": "https://kittsteiner.blog",
+			"role": "Developer"
+		}
+	],
+	"require-dev": {
+		"phpunit/phpunit": "^12.5",
+		"brain/monkey": "2.*",
+		"brain/faker": "dev-master"
+	},
+	"scripts": {
+		"phpcs": "phpcs -s .",
+		"phpunit": "phpunit",
+		"test": [
+			"@phpcs",
+			"@phpunit"
+		]
+	}
+}
