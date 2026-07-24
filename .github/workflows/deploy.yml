@@ -21,12 +21,7 @@ jobs:
           php_version: 8.3
           version: 2.2
       - name: Run PHP Code Sniffer
-        uses: php-actions/phpcs@v1
-        with:
-          php_version: 8.3
-          path: inc/
-          standard: .phpcs.xml
-          vendored_phpcs_path: vendor/bin/phpcs
+        run: vendor/bin/phpcs -s --standard=.phpcs.xml .
   phpunit:
     runs-on: ubuntu-latest
     steps:
