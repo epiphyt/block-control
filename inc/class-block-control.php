@@ -94,7 +94,7 @@ final class Block_Control {
 	/**
 	 * Get a unique instance of the class.
 	 * 
-	 * @return	\epiphyt\Block_Control\Block_Control
+	 * @return	\epiphyt\Block_Control\Block_Control Class instance
 	 */
 	public static function get_instance() {
 		if ( self::$instance === null ) {
@@ -274,8 +274,8 @@ final class Block_Control {
 	/**
 	 * Test if the content should be hidden by its attributes.
 	 * 
-	 * @param	string		$attr The attribute name
-	 * @param	bool		$value The attribute value
+	 * @param	string	$attr The attribute name
+	 * @param	bool	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_desktop( $attr, $value ) {
@@ -300,8 +300,8 @@ final class Block_Control {
 	/**
 	 * Test if the content should be hidden by its attributes.
 	 * 
-	 * @param	string		$attr The attribute name
-	 * @param	bool		$value The attribute value
+	 * @param	string	$attr The attribute name
+	 * @param	bool	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_logged_in( $attr, $value ) {
@@ -311,8 +311,8 @@ final class Block_Control {
 	/**
 	 * Test if the content should be hidden by its attributes.
 	 * 
-	 * @param	string		$attr The attribute name
-	 * @param	bool		$value The attribute value
+	 * @param	string	$attr The attribute name
+	 * @param	bool	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_logged_out( $attr, $value ) {
@@ -322,8 +322,8 @@ final class Block_Control {
 	/**
 	 * Test if the content should be hidden by its attributes.
 	 * 
-	 * @param	string		$attr The attribute name
-	 * @param	bool		$value The attribute value
+	 * @param	string	$attr The attribute name
+	 * @param	bool	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
 	public function hide_mobile( $attr, $value ) {
@@ -392,7 +392,7 @@ final class Block_Control {
 		 * @since	1.6.0
 		 * 
 		 * @param	?\WP_Post	$post Post object
-		 * @param	array 		$value The attribute value
+		 * @param	array		$value The attribute value
 		 */
 		$post = \apply_filters( 'block_control_hide_post_object', $post, $value );
 		
@@ -541,7 +541,7 @@ final class Block_Control {
 	 * 
 	 * @see		https://mediarealm.com.au/articles/wordpress-timezones-strtotime-date-functions/
 	 * 
-	 * @param	string		$str The string to pass
+	 * @param	string	$str The string to pass
 	 * @return	int A timestamp
 	 * @throws	\Exception
 	 */
@@ -577,8 +577,8 @@ final class Block_Control {
 	/**
 	 * Display or hide a block.
 	 * 
-	 * @param	string		$block_content The block content about to be appended
-	 * @param	array		$block The full block, including name and attributes
+	 * @param	string	$block_content The block content about to be appended
+	 * @param	array	$block The full block, including name and attributes
 	 * @return	string The updated block content
 	 */
 	public function toggle_blocks( $block_content, array $block ) {
