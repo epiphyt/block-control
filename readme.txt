@@ -87,6 +87,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Improved: Blocks hidden by date are now marked with an outline instead of reduced contrast
 * Improved: The option to hide content for screen readers now explains when not to use it
 * Improved: The documentation link in the plugin list now announces that it opens in a new tab
+* Improved: The page numbers field now explains its format and that only numbers are allowed
 * Fixed: The visibility panel no longer closes while changing the hide by date settings
 * Fixed: Focus is no longer lost after removing a hide or display date
 * Fixed: Screen readers are now informed if no visibility setting applies to a block anymore

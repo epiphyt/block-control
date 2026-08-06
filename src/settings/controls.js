@@ -894,6 +894,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 										'Page numbers',
 										'block-control'
 									) }
+									help={ __(
+										'Separate the page numbers with commas or the Enter key. Only numbers are allowed.',
+										'block-control'
+									) }
 									maxSuggestions={ 0 }
 									onChange={ ( newValue ) => {
 										const newCustom = { custom: newValue };
