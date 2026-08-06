@@ -83,6 +83,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 1.7.0 =
 * Improved: Group labels of the visibility controls are now announced by screen readers
 * Improved: The hide by date controls now have unique, descriptive labels for screen readers
+* Improved: The visibility panel now indicates to screen readers that settings apply to a block
 * Fixed: The visibility panel no longer closes while changing the hide by date settings
 * Fixed: Focus is no longer lost after removing a hide or display date
 * Fixed: Screen readers are now informed if no visibility setting applies to a block anymore

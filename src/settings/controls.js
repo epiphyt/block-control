@@ -13,6 +13,7 @@ import {
 	PanelBody,
 	RadioControl,
 	ToggleControl,
+	VisuallyHidden,
 } from '@wordpress/components';
 import { createHigherOrderComponent, useInstanceId } from '@wordpress/compose';
 import { select } from '@wordpress/data';
@@ -148,6 +149,28 @@ const isHiddenByDate = ( { hideByDate, hideByDateEnd, hideByDateStart } ) => {
 
 	return true;
 };
+
+/**
+ * The icon of the panel, indicating that visibility settings apply.
+ *
+ * It's rendered inside the panel toggle, so its text becomes part of the
+ * accessible name of the panel.
+ *
+ * @param	{object}	props The icon properties
+ * @param	{string}	props.className The class name assigned by the panel
+ * @return	{Element} The icon element
+ */
+const ActiveIcon = ( { className } ) => (
+	<span className={ className }>
+		<Dashicon icon="visibility" />
+		<VisuallyHidden as="span">
+			{ __(
+				'Visibility settings apply to this block.',
+				'block-control'
+			) }
+		</VisuallyHidden>
+	</span>
+);
 
 /**
  * Create HOC to add our controls to inspector controls of block.
@@ -328,11 +351,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 					<PanelBody
 						className="block-control-panel"
 						title={ __( 'Visibility', 'block-control' ) }
-						icon={
-							isActive( props ) ? (
-								<Dashicon icon="visibility" />
-							) : null
-						}
+						icon={ hasActiveSettings ? ActiveIcon : null }
 						initialOpen={ false }
 					>
 						<fieldset className="block-control-control-area block-control-device-area">
