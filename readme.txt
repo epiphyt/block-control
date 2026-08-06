@@ -80,6 +80,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 1.7.0 =
+* Improved: Group labels of the visibility controls are now announced by screen readers
+
 = 1.6.0 =
 * Added: Allow hiding content in feeds
 * Added: Allow filtering the post object before checking for post type

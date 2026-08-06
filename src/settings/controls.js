@@ -263,10 +263,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						}
 						initialOpen={ isOpen }
 					>
-						<div className="block-control-control-area block-control-device-area">
-							<span className="components-base-control__label">
+						<fieldset className="block-control-control-area block-control-device-area">
+							<legend className="components-base-control__label">
 								{ __( 'Hide device types', 'block-control' ) }
-							</span>
+							</legend>
 							<ToggleControl
 								label={ __(
 									'Hide on smartphones',
@@ -304,7 +304,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								}
 								value={ hideScreenReader || false }
 							/>
-						</div>
+						</fieldset>
 
 						<div className="block-control-control-area">
 							<RadioControl
@@ -530,10 +530,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							) : null }
 						</div>
 
-						<div className="block-control-control-area block-control-control-hide-roles">
-							<span className="components-base-control__label">
+						<fieldset className="block-control-control-area block-control-control-hide-roles">
+							<legend className="components-base-control__label">
 								{ __( 'Hide for user roles', 'block-control' ) }
-							</span>
+							</legend>
 
 							<div className="block-control-checkbox-select">
 								{ Object.keys( blockControlStore.roles ).map(
@@ -564,15 +564,15 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									}
 								) }
 							</div>
-						</div>
+						</fieldset>
 
-						<div className="block-control-control-area block-control-control-hide-conditional-tags">
-							<span className="components-base-control__label">
+						<fieldset className="block-control-control-area block-control-control-hide-conditional-tags">
+							<legend className="components-base-control__label">
 								{ __(
 									'Hide for specific page types',
 									'block-control'
 								) }
-							</span>
+							</legend>
 
 							<div className="block-control-checkbox-select">
 								{ Object.keys( CONDITIONAL_TAGS ).map(
@@ -611,7 +611,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									setAttributes( { hideFeed: value } )
 								}
 							/>
-						</div>
+						</fieldset>
 
 						{ Object.keys( blockControlStore.posts ).map(
 							( type, i ) => {
@@ -628,7 +628,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								}
 
 								return (
-									<div
+									<fieldset
 										className={
 											'block-control-control-area block-control-control-hide-posts is-type-' +
 											type
@@ -636,7 +636,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 										key={ type + i }
 									>
 										{ /* translators: plural post type title */ }
-										<span className="components-base-control__label">
+										<legend className="components-base-control__label">
 											{ sprintf(
 												__(
 													'Hide for post type "%s"',
@@ -645,7 +645,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												blockControlStore.posts[ type ]
 													.title
 											) }
-										</span>
+										</legend>
 
 										<div className="block-control-checkbox-select">
 											<CheckboxControl
@@ -718,18 +718,18 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												/>
 											) ) }
 										</div>
-									</div>
+									</fieldset>
 								);
 							}
 						) }
 
-						<div className="block-control-control-area block-control-control-hide-numbered-pages">
-							<span className="components-base-control__label">
+						<fieldset className="block-control-control-area block-control-control-hide-numbered-pages">
+							<legend className="components-base-control__label">
 								{ __(
 									'Hide on numbered pages',
 									'block-control'
 								) }
-							</span>
+							</legend>
 
 							<div className="block-control-checkbox-select">
 								{ Object.keys( NUMBERED_PAGES ).map(
@@ -796,7 +796,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									}
 								/>
 							) : null }
-						</div>
+						</fieldset>
 					</PanelBody>
 				</InspectorControls>
 			</>
