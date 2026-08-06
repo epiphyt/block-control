@@ -87,6 +87,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fixed: The visibility panel no longer closes while changing the hide by date settings
 * Fixed: Focus is no longer lost after removing a hide or display date
 * Fixed: Screen readers are now informed if no visibility setting applies to a block anymore
+* Fixed: Posts without a title now have a readable label in the visibility settings
 
 = 1.6.0 =
 * Added: Allow hiding content in feeds

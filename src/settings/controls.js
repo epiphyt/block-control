@@ -827,7 +827,14 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 											].items.map( ( item, index ) => (
 												<CheckboxControl
 													key={ type + i + index }
-													label={ item.post_title }
+													label={
+														item.post_title ||
+														/* translators: used as title of a post without a title */
+														__(
+															'(no title)',
+															'block-control'
+														)
+													}
 													checked={
 														hidePosts &&
 														hidePosts[ type ] &&
