@@ -1,6 +1,7 @@
 /**
  * Block controls for Block Control.
  */
+import { speak } from '@wordpress/a11y';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
@@ -17,7 +18,7 @@ import { createHigherOrderComponent, useInstanceId } from '@wordpress/compose';
 import { select } from '@wordpress/data';
 import { getSettings, dateI18n } from '@wordpress/date';
 import { addFilter } from '@wordpress/hooks';
-import { useState } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
 import { UNSUPPORTED_BLOCKS } from './unsupported-block';
@@ -120,14 +121,44 @@ const isActive = ( props ) => {
 };
 
 /**
+ * Check if a block is currently hidden by its date settings.
+ *
+ * @param	{object}	attributes The block attributes
+ * @return	{boolean} True if the block is currently hidden by date, false otherwise
+ */
+const isHiddenByDate = ( { hideByDate, hideByDateEnd, hideByDateStart } ) => {
+	if ( ! hideByDate || ! hideByDateStart ) {
+		return false;
+	}
+
+	const now = new Date();
+
+	// the start date is not reached yet
+	if ( now.getTime() < new Date( hideByDateStart ).getTime() ) {
+		return false;
+	}
+
+	// the end date is reached already
+	if (
+		hideByDateEnd &&
+		now.getTime() > new Date( hideByDateEnd ).getTime()
+	) {
+		return false;
+	}
+
+	return true;
+};
+
+/**
  * Create HOC to add our controls to inspector controls of block.
  */
 const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
-		const [ isOpen, setIsOpen ] = useState( false );
 		const instanceId = useInstanceId( addControls, 'block-control-date' );
 		const hideDateId = instanceId + '-hide';
 		const displayDateId = instanceId + '-display';
+		const hideDateToggle = useRef( null );
+		const displayDateToggle = useRef( null );
 		const {
 			attributes: {
 				hideConditionalTags,
@@ -146,6 +177,25 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			name,
 			setAttributes,
 		} = props;
+		const hasActiveSettings = isActive( props );
+		const hadActiveSettings = useRef( hasActiveSettings );
+
+		useEffect( () => {
+			if ( hadActiveSettings.current === hasActiveSettings ) {
+				return;
+			}
+
+			hadActiveSettings.current = hasActiveSettings;
+
+			if ( ! hasActiveSettings ) {
+				speak(
+					__(
+						'No visibility settings apply to this block anymore.',
+						'block-control'
+					)
+				);
+			}
+		}, [ hasActiveSettings ] );
 
 		if ( UNSUPPORTED_BLOCKS.includes( name ) ) {
 			return <BlockEdit { ...props } />;
@@ -252,19 +302,38 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			setAttributes( { hideRoles: newValue } );
 		};
 
-		const inner = (
+		// remove a date and move the focus, as the button removes itself
+		const removeDate = ( attribute, toggle ) => {
+			setAttributes( { [ attribute ]: '' } );
+
+			// wait for the re-render to know whether the toggle still exists
+			window.setTimeout( () => {
+				if ( toggle.current?.isConnected ) {
+					toggle.current.focus();
+				} else {
+					document
+						.querySelector(
+							'.block-control-panel > .components-panel__body-title > .components-panel__body-toggle'
+						)
+						?.focus();
+				}
+			} );
+		};
+
+		return (
 			<>
 				<BlockEdit { ...props } />
 
 				<InspectorControls>
 					<PanelBody
+						className="block-control-panel"
 						title={ __( 'Visibility', 'block-control' ) }
 						icon={
 							isActive( props ) ? (
 								<Dashicon icon="visibility" />
 							) : null
 						}
-						initialOpen={ isOpen }
+						initialOpen={ false }
 					>
 						<fieldset className="block-control-control-area block-control-device-area">
 							<legend className="components-base-control__label">
@@ -395,6 +464,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 															hideDateId +
 															'-toggle'
 														}
+														ref={ hideDateToggle }
 														variant="link"
 													>
 														{ hideByDateStart
@@ -418,15 +488,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 															}
 															onChange={ (
 																value
-															) => {
-																setIsOpen(
-																	true
-																);
+															) =>
 																setAttributes( {
 																	hideByDateStart:
 																		value,
-																} );
-															} }
+																} )
+															}
 															is12Hour={
 																is12HourTime
 															}
@@ -441,11 +508,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 														'block-control'
 													) }
 													isDestructive={ true }
-													onClick={ () =>
-														setAttributes( {
-															hideByDateStart: '',
-														} )
-													}
+													onClick={ () => {
+														removeDate(
+															'hideByDateStart',
+															hideDateToggle
+														);
+													} }
 													size="compact"
 													variant="secondary"
 												>
@@ -506,6 +574,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 															displayDateId +
 															'-toggle'
 														}
+														ref={
+															displayDateToggle
+														}
 														variant="link"
 													>
 														{ hideByDateEnd
@@ -529,15 +600,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 															}
 															onChange={ (
 																value
-															) => {
-																setIsOpen(
-																	true
-																);
+															) =>
 																setAttributes( {
 																	hideByDateEnd:
 																		value,
-																} );
-															} }
+																} )
+															}
 															is12Hour={
 																is12HourTime
 															}
@@ -552,11 +620,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 														'block-control'
 													) }
 													isDestructive={ true }
-													onClick={ () =>
-														setAttributes( {
-															hideByDateEnd: '',
-														} )
-													}
+													onClick={ () => {
+														removeDate(
+															'hideByDateEnd',
+															displayDateToggle
+														);
+													} }
 													size="compact"
 													variant="secondary"
 												>
@@ -853,30 +922,40 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				</InspectorControls>
 			</>
 		);
-
-		if ( hideByDate && hideByDateStart ) {
-			const now = new Date();
-			const hideDateStart = new Date( hideByDateStart );
-
-			// if block should be hidden
-			if ( now.getTime() >= hideDateStart.getTime() ) {
-				const hideDateEnd = new Date( hideByDateEnd );
-
-				// if end date is reached
-				if ( hideByDateEnd && now.getTime() > hideDateEnd.getTime() ) {
-					return inner;
-				}
-
-				return (
-					<div className="block-control-wrapper block-control-is-hidden by-date">
-						{ inner }
-					</div>
-				);
-			}
-		}
-
-		return inner;
 	};
 }, 'addControls' );
 
+/**
+ * Create HOC to mark blocks that are currently hidden by date.
+ *
+ * The class is added to the block element itself instead of wrapping it. A
+ * wrapper would appear and disappear with the date settings, which re-mounts
+ * the block and therefore closes the inspector panel and discards the focus.
+ */
+const addHiddenClass = createHigherOrderComponent( ( BlockListBlock ) => {
+	return ( props ) => {
+		if ( ! isHiddenByDate( props.attributes ) ) {
+			return <BlockListBlock { ...props } />;
+		}
+
+		return (
+			<BlockListBlock
+				{ ...props }
+				className={ [
+					props.className,
+					'block-control-is-hidden',
+					'by-date',
+				]
+					.filter( Boolean )
+					.join( ' ' ) }
+			/>
+		);
+	};
+}, 'addHiddenClass' );
+
 addFilter( 'editor.BlockEdit', 'block-control/add-controls', addControls );
+addFilter(
+	'editor.BlockListBlock',
+	'block-control/add-hidden-class',
+	addHiddenClass
+);
