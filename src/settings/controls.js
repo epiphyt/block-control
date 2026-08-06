@@ -13,7 +13,7 @@ import {
 	RadioControl,
 	ToggleControl,
 } from '@wordpress/components';
-import { createHigherOrderComponent } from '@wordpress/compose';
+import { createHigherOrderComponent, useInstanceId } from '@wordpress/compose';
 import { select } from '@wordpress/data';
 import { getSettings, dateI18n } from '@wordpress/date';
 import { addFilter } from '@wordpress/hooks';
@@ -125,6 +125,9 @@ const isActive = ( props ) => {
 const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
 		const [ isOpen, setIsOpen ] = useState( false );
+		const instanceId = useInstanceId( addControls, 'block-control-date' );
+		const hideDateId = instanceId + '-hide';
+		const displayDateId = instanceId + '-display';
 		const {
 			attributes: {
 				hideConditionalTags,
@@ -356,7 +359,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							{ hideByDate ? (
 								<div>
 									<div className="block-control-date block-control__date">
-										<div className="block-control-date-label block-control__date--label">
+										<div
+											className="block-control-date-label block-control__date--label"
+											id={ hideDateId + '-label' }
+										>
 											{ __(
 												'Hide date:',
 												'block-control'
@@ -374,8 +380,22 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												} ) => (
 													<Button
 														onClick={ onToggle }
+														aria-describedby={
+															hideDateId + '-help'
+														}
 														aria-expanded={ isOpen }
-														className="components-button is-link"
+														aria-haspopup="dialog"
+														aria-labelledby={
+															hideDateId +
+															'-label ' +
+															hideDateId +
+															'-toggle'
+														}
+														id={
+															hideDateId +
+															'-toggle'
+														}
+														variant="link"
 													>
 														{ hideByDateStart
 															? dateI18n(
@@ -416,6 +436,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 											/>
 											{ hideByDateStart ? (
 												<Button
+													aria-label={ __(
+														'Remove hide date',
+														'block-control'
+													) }
 													isDestructive={ true }
 													onClick={ () =>
 														setAttributes( {
@@ -434,7 +458,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 										</div>
 									</div>
 
-									<div className="block-control-help">
+									<div
+										className="block-control-help"
+										id={ hideDateId + '-help' }
+									>
 										{ __(
 											'The date where the block starts to be hidden.',
 											'block-control'
@@ -442,7 +469,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									</div>
 
 									<div className="block-control-date block-control__date">
-										<div className="block-control-date-label block-control__date--label">
+										<div
+											className="block-control-date-label block-control__date--label"
+											id={ displayDateId + '-label' }
+										>
 											{ __(
 												'Display date:',
 												'block-control'
@@ -460,8 +490,23 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												} ) => (
 													<Button
 														onClick={ onToggle }
+														aria-describedby={
+															displayDateId +
+															'-help'
+														}
 														aria-expanded={ isOpen }
-														className="components-button is-link"
+														aria-haspopup="dialog"
+														aria-labelledby={
+															displayDateId +
+															'-label ' +
+															displayDateId +
+															'-toggle'
+														}
+														id={
+															displayDateId +
+															'-toggle'
+														}
+														variant="link"
 													>
 														{ hideByDateEnd
 															? dateI18n(
@@ -502,6 +547,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 											/>
 											{ hideByDateEnd ? (
 												<Button
+													aria-label={ __(
+														'Remove display date',
+														'block-control'
+													) }
 													isDestructive={ true }
 													onClick={ () =>
 														setAttributes( {
@@ -520,7 +569,10 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 										</div>
 									</div>
 
-									<div className="block-control-help">
+									<div
+										className="block-control-help"
+										id={ displayDateId + '-help' }
+									>
 										{ __(
 											'The date where the block ends to be hidden.',
 											'block-control'

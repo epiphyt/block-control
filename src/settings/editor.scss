@@ -102,9 +102,13 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	min-height: 36px; // make sure the reset icon fits
-	
+
 	&:empty {
 		min-height: 0;
+	}
+
+	.components-button.is-link {
+		min-height: 24px; // make sure the target size is large enough
 	}
 }
 
