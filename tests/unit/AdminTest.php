@@ -40,7 +40,7 @@ final class AdminTest extends Test_Case {
 	public function test_render_plugin_documentation_link_appends_link(): void {
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\when( '__' )->returnArg();
-		Functions\when( 'esc_html__' )->justReturn( 'Documentation' );
+		Functions\when( 'esc_html__' )->returnArg();
 		Functions\when( 'get_plugin_data' )->justReturn( [ 'Version' => '1.6.0' ] );
 
 		$input = [ 'existing-link' ];
@@ -49,7 +49,8 @@ final class AdminTest extends Test_Case {
 		$this->assertCount( 2, $result );
 		$this->assertSame( 'existing-link', $result[0] );
 		$this->assertStringContainsString( 'version=1.6.0', $result[1] );
-		$this->assertStringContainsString( '>Documentation</a>', $result[1] );
+		$this->assertStringContainsString( '>Documentation<', $result[1] );
 		$this->assertStringContainsString( 'target="_blank"', $result[1] );
+		$this->assertStringContainsString( '<span class="screen-reader-text"> (opens in a new tab)</span></a>', $result[1] );
 	}
 }

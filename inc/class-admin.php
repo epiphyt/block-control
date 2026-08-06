@@ -32,7 +32,7 @@ final class Admin {
 			$input,
 			[
 				/* translators: plugin version */
-				'<a href="' . \esc_url( \sprintf( \__( 'https://docs.epiph.yt/block-control/?version=%s', 'block-control' ), \get_plugin_data( \EPI_BLOCK_CONTROL_FILE )['Version'] ) ) . '" target="_blank" rel="noopener noreferrer">' . \esc_html__( 'Documentation', 'block-control' ) . '</a>',
+				'<a href="' . \esc_url( \sprintf( \__( 'https://docs.epiph.yt/block-control/?version=%s', 'block-control' ), \get_plugin_data( \EPI_BLOCK_CONTROL_FILE )['Version'] ) ) . '" target="_blank" rel="noopener noreferrer">' . \esc_html__( 'Documentation', 'block-control' ) . '<span class="screen-reader-text"> ' . \esc_html__( '(opens in a new tab)', 'block-control' ) . '</span></a>',
 			]
 		);
 	}

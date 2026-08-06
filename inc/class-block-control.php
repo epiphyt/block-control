@@ -76,7 +76,7 @@ final class Block_Control {
 	/**
 	 * Add the screen reader text class to a class attribute.
 	 * 
-	 * @since	1.7.0
+	 * @since	1.6.1
 	 * 
 	 * @param	array	$matches The matches of the class attribute
 	 * @return	string The updated class attribute

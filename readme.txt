@@ -80,12 +80,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 1.7.0 =
+= 1.6.1 =
 * Improved: Group labels of the visibility controls are now announced by screen readers
 * Improved: The hide by date controls now have unique, descriptive labels for screen readers
 * Improved: The visibility panel now indicates to screen readers that settings apply to a block
 * Improved: Blocks hidden by date are now marked with an outline instead of reduced contrast
 * Improved: The option to hide content for screen readers now explains when not to use it
+* Improved: The documentation link in the plugin list now announces that it opens in a new tab
 * Fixed: The visibility panel no longer closes while changing the hide by date settings
 * Fixed: Focus is no longer lost after removing a hide or display date
 * Fixed: Screen readers are now informed if no visibility setting applies to a block anymore
