@@ -47,43 +47,6 @@
 	overflow: auto;
 }
 
-.block-control-dashicon {
-	background-color: #fff !important;
-	border-radius: 0;
-	box-shadow: none !important;
-	color: #555d66;
-	cursor: default;
-	opacity: 0;
-	padding: 8px;
-	position: absolute;
-	right: 0;
-	text-shadow: 0 0 3px 2px #fff;
-	top: -31px;
-	transition: top .1s linear;
-	z-index: 10;
-	
-	> svg {
-		margin-right: 0 !important;
-		opacity: 0;
-	}
-	
-	.wp-block:hover &,
-	.is-selected &,
-	&:focus {
-		opacity: 1;
-		
-		> svg {
-			opacity: .5;
-		}
-	}
-	
-	.wp-block:not(.is-selected):hover &,
-	.is-hovered & {
-		top: 0;
-		transition: none;
-	}
-}
-
 .block-control-hide-by-date.block-control-hide-by-date { // needs identical specificity as .block-editor-block-inspector .components-base-control
 	margin-bottom: 0;
 	
@@ -116,10 +79,6 @@
 	flex: 1 1 auto;
 }
 
-.block-control-date-reset {
-	color: #6c7781;
-}
-
 .block-control-datetime-picker {
 	padding: 10px;
 }
@@ -135,14 +94,8 @@
 }
 
 .block-control-is-hidden {
-	&.by-date {
-		opacity: .5;
-
-		&.has-child-selected,
-		&.is-selected {
-			opacity: 1;
-		}
-	}
+	outline: 2px dotted $gray-700;
+	outline-offset: $grid-unit-05;
 }
 
 .block-control-device-area {
@@ -161,5 +114,6 @@
 }
 
 .block-control__screen-reader-text {
-	opacity: .5;
+	text-decoration: underline dotted 2px;
+	text-underline-offset: 2px;
 }

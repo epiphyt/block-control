@@ -122,35 +122,6 @@ const isActive = ( props ) => {
 };
 
 /**
- * Check if a block is currently hidden by its date settings.
- *
- * @param	{object}	attributes The block attributes
- * @return	{boolean} True if the block is currently hidden by date, false otherwise
- */
-const isHiddenByDate = ( { hideByDate, hideByDateEnd, hideByDateStart } ) => {
-	if ( ! hideByDate || ! hideByDateStart ) {
-		return false;
-	}
-
-	const now = new Date();
-
-	// the start date is not reached yet
-	if ( now.getTime() < new Date( hideByDateStart ).getTime() ) {
-		return false;
-	}
-
-	// the end date is reached already
-	if (
-		hideByDateEnd &&
-		now.getTime() > new Date( hideByDateEnd ).getTime()
-	) {
-		return false;
-	}
-
-	return true;
-};
-
-/**
  * The icon of the panel, indicating that visibility settings apply.
  *
  * It's rendered inside the panel toggle, so its text becomes part of the
@@ -960,7 +931,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
  */
 const addHiddenClass = createHigherOrderComponent( ( BlockListBlock ) => {
 	return ( props ) => {
-		if ( ! isHiddenByDate( props.attributes ) ) {
+		if ( ! isActive( props ) ) {
 			return <BlockListBlock { ...props } />;
 		}
 
