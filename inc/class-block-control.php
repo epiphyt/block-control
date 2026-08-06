@@ -673,7 +673,9 @@ final class Block_Control {
 		}
 		
 		if ( self::hide_screen_reader( $block['attrs'] ) ) {
-			$content = (string) \preg_replace( '/^<([^\s>]+)/m', '<$1 aria-hidden="true"', $content );
+			// hiding the outer element hides its content as well, while matching
+			// every element would also match closing tags and break the markup
+			$content = (string) \preg_replace( '/<([a-zA-Z][^\s\/>]*)/', '<$1 aria-hidden="true"', $content, 1 );
 		}
 		
 		return $content;

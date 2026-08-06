@@ -547,6 +547,29 @@ final class BlockControlTest extends Test_Case {
 	}
 
 	/**
+	 * toggle_blocks() should add aria-hidden to the outer element only.
+	 */
+	public function test_toggle_blocks_adds_aria_hidden_to_outer_element_only(): void {
+		$content = '<div class="wp-block-group">' . "\n" . '<p>Hi</p>' . "\n" . '</div>';
+		$result = $this->block_control->toggle_blocks( $content, [ 'attrs' => [ 'hideScreenReader' => true ] ] );
+
+		$this->assertSame( 1, \substr_count( $result, 'aria-hidden="true"' ) );
+		$this->assertStringStartsWith( '<div aria-hidden="true" class="wp-block-group">', $result );
+	}
+
+	/**
+	 * toggle_blocks() should never add aria-hidden to a closing tag.
+	 */
+	public function test_toggle_blocks_keeps_closing_tags_intact(): void {
+		$content = '<div>' . "\n" . '<p>Hi</p>' . "\n" . '</div>';
+		$result = $this->block_control->toggle_blocks( $content, [ 'attrs' => [ 'hideScreenReader' => true ] ] );
+
+		$this->assertStringContainsString( '</div>', $result );
+		$this->assertStringNotContainsString( '</div aria-hidden', $result );
+		$this->assertStringNotContainsString( '</p aria-hidden', $result );
+	}
+
+	/**
 	 * toggle_blocks() should hide a block once its start date has passed.
 	 */
 	public function test_toggle_blocks_hides_after_start_date(): void {

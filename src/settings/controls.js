@@ -354,7 +354,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							<ToggleControl
 								checked={ !! hideScreenReader }
 								help={ __(
-									'Enabling this does not hide the content visually, but only for screen readers using screen reader functionality.',
+									'Enabling this does not hide the content visually, but only for screen readers using screen reader functionality. Do not use it for content containing links or buttons, as they remain reachable by keyboard.',
 									'block-control'
 								) }
 								label={ __(
