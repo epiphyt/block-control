@@ -529,6 +529,38 @@ final class BlockControlTest extends Test_Case {
 	}
 
 	/**
+	 * toggle_blocks() should add the screen-reader-text helper class independently
+	 * of the quotes and other classes in use.
+	 */
+	public function test_toggle_blocks_adds_screen_reader_class_to_any_markup(): void {
+		$contents = [
+			'<p class=\'block-control__screen-reader-text\'>Hi</p>' => 'class=\'block-control__screen-reader-text screen-reader-text\'',
+			'<p class="intro block-control__screen-reader-text">Hi</p>' => 'class="intro block-control__screen-reader-text screen-reader-text"',
+			'<p class="block-control__screen-reader-text intro">Hi</p>' => 'class="block-control__screen-reader-text intro screen-reader-text"',
+		];
+
+		foreach ( $contents as $content => $expected ) {
+			$this->assertStringContainsString(
+				$expected,
+				$this->block_control->toggle_blocks( $content, [ 'attrs' => [] ] )
+			);
+		}
+	}
+
+	/**
+	 * toggle_blocks() should add the screen-reader-text helper class only once,
+	 * as nested blocks are filtered again as part of their parent content.
+	 */
+	public function test_toggle_blocks_adds_screen_reader_class_only_once(): void {
+		$content = '<p class="block-control__screen-reader-text">Hi</p>';
+		$result = $this->block_control->toggle_blocks( $content, [ 'attrs' => [] ] );
+		$result = $this->block_control->toggle_blocks( $result, [ 'attrs' => [] ] );
+
+		// once as part of the own class, once as the class of the theme
+		$this->assertSame( 2, \substr_count( $result, 'screen-reader-text' ) );
+	}
+
+	/**
 	 * toggle_blocks() should hide the block when a condition matches.
 	 */
 	public function test_toggle_blocks_hides_block(): void {

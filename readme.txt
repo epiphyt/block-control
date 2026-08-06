@@ -91,6 +91,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fixed: Screen readers are now informed if no visibility setting applies to a block anymore
 * Fixed: Posts without a title now have a readable label in the visibility settings
 * Fixed: Hiding a block for screen readers no longer produces invalid HTML in nested blocks
+* Fixed: The screen reader text class is now added reliably regardless of quotes and other classes
 
 = 1.6.0 =
 * Added: Allow hiding content in feeds

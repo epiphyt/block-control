@@ -74,6 +74,25 @@ final class Block_Control {
 	}
 	
 	/**
+	 * Add the screen reader text class to a class attribute.
+	 * 
+	 * @since	1.7.0
+	 * 
+	 * @param	array	$matches The matches of the class attribute
+	 * @return	string The updated class attribute
+	 */
+	public static function add_screen_reader_class( array $matches ) {
+		$classes = \preg_split( '/\s+/', \trim( $matches[2] ) );
+		
+		// nested blocks are filtered again as part of their parent content
+		if ( ! \in_array( 'screen-reader-text', $classes, true ) ) {
+			$classes[] = 'screen-reader-text';
+		}
+		
+		return 'class=' . $matches[1] . \implode( ' ', $classes ) . $matches[1];
+	}
+	
+	/**
 	 * Get a list of ignored post types.
 	 * 
 	 * @since	1.1.0
@@ -588,8 +607,12 @@ final class Block_Control {
 		$is_hidden = false;
 		$hide_by_date = false;
 		
-		if ( \str_contains( $block_content, 'class="block-control__screen-reader-text"' ) ) {
-			$block_content = \str_replace( 'class="block-control__screen-reader-text"', 'class="block-control__screen-reader-text screen-reader-text"', $block_content );
+		if ( \str_contains( $block_content, 'block-control__screen-reader-text' ) ) {
+			$block_content = (string) \preg_replace_callback(
+				'/class=(["\'])([^"\']*\bblock-control__screen-reader-text\b[^"\']*)\1/',
+				[ self::class, 'add_screen_reader_class' ],
+				$block_content
+			);
 		}
 		
 		// if there are no attributes, the block should be displayed
