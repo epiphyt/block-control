@@ -70,9 +70,15 @@ function my_filter_block_control_post_types( $post_types ) {
 add_filter( 'block_control_ignored_post_types', 'my_filter_block_control_post_types' );
 `
 
+= Is Block Control accessible? =
+
+Yes. During development, I test each feature against the Web Content Accessibility Guidelines (WCAG). You can find the [Accessibility Conformance Report](https://docs.epiph.yt/block-control/acr.html) in the documentation.
+
+If you find an issue, please don't hesitate to contact me via the support forums or via my [contact page](https://epiph.yt/en/contact/).
+
 = Who are you folks? =
 
-We are [Epiph.yt](https://epiph.yt/en/), your friendly neighborhood WordPress plugin shop from southern Germany.
+[Epiph.yt](https://epiph.yt/en/) is your friendly neighborhood WordPress plugin shop from southern Germany.
 
 = How can I report security bugs? =
 
