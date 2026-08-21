@@ -11,7 +11,7 @@ Domain Path:		/languages
 License URI:		https://www.gnu.org/licenses/gpl-2.0.html
 License:			GPL2
 Requires at least:	6.8
-Requires PHP:		5.6
+Requires PHP:		8.0
 Tested up to:		7.1
 Text Domain:		block-control
 

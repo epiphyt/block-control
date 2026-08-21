@@ -4,7 +4,7 @@ Tags: gutenberg, block, conditional, visibility, block editor
 Requires at least: 6.8
 Stable tag: 1.6.1
 Tested up to: 7.1
-Requires PHP: 5.6
+Requires PHP: 8.0
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

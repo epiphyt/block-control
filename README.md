@@ -17,7 +17,7 @@ Additionally, you can set an inline formatting to display certain text only for 
 
 ## Requirements
 
-PHP: 5.6<br>
+PHP: 8.0<br>
 WordPress: 6.8
 
 ## Installation
