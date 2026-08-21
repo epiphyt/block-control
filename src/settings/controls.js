@@ -6,14 +6,12 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
 	CheckboxControl,
-	Dashicon,
 	DateTimePicker,
 	Dropdown,
 	FormTokenField,
 	PanelBody,
 	RadioControl,
 	ToggleControl,
-	VisuallyHidden,
 } from '@wordpress/components';
 import { createHigherOrderComponent, useInstanceId } from '@wordpress/compose';
 import { select } from '@wordpress/data';
@@ -21,7 +19,9 @@ import { getSettings, dateI18n } from '@wordpress/date';
 import { addFilter } from '@wordpress/hooks';
 import { useEffect, useRef } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
+import { unseen } from '@wordpress/icons';
 
+import { ACTIVE_LABEL, isActive } from './is-active';
 import { UNSUPPORTED_BLOCKS } from './unsupported-block';
 
 const CONDITIONAL_TAGS = {
@@ -49,99 +49,20 @@ const NUMBERED_PAGES = {
 	custom: __( 'Specific page(s)', 'block-control' ),
 };
 
+const PANEL_TITLE = __( 'Visibility', 'block-control' );
+
 /**
- * Check if Block Control has an active filter.
+ * Properties of the panel toggle if visibility settings apply.
  *
- * @param	{object}	props The block properties
- * @return	{boolean} True if a filter is active, false otherwise
+ * The label keeps the title as the accessible name of the panel toggle, while
+ * the description is announced in addition to it and is the only text of the
+ * tooltip, which explains the icon indicating that settings apply.
  */
-const isActive = ( props ) => {
-	const {
-		attributes: {
-			hideByDate,
-			hideByDateEnd,
-			hideByDateStart,
-			hideConditionalTags,
-			hideDesktop,
-			hideFeed,
-			hideMobile,
-			hideNumberedPages,
-			hidePosts,
-			hideRoles,
-			hideScreenReader,
-			loginStatus,
-		},
-	} = props;
-
-	if (
-		( hideByDate && ( hideByDateStart || hideByDateEnd ) ) ||
-		hideDesktop ||
-		hideFeed ||
-		hideMobile ||
-		hideScreenReader ||
-		( loginStatus && loginStatus !== 'none' )
-	) {
-		return true;
-	}
-
-	if ( typeof hideConditionalTags !== 'undefined' ) {
-		for ( const tag in hideConditionalTags ) {
-			if ( hideConditionalTags[ tag ] === true ) {
-				return true;
-			}
-		}
-	}
-
-	if ( typeof hideNumberedPages !== 'undefined' ) {
-		for ( const page in hideNumberedPages ) {
-			if ( !! hideNumberedPages[ page ] ) {
-				return true;
-			}
-		}
-	}
-
-	if ( typeof hidePosts !== 'undefined' ) {
-		for ( const posts in hidePosts ) {
-			for ( const post in hidePosts[ posts ] ) {
-				if ( hidePosts[ posts ][ post ] === true ) {
-					return true;
-				}
-			}
-		}
-	}
-
-	if ( typeof hideRoles !== 'undefined' ) {
-		for ( const role in hideRoles ) {
-			if ( hideRoles[ role ] === true ) {
-				return true;
-			}
-		}
-	}
-
-	return false;
+const ACTIVE_BUTTON_PROPS = {
+	description: ACTIVE_LABEL,
+	label: PANEL_TITLE,
+	showTooltip: true,
 };
-
-/**
- * The icon of the panel, indicating that visibility settings apply.
- *
- * It's rendered inside the panel toggle, so its text becomes part of the
- * accessible name of the panel.
- *
- * @param	{object}	props The icon properties
- * @param	{string}	props.className The class name assigned by the panel
- * @return	{Element} The icon element
- */
-const ActiveIcon = ( { className } ) => (
-	<span className={ className }>
-		<Dashicon icon="visibility" />
-		<VisuallyHidden as="span">
-			{ __(
-				'Visibility settings apply to this block.',
-				'block-control'
-			) }
-		</VisuallyHidden>
-	</span>
-);
 
 /**
  * Create HOC to add our controls to inspector controls of block.
@@ -171,7 +92,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 			name,
 			setAttributes,
 		} = props;
-		const hasActiveSettings = isActive( props );
+		const hasActiveSettings = isActive( props.attributes );
 		const hadActiveSettings = useRef( hasActiveSettings );
 
 		useEffect( () => {
@@ -320,9 +241,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 
 				<InspectorControls>
 					<PanelBody
+						buttonProps={
+							hasActiveSettings ? ACTIVE_BUTTON_PROPS : undefined
+						}
 						className="block-control-panel"
-						title={ __( 'Visibility', 'block-control' ) }
-						icon={ hasActiveSettings ? ActiveIcon : null }
+						title={ PANEL_TITLE }
+						icon={ hasActiveSettings ? unseen : null }
 						initialOpen={ false }
 					>
 						<fieldset className="block-control-control-area block-control-device-area">
@@ -935,7 +859,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
  */
 const addHiddenClass = createHigherOrderComponent( ( BlockListBlock ) => {
 	return ( props ) => {
-		if ( ! isActive( props ) ) {
+		if ( ! isActive( props.attributes ) ) {
 			return <BlockListBlock { ...props } />;
 		}
 

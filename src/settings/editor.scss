@@ -93,6 +93,14 @@
 	margin-block-start: $grid-unit-20;
 }
 
+.block-control-list-view-indicator {
+	display: flex;
+	
+	&__icon {
+		line-height: 0;
+	}
+}
+
 .block-control-is-hidden {
 	outline: 2px dotted $gray-700;
 	outline-offset: $grid-unit-05;
