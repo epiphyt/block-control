@@ -12,7 +12,6 @@ import {
 	FormTokenField,
 	PanelBody,
 	RadioControl,
-	ToggleControl,
 } from '@wordpress/components';
 import { createHigherOrderComponent, useInstanceId } from '@wordpress/compose';
 import { select } from '@wordpress/data';
@@ -254,29 +253,27 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							<BaseControl.VisualLabel as="legend">
 								{ __( 'Hide device types', 'block-control' ) }
 							</BaseControl.VisualLabel>
-							<ToggleControl
+							<CheckboxControl
 								label={ __(
 									'Hide on smartphones',
 									'block-control'
 								) }
-								value={ hideMobile || false }
 								checked={ !! hideMobile }
 								onChange={ ( value ) =>
 									setAttributes( { hideMobile: value } )
 								}
 							/>
-							<ToggleControl
+							<CheckboxControl
 								label={ __(
 									'Hide on desktops',
 									'block-control'
 								) }
-								value={ hideDesktop || false }
 								checked={ !! hideDesktop }
 								onChange={ ( value ) =>
 									setAttributes( { hideDesktop: value } )
 								}
 							/>
-							<ToggleControl
+							<CheckboxControl
 								checked={ !! hideScreenReader }
 								help={ __(
 									'Enabling this does not hide the content visually, but only for screen readers using screen reader functionality. Do not use it for content containing links or buttons, as they remain reachable by keyboard.',
@@ -289,7 +286,6 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								onChange={ ( hideScreenReader ) =>
 									setAttributes( { hideScreenReader } )
 								}
-								value={ hideScreenReader || false }
 							/>
 						</fieldset>
 
@@ -331,10 +327,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						</div>
 
 						<div className="block-control-control-area">
-							<ToggleControl
+							<CheckboxControl
 								className="block-control-hide-by-date"
 								label={ __( 'Hide by date', 'block-control' ) }
-								value={ hideByDate || false }
 								checked={ !! hideByDate }
 								onChange={ ( value ) =>
 									setAttributes( { hideByDate: value } )
@@ -638,10 +633,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 								) }
 							</div>
 
-							<ToggleControl
+							<CheckboxControl
 								className="block-control__hide-in-feed--toggle"
 								label={ __( 'Hide in feeds', 'block-control' ) }
-								value={ hideFeed || false }
 								checked={ !! hideFeed }
 								onChange={ ( value ) =>
 									setAttributes( { hideFeed: value } )
