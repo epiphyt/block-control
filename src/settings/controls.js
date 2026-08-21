@@ -4,6 +4,7 @@
 import { speak } from '@wordpress/a11y';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
+	BaseControl,
 	Button,
 	CheckboxControl,
 	DateTimePicker,
@@ -250,9 +251,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						initialOpen={ false }
 					>
 						<fieldset className="block-control-control-area block-control-device-area">
-							<legend className="components-base-control__label">
+							<BaseControl.VisualLabel as="legend">
 								{ __( 'Hide device types', 'block-control' ) }
-							</legend>
+							</BaseControl.VisualLabel>
 							<ToggleControl
 								label={ __(
 									'Hide on smartphones',
@@ -342,7 +343,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 							{ hideByDate ? (
 								<div>
 									<div className="block-control-date block-control__date">
-										<div
+										<BaseControl.VisualLabel
 											className="block-control-date-label block-control__date--label"
 											id={ hideDateId + '-label' }
 										>
@@ -350,7 +351,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												'Hide date:',
 												'block-control'
 											) }
-										</div>
+										</BaseControl.VisualLabel>
 
 										<div className="block-control__date--value">
 											<Dropdown
@@ -451,7 +452,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									</div>
 
 									<div className="block-control-date block-control__date">
-										<div
+										<BaseControl.VisualLabel
 											className="block-control-date-label block-control__date--label"
 											id={ displayDateId + '-label' }
 										>
@@ -459,7 +460,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												'Display date:',
 												'block-control'
 											) }
-										</div>
+										</BaseControl.VisualLabel>
 
 										<div className="block-control__date--value">
 											<Dropdown
@@ -566,9 +567,9 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						</div>
 
 						<fieldset className="block-control-control-area block-control-control-hide-roles">
-							<legend className="components-base-control__label">
+							<BaseControl.VisualLabel as="legend">
 								{ __( 'Hide for user roles', 'block-control' ) }
-							</legend>
+							</BaseControl.VisualLabel>
 
 							<div className="block-control-checkbox-select">
 								{ Object.keys( blockControlStore.roles ).map(
@@ -602,12 +603,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						</fieldset>
 
 						<fieldset className="block-control-control-area block-control-control-hide-conditional-tags">
-							<legend className="components-base-control__label">
+							<BaseControl.VisualLabel as="legend">
 								{ __(
 									'Hide for specific page types',
 									'block-control'
 								) }
-							</legend>
+							</BaseControl.VisualLabel>
 
 							<div className="block-control-checkbox-select">
 								{ Object.keys( CONDITIONAL_TAGS ).map(
@@ -671,7 +672,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 										key={ type + i }
 									>
 										{ /* translators: plural post type title */ }
-										<legend className="components-base-control__label">
+										<BaseControl.VisualLabel as="legend">
 											{ sprintf(
 												__(
 													'Hide for post type "%s"',
@@ -680,7 +681,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 												blockControlStore.posts[ type ]
 													.title
 											) }
-										</legend>
+										</BaseControl.VisualLabel>
 
 										<div className="block-control-checkbox-select">
 											<CheckboxControl
@@ -766,12 +767,12 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 						) }
 
 						<fieldset className="block-control-control-area block-control-control-hide-numbered-pages">
-							<legend className="components-base-control__label">
+							<BaseControl.VisualLabel as="legend">
 								{ __(
 									'Hide on numbered pages',
 									'block-control'
 								) }
-							</legend>
+							</BaseControl.VisualLabel>
 
 							<div className="block-control-checkbox-select">
 								{ Object.keys( NUMBERED_PAGES ).map(

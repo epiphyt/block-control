@@ -17,10 +17,6 @@
 		margin-bottom: 0;
 		padding-bottom: 0;
 	}
-
-	> legend {
-		padding: 0;
-	}
 }
 
 .interface-interface-skeleton__sidebar {
@@ -28,16 +24,8 @@
 	.block-control-control-hide-numbered-pages,
 	.block-control-control-hide-posts,
 	.block-control-control-hide-roles {
-		> .components-base-control__label {
-			margin-bottom: 8px;
-		}
-		
 		.block-control-checkbox-select > .components-base-control {
 			margin-bottom: 4px;
-		}
-		
-		.components-base-control__label {
-			display: block;
 		}
 	}
 }
@@ -112,11 +100,6 @@
 	}
 	
 	.components-base-control__field {
-		margin-bottom: 8px;
-	}
-	
-	.components-base-control__label {
-		display: block;
 		margin-bottom: 8px;
 	}
 }

@@ -86,6 +86,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 2.0.0 =
+* Added: Blocks with visibility settings are now marked in the document overview and the block itself
+* Improved: The visibility panel now explains via tooltip that settings apply to a block
+* Updated: PHP requirement changed from minimum version 5.6 to 8.0
+* Updated: Library to detect mobile devices
+
 = 1.6.1 =
 * Improved: Group labels of the visibility controls are now announced by screen readers
 * Improved: The hide by date controls now have unique, descriptive labels for screen readers
