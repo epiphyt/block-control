@@ -5,7 +5,8 @@
 	"homepage": "https://epiph.yt/en/",
 	"license": "GPL-2.0-only",
 	"require": {
-		"php": "^8.0"
+		"php": "^8.0",
+		"mobiledetect/mobiledetectlib": "^4.11"
 	},
 	"support": {
 		"email": "hey.composer@epiph.yt",

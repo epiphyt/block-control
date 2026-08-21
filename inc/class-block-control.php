@@ -3,7 +3,7 @@ namespace epiphyt\Block_Control;
 
 use DateTime;
 use DateTimeZone;
-use Mobile_Detect;
+use Detection\MobileDetect;
 use stdClass;
 use WP_Post;
 
@@ -42,7 +42,7 @@ final class Block_Control {
 	public static $instance;
 	
 	/**
-	 * @var		\Mobile_Detect The Mobile Detect instance
+	 * @var		\Detection\MobileDetect The Mobile Detect instance
 	 */
 	public $mobile_detect;
 	
@@ -55,10 +55,7 @@ final class Block_Control {
 	 * Block_Control constructor.
 	 */
 	public function __construct() {
-		require_once 'lib/class-mobile-detect.php';
-		
-		self::$instance = $this;
-		$this->mobile_detect = new Mobile_Detect();
+		$this->mobile_detect = new MobileDetect();
 	}
 	
 	/**
