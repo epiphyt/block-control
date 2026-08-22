@@ -4,6 +4,7 @@ namespace epiphyt\Block_Control;
 use DateTime;
 use DateTimeZone;
 use Detection\MobileDetect;
+use epiphyt\Block_Control\REST_API\Viewports;
 use stdClass;
 use WP_Post;
 
@@ -64,6 +65,7 @@ final class Block_Control {
 	public function init() {
 		\add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 100 );
 		\add_action( 'init', [ self::class, 'register_blocks' ] );
+		\add_action( 'rest_api_init', [ self::class, 'register_rest_routes' ] );
 		\add_filter( 'register_block_type_args', [ $this, 'register_attributes' ] );
 		\add_filter( 'render_block', [ $this, 'toggle_blocks' ], 10, 2 );
 		
@@ -190,6 +192,10 @@ final class Block_Control {
 		\wp_localize_script( 'block-control-settings-editor-script', 'blockControlStore', [
 			'posts' => $this->get_posts(),
 			'roles' => $this->get_roles(),
+			'viewports' => [
+				'custom' => Viewport::get_custom(),
+				'presets' => Viewport::get_presets(),
+			],
 		] );
 	}
 	
@@ -521,6 +527,13 @@ final class Block_Control {
 				'default' => false,
 				'type' => 'boolean',
 			],
+			'hideViewports' => [
+				'default' => [],
+				'items' => [
+					'type' => 'string',
+				],
+				'type' => 'array',
+			],
 			'loginStatus' => [
 				'default' => 'none',
 				'type' => 'string',
@@ -538,6 +551,15 @@ final class Block_Control {
 			\EPI_BLOCK_CONTROL_BASE . 'build',
 			\EPI_BLOCK_CONTROL_BASE . 'build/blocks-manifest.php'
 		);
+	}
+	
+	/**
+	 * Register REST API routes.
+	 * 
+	 * @since	2.0.0
+	 */
+	public static function register_rest_routes() {
+		( new Viewports() )->register_routes();
 	}
 	
 	/**
@@ -690,6 +712,12 @@ final class Block_Control {
 		if ( ! $is_hidden ) {
 			// get the block content to output it
 			$content = $block_content;
+		}
+		
+		// viewports are hidden via CSS and thus only relevant if the block is
+		// not already hidden server-side
+		if ( ! empty( $content ) && ! empty( $block['attrs']['hideViewports'] ) ) {
+			$content = Viewport::render( $content, (array) $block['attrs']['hideViewports'] );
 		}
 		
 		if ( self::hide_screen_reader( $block['attrs'] ) ) {

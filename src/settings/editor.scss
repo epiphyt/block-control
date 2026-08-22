@@ -104,7 +104,28 @@
 	}
 }
 
+.block-control__viewport {
+	align-items: center;
+	display: flex;
+	gap: $grid-unit-05;
+	margin-block-end: $grid-unit-20;
+
+	> .components-base-control {
+		flex: 1 1 auto;
+		min-width: 0;
+		margin-block-end: 0;
+	}
+	
+	.components-button {
+		flex: 0 0 auto;
+	}
+}
+
+.block-control__viewports--add {
+	margin-block-end: $grid-unit-15;
+}
+
 .block-control__screen-reader-text {
-	text-decoration: underline dotted 2px;
+	text-decoration: 2px dotted underline;
 	text-underline-offset: 2px;
 }

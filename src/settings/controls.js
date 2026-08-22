@@ -23,6 +23,7 @@ import { unseen } from '@wordpress/icons';
 
 import { ACTIVE_LABEL, isActive } from './is-active';
 import { UNSUPPORTED_BLOCKS } from './unsupported-block';
+import ViewportControl from './viewport-control';
 
 const CONDITIONAL_TAGS = {
 	is_home: __( 'Blog page', 'block-control' ),
@@ -87,6 +88,7 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 				hidePosts,
 				hideRoles,
 				hideScreenReader,
+				hideViewports,
 				loginStatus,
 			},
 			name,
@@ -287,6 +289,26 @@ const addControls = createHigherOrderComponent( ( BlockEdit ) => {
 									setAttributes( { hideScreenReader } )
 								}
 							/>
+						</fieldset>
+
+						<fieldset className="block-control-control-area block-control-control-hide-viewports">
+							<BaseControl.VisualLabel as="legend">
+								{ __( 'Hide by viewport', 'block-control' ) }
+							</BaseControl.VisualLabel>
+
+							<ViewportControl
+								onChange={ ( hideViewports ) =>
+									setAttributes( { hideViewports } )
+								}
+								value={ hideViewports }
+							/>
+
+							<div className="block-control-help">
+								{ __(
+									'Hiding content via breakpoints will only hide it visually. It is still accessible in the source code.',
+									'block-control'
+								) }
+							</div>
 						</fieldset>
 
 						<div className="block-control-control-area">

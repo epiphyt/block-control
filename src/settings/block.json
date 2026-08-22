@@ -49,6 +49,13 @@
 			"default": false,
 			"type": "boolean"
 		},
+		"hideViewports": {
+			"default": [],
+			"items": {
+				"type": "string"
+			},
+			"type": "array"
+		},
 		"loginStatus": {
 			"default": "none",
 			"type": "string"

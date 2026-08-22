@@ -721,10 +721,13 @@ final class BlockControlTest extends Test_Case {
 	}
 
 	/**
-	 * editor_assets() should localize the posts and roles for the editor script.
+	 * editor_assets() should localize the posts, roles and viewports for the editor script.
 	 */
 	public function test_editor_assets_localizes_store(): void {
 		Functions\when( 'get_post_types' )->justReturn( [] );
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'wp_get_global_settings' )->justReturn( [] );
+		Functions\when( '__' )->returnArg();
 		global $wp_roles;
 		$wp_roles = new stdClass();
 		$wp_roles->roles = [];
@@ -738,7 +741,15 @@ final class BlockControlTest extends Test_Case {
 
 		$this->assertSame( 'block-control-settings-editor-script', $localized[0] );
 		$this->assertSame( 'blockControlStore', $localized[1] );
-		$this->assertSame( [ 'posts' => [], 'roles' => [] ], $localized[2] );
+		$this->assertSame( [ 'posts' => [], 'roles' => [] ], [
+			'posts' => $localized[2]['posts'],
+			'roles' => $localized[2]['roles'],
+		] );
+		$this->assertSame( [], $localized[2]['viewports']['custom'] );
+		$this->assertSame(
+			[ 'mobile', 'tablet', 'desktop' ],
+			\array_keys( $localized[2]['viewports']['presets'] )
+		);
 	}
 
 	/**
@@ -749,6 +760,7 @@ final class BlockControlTest extends Test_Case {
 
 		$this->assertNotFalse( Actions\has( 'enqueue_block_editor_assets' ) );
 		$this->assertNotFalse( Actions\has( 'init' ) );
+		$this->assertNotFalse( Actions\has( 'rest_api_init' ) );
 		$this->assertNotFalse( Filters\has( 'register_block_type_args' ) );
 		$this->assertNotFalse( Filters\has( 'render_block' ) );
 		$this->assertNotFalse( Filters\has( 'plugin_row_meta' ) );

@@ -17,6 +17,7 @@ Have you ever used WordPress’ new block editor Gutenberg and wished for a way 
 You can hide blocks based on:
 
 * Device types (desktop, mobile, screen reader)
+* Viewports/CSS breakpoints
 * Login status
 * Date (start and end date)
 * User roles
@@ -52,7 +53,9 @@ Conditional blocks configured this way will only be displayed under certain circ
 
 = Does Block Control work with page caching plugins? =
 
-As Block Control removes content completely from the source code and not just hides it via CSS, it is mostly incompatible to any caching plugin because it may generate different HTML for every user.
+Mostly not. Since Block Control removes content completely from the source code and not just hides it via CSS, it may generate different HTML for every user, which is incompatible to any caching plugin.
+
+The only exception is hiding a block by viewport. As this happens via CSS in the browser, the HTML stays the same for every user and thus works together with page caching. Keep in mind that the content is still accessible in the source code.
 
 = How to disable post type X from showing up? =
 
@@ -87,8 +90,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 2.0.0 =
+* Added: Hide blocks at certain viewports/CSS breakpoints, either by the breakpoints of your theme or by your own media queries
 * Added: Blocks with visibility settings are now marked in the document overview and the block itself
 * Improved: The visibility panel now explains via tooltip that settings apply to a block
+* Improved: Unified the look and feel of the settings
 * Updated: PHP requirement changed from minimum version 5.6 to 8.0
 * Updated: Library to detect mobile devices
 

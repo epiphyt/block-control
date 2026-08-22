@@ -6,6 +6,7 @@ Have you ever used WordPress’ new block editor Gutenberg and wished for a way 
 
 You can hide blocks based on:
 * Device types (desktop, mobile, screen reader)
+* Viewports/CSS breakpoints
 * Login status
 * Date (start and end date)
 * User roles

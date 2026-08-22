@@ -29,6 +29,7 @@ export const isActive = ( attributes ) => {
 		hidePosts,
 		hideRoles,
 		hideScreenReader,
+		hideViewports,
 		loginStatus,
 	} = attributes || {};
 
@@ -38,6 +39,7 @@ export const isActive = ( attributes ) => {
 		hideFeed ||
 		hideMobile ||
 		hideScreenReader ||
+		hideViewports?.length ||
 		( loginStatus && loginStatus !== 'none' )
 	) {
 		return true;

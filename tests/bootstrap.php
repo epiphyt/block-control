@@ -44,5 +44,6 @@ if ( ! class_exists( 'WP_Post' ) ) {
 }
 
 require_once EPI_BLOCK_CONTROL_BASE . 'inc/class-admin.php';
+require_once EPI_BLOCK_CONTROL_BASE . 'inc/class-viewport.php';
 require_once EPI_BLOCK_CONTROL_BASE . 'inc/class-block-control.php';
 require_once __DIR__ . '/class-test-case.php';

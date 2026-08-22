@@ -6,6 +6,7 @@
 	},
 	"devDependencies": {
 		"@wordpress/a11y": "^4.46.0",
+		"@wordpress/api-fetch": "^7.46.0",
 		"@wordpress/block-editor": "^15.19.0",
 		"@wordpress/blocks": "^15.19.0",
 		"@wordpress/components": "^33.1.0",
