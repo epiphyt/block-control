@@ -1,12 +1,10 @@
 <?php
+declare(strict_types = 1);
+
 namespace epiphyt\Block_Control;
 
-use DateTime;
-use DateTimeZone;
 use Detection\MobileDetect;
 use epiphyt\Block_Control\REST_API\Viewports;
-use stdClass;
-use WP_Post;
 
 /**
  * The main Block Control class.
@@ -19,7 +17,7 @@ final class Block_Control {
 	 * @since	1.1.0
 	 * @var		string[] List of ignored custom post types
 	 */
-	private $ignored_post_types = [
+	private array $ignored_post_types = [
 		'attachment',
 		'custom_css',
 		'customize_changeset',
@@ -38,19 +36,19 @@ final class Block_Control {
 	];
 	
 	/**
-	 * @var		\epiphyt\Block_Control\Block_Control
+	 * @var		?static
 	 */
-	public static $instance;
+	public static $instance = null;
 	
 	/**
 	 * @var		\Detection\MobileDetect The Mobile Detect instance
 	 */
-	public $mobile_detect;
+	public \Detection\MobileDetect $mobile_detect;
 	
 	/**
 	 * @var		string The plugin filename
 	 */
-	public $plugin_file = '';
+	public string $plugin_file = '';
 	
 	/**
 	 * Block_Control constructor.
@@ -62,7 +60,7 @@ final class Block_Control {
 	/**
 	 * Initialize functions.
 	 */
-	public function init() {
+	public function init(): void {
 		\add_action( 'enqueue_block_editor_assets', [ $this, 'editor_assets' ], 100 );
 		\add_action( 'init', [ self::class, 'register_blocks' ] );
 		\add_action( 'rest_api_init', [ self::class, 'register_rest_routes' ] );
@@ -80,7 +78,7 @@ final class Block_Control {
 	 * @param	array	$matches The matches of the class attribute
 	 * @return	string The updated class attribute
 	 */
-	public static function add_screen_reader_class( array $matches ) {
+	public static function add_screen_reader_class( array $matches ): string {
 		$classes = \preg_split( '/\s+/', \trim( $matches[2] ) );
 		
 		// nested blocks are filtered again as part of their parent content
@@ -98,7 +96,7 @@ final class Block_Control {
 	 * 
 	 * @return	array The list of ignored post types
 	 */
-	public function get_ignored_post_types() {
+	public function get_ignored_post_types(): array {
 		/**
 		 * Filter the ignored post type list.
 		 * 
@@ -106,7 +104,7 @@ final class Block_Control {
 		 * 
 		 * @param	array	$ignored_post_types The current ignored post type list
 		 */
-		return \apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
+		return (array) \apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
 	}
 	
 	/**
@@ -114,7 +112,7 @@ final class Block_Control {
 	 * 
 	 * @return	\epiphyt\Block_Control\Block_Control Class instance
 	 */
-	public static function get_instance() {
+	public static function get_instance(): self {
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
@@ -129,7 +127,7 @@ final class Block_Control {
 	 * 
 	 * @return	array A list of posts within a list of post types
 	 */
-	public function get_posts() {
+	public function get_posts(): array {
 		$posts = [];
 		
 		foreach ( \get_post_types() as $post_type ) {
@@ -174,7 +172,7 @@ final class Block_Control {
 	 * 
 	 * @return	array A list of all roles
 	 */
-	public function get_roles() {
+	public function get_roles(): array {
 		global $wp_roles;
 		$roles = [];
 		
@@ -188,15 +186,19 @@ final class Block_Control {
 	/**
 	 * Add the editor assets.
 	 */
-	public function editor_assets() {
-		\wp_localize_script( 'block-control-settings-editor-script', 'blockControlStore', [
-			'posts' => $this->get_posts(),
-			'roles' => $this->get_roles(),
-			'viewports' => [
-				'custom' => Viewport::get_custom(),
-				'presets' => Viewport::get_presets(),
-			],
-		] );
+	public function editor_assets(): void {
+		\wp_localize_script(
+			'block-control-settings-editor-script',
+			'blockControlStore',
+			[
+				'posts' => $this->get_posts(),
+				'roles' => $this->get_roles(),
+				'viewports' => [
+					'custom' => Viewport::get_custom(),
+					'presets' => Viewport::get_presets(),
+				],
+			]
+		);
 	}
 	
 	/**
@@ -204,10 +206,14 @@ final class Block_Control {
 	 * 
 	 * @since	1.1.0
 	 * 
-	 * @param	array	$value The attribute value
+	 * @param	mixed	$value The attribute value
 	 * @return	bool Whether the content should be hidden
 	 */
-	public function hide_conditional_tags( array $value ) {
+	public function hide_conditional_tags( mixed $value ): bool {
+		if ( ! \is_array( $value ) ) {
+			return false;
+		}
+		
 		$hidden = false;
 		
 		foreach ( $value as $tag => $is_hidden ) {
@@ -297,10 +303,10 @@ final class Block_Control {
 	 * Test if the content should be hidden by its attributes.
 	 * 
 	 * @param	string	$attr The attribute name
-	 * @param	bool	$value The attribute value
+	 * @param	mixed	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
-	public function hide_desktop( $attr, $value ) {
+	public function hide_desktop( string $attr, mixed $value ): bool {
 		return $attr === 'hideDesktop'
 			&& $value === true
 			&& (
@@ -312,10 +318,10 @@ final class Block_Control {
 	/**
 	 * Check, whether the content should be hidden in feeds.
 	 * 
-	 * @param	bool	$value Block attribute value
+	 * @param	mixed	$value Block attribute value
 	 * @return	bool Whether the content should be hidden in feeds
 	 */
-	public static function hide_feed( $value ) {
+	public static function hide_feed( mixed $value ): bool {
 		return $value === true && \is_feed();
 	}
 	
@@ -323,10 +329,10 @@ final class Block_Control {
 	 * Test if the content should be hidden by its attributes.
 	 * 
 	 * @param	string	$attr The attribute name
-	 * @param	bool	$value The attribute value
+	 * @param	mixed	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
-	public function hide_logged_in( $attr, $value ) {
+	public function hide_logged_in( string $attr, mixed $value ): bool {
 		return $attr === 'loginStatus' && $value === 'logged-out' && \is_user_logged_in();
 	}
 	
@@ -334,10 +340,10 @@ final class Block_Control {
 	 * Test if the content should be hidden by its attributes.
 	 * 
 	 * @param	string	$attr The attribute name
-	 * @param	bool	$value The attribute value
+	 * @param	mixed	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
-	public function hide_logged_out( $attr, $value ) {
+	public function hide_logged_out( string $attr, mixed $value ): bool {
 		return $attr === 'loginStatus' && $value === 'logged-in' && ! \is_user_logged_in();
 	}
 	
@@ -345,10 +351,10 @@ final class Block_Control {
 	 * Test if the content should be hidden by its attributes.
 	 * 
 	 * @param	string	$attr The attribute name
-	 * @param	bool	$value The attribute value
+	 * @param	mixed	$value The attribute value
 	 * @return	bool True if the content should be hidden, false otherwise
 	 */
-	public function hide_mobile( $attr, $value ) {
+	public function hide_mobile( string $attr, mixed $value ): bool {
 		return $attr === 'hideMobile'
 			&& $value === true
 			&& $this->mobile_detect->isMobile()
@@ -358,11 +364,19 @@ final class Block_Control {
 	/**
 	 * Check, whether the content should be hidden by its attributes.
 	 * 
-	 * @param	array{first?: bool, last?: bool, odd?: bool, even?: bool, custom?: string[]}	$value Attribute value
+	 * @param	array{first?: bool, last?: bool, odd?: bool, even?: bool, custom?: string[]}|mixed	$value Attribute value
 	 * @return	bool Whether the content should be hidden
 	 */
-	public static function hide_numbered_pages( array $value ) {
-		if ( ! \is_home() && ! \is_archive() && ! \is_category() && ! \is_tag() && ! \is_tax() && ! \is_search() ) {
+	public static function hide_numbered_pages( mixed $value ): bool {
+		if (
+			! \is_home()
+			&& ! \is_archive()
+			&& ! \is_category()
+			&& ! \is_tag()
+			&& ! \is_tax()
+			&& ! \is_search()
+			|| ! \is_array( $value )
+		) {
 			return false;
 		}
 		
@@ -402,10 +416,14 @@ final class Block_Control {
 	 * 
 	 * @since	1.1.0
 	 * 
-	 * @param	array	$value The attribute value
+	 * @param	mixed	$value The attribute value
 	 * @return	bool Whether the content should be hidden
 	 */
-	public function hide_post( array $value ) {
+	public function hide_post( mixed $value ): bool {
+		if ( ! \is_array( $value ) ) {
+			return false;
+		}
+		
 		$post = \get_post();
 		
 		/**
@@ -418,7 +436,7 @@ final class Block_Control {
 		 */
 		$post = \apply_filters( 'block_control_hide_post_object', $post, $value );
 		
-		if ( ! $post instanceof WP_Post ) {
+		if ( ! $post instanceof \WP_Post ) {
 			return false;
 		}
 		
@@ -438,10 +456,10 @@ final class Block_Control {
 	 * 
 	 * @since	1.1.0
 	 * 
-	 * @param	array	$value The attribute value
-	 * @return	bool True if the content should be hidden, false otherwise
+	 * @param	mixed	$value The attribute value
+	 * @return	bool Whether the content should be hidden
 	 */
-	public function hide_roles( array $value ) {
+	public function hide_roles( mixed $value ): bool {
 		// logged-out users don't have any role
 		// check them via login status
 		if ( ! \is_user_logged_in() || empty( $value ) ) {
@@ -469,7 +487,7 @@ final class Block_Control {
 	 * @param	array	$attributes Block attributes
 	 * @return	bool Whether the content should be hidden
 	 */
-	public static function hide_screen_reader( array $attributes ) {
+	public static function hide_screen_reader( array $attributes ): bool {
 		return ! empty( $attributes['hideScreenReader'] );
 	}
 	
@@ -481,7 +499,7 @@ final class Block_Control {
 	 * @param	array	$args List of block arguments
 	 * @return	array Updated list of block arguments
 	 */
-	public function register_attributes( array $args ) {
+	public function register_attributes( array $args ): array {
 		$args['attributes'] = \array_merge( $args['attributes'], [
 			'hideByDate' => [
 				'default' => false,
@@ -496,7 +514,7 @@ final class Block_Control {
 				'type' => 'string',
 			],
 			'hideConditionalTags' => [
-				'default' => new stdClass(),
+				'default' => new \stdClass(),
 				'type' => 'object',
 			],
 			'hideDesktop' => [
@@ -512,15 +530,15 @@ final class Block_Control {
 				'type' => 'boolean',
 			],
 			'hideNumberedPages' => [
-				'default' => new stdClass(),
+				'default' => new \stdClass(),
 				'type' => 'object',
 			],
 			'hidePosts' => [
-				'default' => new stdClass(),
+				'default' => new \stdClass(),
 				'type' => 'object',
 			],
 			'hideRoles' => [
-				'default' => new stdClass(),
+				'default' => new \stdClass(),
 				'type' => 'object',
 			],
 			'hideScreenReader' => [
@@ -546,7 +564,7 @@ final class Block_Control {
 	/**
 	 * Register blocks.
 	 */
-	public static function register_blocks() {
+	public static function register_blocks(): void {
 		\wp_register_block_types_from_metadata_collection(
 			\EPI_BLOCK_CONTROL_BASE . 'build',
 			\EPI_BLOCK_CONTROL_BASE . 'build/blocks-manifest.php'
@@ -558,7 +576,7 @@ final class Block_Control {
 	 * 
 	 * @since	2.0.0
 	 */
-	public static function register_rest_routes() {
+	public static function register_rest_routes(): void {
 		( new Viewports() )->register_routes();
 	}
 	
@@ -567,7 +585,7 @@ final class Block_Control {
 	 * 
 	 * @param	string	$file The path to the file
 	 */
-	public function set_plugin_file( $file ) {
+	public function set_plugin_file( string $file ): void {
 		if ( \file_exists( $file ) ) {
 			$this->plugin_file = $file;
 		}
@@ -583,7 +601,7 @@ final class Block_Control {
 	 * @return	int A timestamp
 	 * @throws	\Exception
 	 */
-	public function strtotime( $str ) {
+	public function strtotime( string $str ): int {
 		$tz_string = \get_option( 'timezone_string' );
 		$tz_offset = \get_option( 'gmt_offset', 0 );
 		
@@ -607,7 +625,7 @@ final class Block_Control {
 			}
 		}
 		
-		$datetime = new DateTime( $str, new DateTimeZone( $timezone ) );
+		$datetime = new \DateTimeImmutable( $str, new \DateTimeZone( $timezone ) );
 		
 		return (int) $datetime->format( 'U' );
 	}
@@ -619,7 +637,7 @@ final class Block_Control {
 	 * @param	array	$block The full block, including name and attributes
 	 * @return	string The updated block content
 	 */
-	public function toggle_blocks( $block_content, array $block ) {
+	public function toggle_blocks( string $block_content, array $block ): string {
 		// set default content
 		$content = '';
 		// set default visibility

@@ -1,10 +1,12 @@
 <?php
+declare(strict_types = 1);
+
 namespace epiphyt\Block_Control;
 
 /*
 Plugin Name:		Block Control
 Description:		Control the visibility of your Gutenberg blocks by conditions.
-Version:			1.6.1
+Version:			2.0.0-dev
 Author URI:			https://epiph.yt/en/
 Author:				Epiphyt
 Domain Path:		/languages
@@ -44,14 +46,14 @@ if ( ! \defined( 'EPI_BLOCK_CONTROL_BASE' ) ) {
 
 \define( 'EPI_BLOCK_CONTROL_FILE', \EPI_BLOCK_CONTROL_BASE . \basename( __FILE__ ) );
 \define( 'EPI_BLOCK_CONTROL_URL', \plugin_dir_url( \EPI_BLOCK_CONTROL_FILE ) );
-\define( 'EPI_BLOCK_CONTROL_VERSION', '1.6.1' );
+\define( 'EPI_BLOCK_CONTROL_VERSION', '2.0.0-dev' );
 
 /**
  * Autoload all necessary classes.
  * 
  * @param	string	$class_name The class name of the auto-loaded class
  */
-\spl_autoload_register( static function( $class_name ) {
+\spl_autoload_register( static function( $class_name ): void {
 	$namespace = \strtolower( __NAMESPACE__ . '\\' );
 	$path = \explode( '\\', $class_name );
 	$filename = \str_replace( '_', '-', \strtolower( \array_pop( $path ) ) );

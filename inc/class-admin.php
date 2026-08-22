@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace epiphyt\Block_Control;
 
 /**
@@ -12,7 +14,7 @@ final class Admin {
 	/**
 	 * Initialize functionality.
 	 */
-	public static function init() {
+	public static function init(): void {
 		\add_filter( 'plugin_row_meta', [ self::class, 'render_plugin_documentation_link' ], 10, 2 );
 	}
 	
@@ -23,7 +25,7 @@ final class Admin {
 	 * @param	string	$file Current plugin file
 	 * @return	array Merged links
 	 */
-	public static function render_plugin_documentation_link( $input, $file ) {
+	public static function render_plugin_documentation_link( array $input, string $file ): array {
 		if ( ! \str_ends_with( \EPI_BLOCK_CONTROL_FILE, $file ) ) {
 			return $input;
 		}

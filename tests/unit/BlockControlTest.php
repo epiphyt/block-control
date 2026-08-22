@@ -11,10 +11,10 @@ namespace epiphyt\Block_Control\Tests\Unit;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use Detection\MobileDetect;
 use epiphyt\Block_Control\Admin;
 use epiphyt\Block_Control\Block_Control;
 use epiphyt\Block_Control\Tests\Test_Case;
-use Mobile_Detect;
 use Mockery;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -47,7 +47,7 @@ final class BlockControlTest extends Test_Case {
 	 * @param bool $is_tablet Whether isTablet() should return true.
 	 */
 	private function mock_mobile_detect( bool $is_mobile, bool $is_tablet ): void {
-		$mobile_detect = Mockery::mock( Mobile_Detect::class );
+		$mobile_detect = Mockery::mock( MobileDetect::class );
 		$mobile_detect->shouldReceive( 'isMobile' )->andReturn( $is_mobile );
 		$mobile_detect->shouldReceive( 'isTablet' )->andReturn( $is_tablet );
 

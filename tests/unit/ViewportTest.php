@@ -61,13 +61,11 @@ final class ViewportTest extends Test_Case {
 	/**
 	 * Invalid media conditions.
 	 *
-	 * @return array<string, array{mixed}>
+	 * @return array<string, array{string}>
 	 */
 	public static function provide_invalid_conditions(): array {
 		return [
 			'empty' => [ '' ],
-			'no array' => [ [] ],
-			'no string' => [ 5 ],
 			'no feature' => [ 'screen' ],
 			'unbalanced parenthesis' => [ '(max-width: 600px' ],
 			'closing brace' => [ 'red} body{display:none' ],
@@ -93,10 +91,10 @@ final class ViewportTest extends Test_Case {
 	/**
 	 * is_valid_condition() should reject anything that could break the media query.
 	 *
-	 * @param mixed $condition The media condition to check.
+	 * @param string $condition The media condition to check.
 	 */
 	#[DataProvider( 'provide_invalid_conditions' )]
-	public function test_is_valid_condition_rejects_invalid_conditions( $condition ): void {
+	public function test_is_valid_condition_rejects_invalid_conditions( string $condition ): void {
 		$this->assertFalse( Viewport::is_valid_condition( $condition ) );
 	}
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace epiphyt\Block_Control\REST_API;
 
 use epiphyt\Block_Control\Viewport;
@@ -18,12 +20,12 @@ final class Viewports extends WP_REST_Controller {
 	/**
 	 * @var		string The namespace of the route
 	 */
-	protected $namespace = 'block-control/v1';
+	protected string $namespace = 'block-control/v1';
 	
 	/**
 	 * @var		string The base of the route
 	 */
-	protected $rest_base = 'viewports';
+	protected string $rest_base = 'viewports';
 	
 	/**
 	 * Register the routes.
@@ -48,53 +50,39 @@ final class Viewports extends WP_REST_Controller {
 	}
 	
 	/**
-	 * Add media conditions to the stored ones.
-	 * 
-	 * @param	\WP_REST_Request	$request The request object
-	 * @return	\WP_REST_Response|\WP_Error The response object
+	 * {@inheritDoc}
 	 */
-	public function create_item( $request ) {
+	public function create_item( $request ) { // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		$viewports = \array_merge( Viewport::get_custom(), (array) $request->get_param( 'viewports' ) );
 		
 		return \rest_ensure_response( $this->prepare_item_for_response( Viewport::set_custom( $viewports ), $request ) );
 	}
 	
 	/**
-	 * Check whether media conditions may be added.
-	 * 
-	 * @param	\WP_REST_Request	$request The request object
-	 * @return	bool|\WP_Error True if the request has access, WP_Error otherwise
+	 * {@inheritDoc}
 	 */
-	public function create_item_permissions_check( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function create_item_permissions_check( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found, SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		return $this->check_permissions();
 	}
 	
 	/**
-	 * Get the presets and the stored media conditions.
-	 * 
-	 * @param	\WP_REST_Request	$request The request object
-	 * @return	\WP_REST_Response|\WP_Error The response object
+	 * {@inheritDoc}
 	 */
-	public function get_items( $request ) {
+	public function get_items( $request ) { // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		return \rest_ensure_response( $this->prepare_item_for_response( Viewport::get_custom(), $request ) );
 	}
 	
 	/**
-	 * Check whether the presets and media conditions may be read.
-	 * 
-	 * @param	\WP_REST_Request	$request The request object
-	 * @return	bool|\WP_Error True if the request has access, WP_Error otherwise
+	 * {@inheritDoc}
 	 */
-	public function get_items_permissions_check( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function get_items_permissions_check( $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found, SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		return $this->check_permissions();
 	}
 	
 	/**
-	 * Get the item schema.
-	 * 
-	 * @return	array The item schema
+	 * {@inheritDoc}
 	 */
-	public function get_item_schema() {
+	public function get_item_schema() { // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		if ( $this->schema !== null ) {
 			return $this->add_additional_fields_schema( $this->schema );
 		}
@@ -125,13 +113,9 @@ final class Viewports extends WP_REST_Controller {
 	}
 	
 	/**
-	 * Prepare the media conditions for the response.
-	 * 
-	 * @param	string[]			$item The list of custom media conditions
-	 * @param	\WP_REST_Request	$request The request object
-	 * @return	\WP_REST_Response The response object
+	 * {@inheritDoc}
 	 */
-	public function prepare_item_for_response( $item, $request ) {
+	public function prepare_item_for_response( $item, $request ) { // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		$data = [
 			'presets' => Viewport::get_presets(),
 			'viewports' => $item,
@@ -142,14 +126,14 @@ final class Viewports extends WP_REST_Controller {
 	}
 	
 	/**
-	 * Check whether the current user may read and add media conditions.
+	 * Check whether the current user may read and add media queries.
 	 * 
-	 * Media conditions are shared across all posts, but they are part of
+	 * Media queries are shared across all posts, but they are part of
 	 * editing a block and thus available to everyone who can edit posts.
 	 * 
 	 * @return	bool|\WP_Error True if the request has access, WP_Error otherwise
 	 */
-	private function check_permissions() {
+	private function check_permissions(): bool|\WP_Error {
 		if ( ! \current_user_can( 'edit_posts' ) ) {
 			return new \WP_Error(
 				'block_control_rest_forbidden',
