@@ -75,11 +75,16 @@ final class Block_Control {
 	 * 
 	 * @since	1.6.1
 	 * 
-	 * @param	array	$matches The matches of the class attribute
+	 * @param	string[]	$matches The matches of the class attribute
 	 * @return	string The updated class attribute
 	 */
 	public static function add_screen_reader_class( array $matches ): string {
 		$classes = \preg_split( '/\s+/', \trim( $matches[2] ) );
+		
+		// leave the class attribute untouched if it cannot be split
+		if ( $classes === false ) {
+			return $matches[0];
+		}
 		
 		// nested blocks are filtered again as part of their parent content
 		if ( ! \in_array( 'screen-reader-text', $classes, true ) ) {
@@ -94,7 +99,7 @@ final class Block_Control {
 	 * 
 	 * @since	1.1.0
 	 * 
-	 * @return	array The list of ignored post types
+	 * @return	string[] The list of ignored post types
 	 */
 	public function get_ignored_post_types(): array {
 		/**
@@ -102,9 +107,12 @@ final class Block_Control {
 		 * 
 		 * @since	1.1.0
 		 * 
-		 * @param	array	$ignored_post_types The current ignored post type list
+		 * @param	string[]	$ignored_post_types The current ignored post type list
 		 */
-		return (array) \apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
+		/** @var string[] $ignored_post_types */
+		$ignored_post_types = (array) \apply_filters( 'block_control_ignored_post_types', $this->ignored_post_types );
+		
+		return $ignored_post_types;
 	}
 	
 	/**
@@ -125,7 +133,7 @@ final class Block_Control {
 	 * 
 	 * @since	1.1.0
 	 * 
-	 * @return	array A list of posts within a list of post types
+	 * @return	array<string, array{items: list<array{ID: int, post_title: string}>, title: string}> A list of posts within a list of post types
 	 */
 	public function get_posts(): array {
 		$posts = [];
@@ -150,15 +158,16 @@ final class Block_Control {
 			$post_map = [];
 			
 			foreach ( $post_ids as $post_id ) {
+				$post_title = \get_post_field( 'post_title', $post_id );
 				$post_map[] = [
 					'ID' => $post_id,
-					'post_title' => \get_post_field( 'post_title', $post_id ),
+					'post_title' => \is_string( $post_title ) ? $post_title : '',
 				];
 			}
 			
 			$posts[ $post_type ] = [
 				'items' => $post_map,
-				'title' => $post_type_object->labels->name,
+				'title' => (string) $post_type_object->labels->name,
 			];
 		}
 		
@@ -170,7 +179,7 @@ final class Block_Control {
 	 * 
 	 * @since	1.1.0
 	 * 
-	 * @return	array A list of all roles
+	 * @return	array<string, string> A list of all roles
 	 */
 	public function get_roles(): array {
 		global $wp_roles;
@@ -402,10 +411,8 @@ final class Block_Control {
 			return true;
 		}
 		
-		if ( ! empty( $value['custom'] ) ) {
-			if ( \in_array( (string) $current_page, $value['custom'], true ) ) {
-				return true;
-			}
+		if ( ! empty( $value['custom'] ) && \is_array( $value['custom'] ) ) {
+			return \in_array( (string) $current_page, $value['custom'], true );
 		}
 		
 		return false;
@@ -440,12 +447,14 @@ final class Block_Control {
 			return false;
 		}
 		
-		if ( empty( $value[ $post->post_type ] ) ) {
+		$hidden_posts = $value[ $post->post_type ] ?? null;
+		
+		if ( empty( $hidden_posts ) || ! \is_array( $hidden_posts ) ) {
 			return false;
 		}
 		
-		if ( isset( $value[ $post->post_type ][ $post->ID ] ) ) {
-			return (bool) $value[ $post->post_type ][ $post->ID ];
+		if ( isset( $hidden_posts[ $post->ID ] ) ) {
+			return (bool) $hidden_posts[ $post->ID ];
 		}
 		
 		return false;
@@ -462,7 +471,7 @@ final class Block_Control {
 	public function hide_roles( mixed $value ): bool {
 		// logged-out users don't have any role
 		// check them via login status
-		if ( ! \is_user_logged_in() || empty( $value ) ) {
+		if ( ! \is_user_logged_in() || ! \is_array( $value ) || empty( $value ) ) {
 			return false;
 		}
 		
@@ -484,7 +493,7 @@ final class Block_Control {
 	 * 
 	 * @since	1.2.0
 	 * 
-	 * @param	array	$attributes Block attributes
+	 * @param	array<string, mixed>	$attributes Block attributes
 	 * @return	bool Whether the content should be hidden
 	 */
 	public static function hide_screen_reader( array $attributes ): bool {
@@ -496,11 +505,11 @@ final class Block_Control {
 	 * 
 	 * @since	1.1.7
 	 * 
-	 * @param	array	$args List of block arguments
-	 * @return	array Updated list of block arguments
+	 * @param	array<string, mixed>	$args List of block arguments
+	 * @return	array<string, mixed> Updated list of block arguments
 	 */
 	public function register_attributes( array $args ): array {
-		$args['attributes'] = \array_merge( $args['attributes'], [
+		$args['attributes'] = \array_merge( (array) ( $args['attributes'] ?? [] ), [
 			'hideByDate' => [
 				'default' => false,
 				'type' => 'boolean',
@@ -604,8 +613,9 @@ final class Block_Control {
 	public function strtotime( string $str ): int {
 		$tz_string = \get_option( 'timezone_string' );
 		$tz_offset = \get_option( 'gmt_offset', 0 );
+		$tz_offset = \is_scalar( $tz_offset ) ? (string) $tz_offset : '0';
 		
-		if ( ! empty( $tz_string ) ) {
+		if ( ! empty( $tz_string ) && \is_string( $tz_string ) ) {
 			// if site timezone option string exists, use it
 			$timezone = $tz_string;
 		}
@@ -633,11 +643,13 @@ final class Block_Control {
 	/**
 	 * Display or hide a block.
 	 * 
-	 * @param	string	$block_content The block content about to be appended
-	 * @param	array	$block The full block, including name and attributes
+	 * @param	string					$block_content The block content about to be appended
+	 * @param	array<string, mixed>	$block The full block, including name and attributes
 	 * @return	string The updated block content
 	 */
 	public function toggle_blocks( string $block_content, array $block ): string {
+		/** @var array<string, mixed> $attributes */
+		$attributes = (array) ( $block['attrs'] ?? [] );
 		// set default content
 		$content = '';
 		// set default visibility
@@ -653,12 +665,12 @@ final class Block_Control {
 		}
 		
 		// if there are no attributes, the block should be displayed
-		if ( empty( $block['attrs'] ) ) {
+		if ( empty( $attributes ) ) {
 			return $block_content;
 		}
 		
 		// iterate through all block attributes
-		foreach ( $block['attrs'] as $attr => $value ) {
+		foreach ( $attributes as $attr => $value ) {
 			if (
 				$this->hide_desktop( $attr, $value )
 				|| $this->hide_mobile( $attr, $value )
@@ -678,20 +690,22 @@ final class Block_Control {
 				$hide_by_date = true;
 			}
 			
-			if ( $hide_by_date && $attr === 'hideByDateStart' ) {
+			if ( $hide_by_date && $attr === 'hideByDateStart' && \is_string( $value ) ) {
+				$end_date = $attributes['hideByDateEnd'] ?? null;
+				
 				if ( \time() > $this->strtotime( $value ) ) {
 					$is_hidden = true;
 					
 					// check end date, too
 					if (
-						! isset( $block['attrs']['hideByDateEnd'] )
+						! \is_string( $end_date )
 						|| (
-							$this->strtotime( $value ) > $this->strtotime( $block['attrs']['hideByDateEnd'] )
-							&& \time() > $this->strtotime( $block['attrs']['hideByDateEnd'] )
+							$this->strtotime( $value ) > $this->strtotime( $end_date )
+							&& \time() > $this->strtotime( $end_date )
 						)
 						|| (
-							$this->strtotime( $value ) <= $this->strtotime( $block['attrs']['hideByDateEnd'] )
-							&& \time() < $this->strtotime( $block['attrs']['hideByDateEnd'] )
+							$this->strtotime( $value ) <= $this->strtotime( $end_date )
+							&& \time() < $this->strtotime( $end_date )
 						)
 					) {
 						break;
@@ -702,20 +716,22 @@ final class Block_Control {
 				}
 			}
 			
-			if ( $hide_by_date && $attr === 'hideByDateEnd' ) {
+			if ( $hide_by_date && $attr === 'hideByDateEnd' && \is_string( $value ) ) {
+				$start_date = $attributes['hideByDateStart'] ?? null;
+				
 				if ( \time() <= $this->strtotime( $value ) ) {
 					$is_hidden = true;
 					
 					// check start date, too
 					if (
-						! isset( $block['attrs']['hideByDateStart'] )
+						! \is_string( $start_date )
 						|| (
-							$this->strtotime( $value ) > $this->strtotime( $block['attrs']['hideByDateStart'] )
-							&& \time() > $this->strtotime( $block['attrs']['hideByDateStart'] )
+							$this->strtotime( $value ) > $this->strtotime( $start_date )
+							&& \time() > $this->strtotime( $start_date )
 						)
 						|| (
-							$this->strtotime( $value ) <= $this->strtotime( $block['attrs']['hideByDateStart'] )
-							&& \time() < $this->strtotime( $block['attrs']['hideByDateStart'] )
+							$this->strtotime( $value ) <= $this->strtotime( $start_date )
+							&& \time() < $this->strtotime( $start_date )
 						)
 					) {
 						break;
@@ -734,11 +750,11 @@ final class Block_Control {
 		
 		// viewports are hidden via CSS and thus only relevant if the block is
 		// not already hidden server-side
-		if ( ! empty( $content ) && ! empty( $block['attrs']['hideViewports'] ) ) {
-			$content = Viewport::render( $content, (array) $block['attrs']['hideViewports'] );
+		if ( ! empty( $content ) && ! empty( $attributes['hideViewports'] ) ) {
+			$content = Viewport::render( $content, (array) $attributes['hideViewports'] );
 		}
 		
-		if ( self::hide_screen_reader( $block['attrs'] ) ) {
+		if ( self::hide_screen_reader( $attributes ) ) {
 			// hiding the outer element hides its content as well, while matching
 			// every element would also match closing tags and break the markup
 			$content = (string) \preg_replace( '/<([a-zA-Z][^\s\/>]*)/', '<$1 aria-hidden="true"', $content, 1 );

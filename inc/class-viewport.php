@@ -48,7 +48,7 @@ final class Viewport {
 	
 	/**
 	 * @since	2.0.0
-	 * @var		?array The cached viewport presets
+	 * @var		?array<string, array{label: string, media_query: string}> The cached viewport presets
 	 */
 	private static ?array $presets = null;
 	
@@ -114,7 +114,7 @@ final class Viewport {
 	 * 
 	 * @since	2.0.0
 	 * 
-	 * @return	array The list of presets with their label and media query
+	 * @return	array<string, array{label: string, media_query: string}> The list of presets with their label and media query
 	 */
 	public static function get_presets(): array {
 		if ( self::$presets !== null ) {
@@ -124,7 +124,7 @@ final class Viewport {
 		// the path parameter of wp_get_global_settings() falls back to all
 		// settings, which would be returned as viewport settings before
 		// WordPress 7.1, where settings.viewport doesn't exist
-		$settings = \wp_get_global_settings();
+		$settings = (array) \wp_get_global_settings();
 		$viewport = $settings['viewport'] ?? null;
 		$labels = [
 			'desktop' => \__( 'Desktop', 'block-control' ),
@@ -150,9 +150,11 @@ final class Viewport {
 		 * 
 		 * @since	2.0.0
 		 * 
-		 * @param	array	$presets The current presets
+		 * @param	array<string, array{label: string, media_query: string}>	$presets The current presets
 		 */
-		self::$presets = (array) \apply_filters( 'block_control_viewport_presets', $presets );
+		/** @var array<string, array{label: string, media_query: string}> $presets */
+		$presets = (array) \apply_filters( 'block_control_viewport_presets', $presets );
+		self::$presets = $presets;
 		
 		return self::$presets;
 	}
@@ -196,7 +198,7 @@ final class Viewport {
 	 * @since	2.0.0
 	 * 
 	 * @param	string	$block_content The block content
-	 * @param	array	$entries The list of preset slugs and media conditions
+	 * @param	mixed[]	$entries The list of preset slugs and media conditions
 	 * @return	string The updated block content
 	 */
 	public static function render( string $block_content, array $entries ): string {
@@ -208,6 +210,10 @@ final class Viewport {
 		$css_rules = [];
 		
 		foreach ( $entries as $entry ) {
+			if ( ! \is_string( $entry ) ) {
+				continue;
+			}
+			
 			$class_name = self::get_class_name( $entry );
 			$media_query = self::get_media_query( $entry );
 			
@@ -252,7 +258,7 @@ final class Viewport {
 	 * 
 	 * @since	2.0.0
 	 * 
-	 * @param	string[]	$viewports The list of custom media conditions
+	 * @param	mixed[]	$viewports The list of custom media conditions
 	 * @return	string[] The stored list of custom media conditions
 	 */
 	public static function set_custom( array $viewports ): array {
@@ -436,7 +442,13 @@ final class Viewport {
 		$breakpoints = [];
 		
 		foreach ( \array_keys( self::DEFAULT_BREAKPOINTS ) as $breakpoint ) {
-			$pixels = self::get_breakpoint_in_pixels( $viewport[ $breakpoint ] ?? null );
+			$value = $viewport[ $breakpoint ] ?? null;
+			
+			if ( ! \is_string( $value ) ) {
+				continue;
+			}
+			
+			$pixels = self::get_breakpoint_in_pixels( $value );
 			
 			if ( $pixels === null ) {
 				continue;
@@ -444,27 +456,32 @@ final class Viewport {
 			
 			$breakpoints[ $breakpoint ] = [
 				'pixels' => $pixels,
-				'value' => \trim( $viewport[ $breakpoint ] ),
+				'value' => \trim( $value ),
 			];
 		}
 		
-		if ( empty( $breakpoints ) ) {
+		$mobile = $breakpoints['mobile'] ?? null;
+		$tablet = $breakpoints['tablet'] ?? null;
+		
+		if ( $mobile === null && $tablet === null ) {
 			return self::DEFAULT_BREAKPOINTS;
 		}
 		
-		if ( \count( $breakpoints ) === 1 ) {
-			$breakpoint = (string) \key( $breakpoints );
-			
-			return [ $breakpoint => $breakpoints[ $breakpoint ]['value'] ];
+		if ( $mobile === null ) {
+			return [ 'tablet' => $tablet['value'] ];
+		}
+		
+		if ( $tablet === null ) {
+			return [ 'mobile' => $mobile['value'] ];
 		}
 		
 		$sanitized = [
-			'mobile' => $breakpoints['mobile']['value'],
+			'mobile' => $mobile['value'],
 		];
 		
 		// a tablet breakpoint that is not larger than the mobile one is of no use
-		if ( $breakpoints['mobile']['pixels'] < $breakpoints['tablet']['pixels'] ) {
-			$sanitized['tablet'] = $breakpoints['tablet']['value'];
+		if ( $mobile['pixels'] < $tablet['pixels'] ) {
+			$sanitized['tablet'] = $tablet['value'];
 		}
 		
 		return $sanitized;

@@ -16,14 +16,24 @@ use epiphyt\Block_Control\Viewport;
  */
 final class Viewports extends \WP_REST_Controller {
 	/**
+	 * The namespace of the route.
+	 */
+	public const ROUTE_NAMESPACE = 'block-control/v1';
+	
+	/**
+	 * The base of the route.
+	 */
+	public const ROUTE_BASE = 'viewports';
+	
+	/**
 	 * @var		string The namespace of the route
 	 */
-	protected $namespace = 'block-control/v1'; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+	protected $namespace = self::ROUTE_NAMESPACE; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
 	
 	/**
 	 * @var		string The base of the route
 	 */
-	protected $rest_base = 'viewports'; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+	protected $rest_base = self::ROUTE_BASE; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
 	
 	/**
 	 * Register the routes.
@@ -44,7 +54,7 @@ final class Viewports extends \WP_REST_Controller {
 		];
 		$args['schema'] = [ $this, 'get_public_item_schema' ];
 		
-		\register_rest_route( $this->namespace, '/' . $this->rest_base, $args );
+		\register_rest_route( self::ROUTE_NAMESPACE, '/' . self::ROUTE_BASE, $args );
 	}
 	
 	/**
@@ -79,6 +89,8 @@ final class Viewports extends \WP_REST_Controller {
 	
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @phpstan-ignore	missingType.iterableValue
 	 */
 	public function get_item_schema() { // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		if ( $this->schema !== null ) {
@@ -112,6 +124,8 @@ final class Viewports extends \WP_REST_Controller {
 	
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @phpstan-ignore	return.unusedType
 	 */
 	public function prepare_item_for_response( $item, $request ) { // phpcs:ignore SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint, SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 		$data = [
@@ -129,7 +143,7 @@ final class Viewports extends \WP_REST_Controller {
 	 * Media queries are shared across all posts, but they are part of
 	 * editing a block and thus available to everyone who can edit posts.
 	 * 
-	 * @return	bool|\WP_Error True if the request has access, WP_Error otherwise
+	 * @return	true|\WP_Error True if the request has access, WP_Error otherwise
 	 */
 	private function check_permissions(): bool|\WP_Error {
 		if ( ! \current_user_can( 'edit_posts' ) ) {

@@ -24,19 +24,27 @@
 		"brain/monkey": "2.*",
 		"brain/faker": "dev-master",
 		"epiphyt/coding-standard": "^1.0",
-		"phpunit/phpunit": "^9.6"
+		"phpunit/phpunit": "^9.6",
+		"phpstan/phpstan": "^2.2",
+		"szepeviktor/phpstan-wordpress": "^2.0",
+		"phpstan/extension-installer": "^1.4",
+		"swissspidy/phpstan-no-private": "^1.0",
+		"phpstan/phpstan-deprecation-rules": "^2.0"
 	},
 	"scripts": {
 		"phpcs": "phpcs -s .",
+		"phpstan": "phpstan analyse -v --memory-limit=2G",
 		"phpunit": "phpunit",
 		"test": [
 			"@phpcs",
+			"@phpstan",
 			"@phpunit"
 		]
 	},
 	"config": {
 		"allow-plugins": {
-			"dealerdirect/phpcodesniffer-composer-installer": true
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"phpstan/extension-installer": true
 		}
 	}
 }
