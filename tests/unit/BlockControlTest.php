@@ -455,24 +455,6 @@ final class BlockControlTest extends Test_Case {
 	}
 
 	/**
-	 * set_plugin_file() should store an existing file path.
-	 */
-	public function test_set_plugin_file_stores_existing_file(): void {
-		$this->block_control->set_plugin_file( __FILE__ );
-
-		$this->assertSame( __FILE__, $this->block_control->plugin_file );
-	}
-
-	/**
-	 * set_plugin_file() should ignore a non-existent file path.
-	 */
-	public function test_set_plugin_file_ignores_missing_file(): void {
-		$this->block_control->set_plugin_file( __DIR__ . '/does-not-exist.php' );
-
-		$this->assertSame( '', $this->block_control->plugin_file );
-	}
-
-	/**
 	 * strtotime() should use UTC when no timezone is configured.
 	 */
 	public function test_strtotime_uses_utc_by_default(): void {

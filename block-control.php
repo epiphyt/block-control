@@ -77,5 +77,4 @@ if ( ! \defined( 'EPI_BLOCK_CONTROL_BASE' ) ) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-Block_Control::get_instance()->set_plugin_file( __FILE__ );
 Block_Control::get_instance()->init();

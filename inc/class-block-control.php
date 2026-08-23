@@ -36,7 +36,7 @@ final class Block_Control {
 	];
 	
 	/**
-	 * @var		?static
+	 * @var		?static Class instance
 	 */
 	public static $instance = null;
 	
@@ -44,11 +44,6 @@ final class Block_Control {
 	 * @var		\Detection\MobileDetect The Mobile Detect instance
 	 */
 	public \Detection\MobileDetect $mobile_detect;
-	
-	/**
-	 * @var		string The plugin filename
-	 */
-	public string $plugin_file = '';
 	
 	/**
 	 * Block_Control constructor.
@@ -587,17 +582,6 @@ final class Block_Control {
 	 */
 	public static function register_rest_routes(): void {
 		( new Viewports() )->register_routes();
-	}
-	
-	/**
-	 * Set the plugin file.
-	 * 
-	 * @param	string	$file The path to the file
-	 */
-	public function set_plugin_file( string $file ): void {
-		if ( \file_exists( $file ) ) {
-			$this->plugin_file = $file;
-		}
 	}
 	
 	/**
