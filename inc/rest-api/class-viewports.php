@@ -4,8 +4,6 @@ declare(strict_types = 1);
 namespace epiphyt\Block_Control\REST_API;
 
 use epiphyt\Block_Control\Viewport;
-use WP_REST_Controller;
-use WP_REST_Server;
 
 /**
  * The viewports REST API controller.
@@ -16,16 +14,16 @@ use WP_REST_Server;
  * @license	GPL2
  * @package	epiphyt\Block_Control
  */
-final class Viewports extends WP_REST_Controller {
+final class Viewports extends \WP_REST_Controller {
 	/**
 	 * @var		string The namespace of the route
 	 */
-	protected string $namespace = 'block-control/v1';
+	protected $namespace = 'block-control/v1'; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
 	
 	/**
 	 * @var		string The base of the route
 	 */
-	protected string $rest_base = 'viewports';
+	protected $rest_base = 'viewports'; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
 	
 	/**
 	 * Register the routes.
@@ -34,13 +32,13 @@ final class Viewports extends WP_REST_Controller {
 		$args = [
 			[
 				'callback' => [ $this, 'get_items' ],
-				'methods' => WP_REST_Server::READABLE,
+				'methods' => \WP_REST_Server::READABLE,
 				'permission_callback' => [ $this, 'get_items_permissions_check' ],
 			],
 			[
-				'args' => $this->get_endpoint_args_for_item_schema( WP_REST_Server::CREATABLE ),
+				'args' => $this->get_endpoint_args_for_item_schema( \WP_REST_Server::CREATABLE ),
 				'callback' => [ $this, 'create_item' ],
-				'methods' => WP_REST_Server::CREATABLE,
+				'methods' => \WP_REST_Server::CREATABLE,
 				'permission_callback' => [ $this, 'create_item_permissions_check' ],
 			],
 		];
