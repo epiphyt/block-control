@@ -2,13 +2,14 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
-         cacheDirectory=".phpunit.cache"
+         cacheResultFile=".phpunit.cache/test-results"
          executionOrder="depends,defects"
-         requireCoverageMetadata="true"
-         beStrictAboutCoverageMetadata="true"
+         forceCoversAnnotation="true"
+         beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
-         displayDetailsOnPhpunitDeprecations="true"
-         failOnPhpunitDeprecation="true"
+         convertDeprecationsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
          failOnRisky="true"
          failOnWarning="true">
     <testsuites>
@@ -17,12 +18,12 @@
         </testsuite>
     </testsuites>
 
-    <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
+    <coverage>
         <include>
             <directory>inc</directory>
         </include>
         <exclude>
             <directory>inc/lib</directory>
         </exclude>
-    </source>
+    </coverage>
 </phpunit>

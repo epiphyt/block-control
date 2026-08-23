@@ -16,13 +16,14 @@ use epiphyt\Block_Control\Admin;
 use epiphyt\Block_Control\Block_Control;
 use epiphyt\Block_Control\Tests\Test_Case;
 use Mockery;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\UsesClass;
 use stdClass;
 use WP_Post;
 
-#[CoversClass( Block_Control::class )]
-#[UsesClass( Admin::class )]
+/**
+ * @covers \epiphyt\Block_Control\Block_Control
+ *
+ * @uses \epiphyt\Block_Control\Admin
+ */
 final class BlockControlTest extends Test_Case {
 	/**
 	 * A fresh instance to run instance methods against.

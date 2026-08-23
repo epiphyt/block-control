@@ -12,9 +12,10 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use epiphyt\Block_Control\Admin;
 use epiphyt\Block_Control\Tests\Test_Case;
-use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass( Admin::class )]
+/**
+ * @covers \epiphyt\Block_Control\Admin
+ */
 final class AdminTest extends Test_Case {
 	/**
 	 * init() should register the plugin_row_meta filter.

@@ -12,10 +12,10 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use epiphyt\Block_Control\Tests\Test_Case;
 use epiphyt\Block_Control\Viewport;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 
-#[CoversClass( Viewport::class )]
+/**
+ * @covers \epiphyt\Block_Control\Viewport
+ */
 final class ViewportTest extends Test_Case {
 	/**
 	 * Stub the translation function before each test.
@@ -81,9 +81,10 @@ final class ViewportTest extends Test_Case {
 	/**
 	 * is_valid_condition() should accept usable media conditions.
 	 *
+	 * @dataProvider provide_valid_conditions
+	 *
 	 * @param string $condition The media condition to check.
 	 */
-	#[DataProvider( 'provide_valid_conditions' )]
 	public function test_is_valid_condition_accepts_valid_conditions( string $condition ): void {
 		$this->assertTrue( Viewport::is_valid_condition( $condition ) );
 	}
@@ -91,9 +92,10 @@ final class ViewportTest extends Test_Case {
 	/**
 	 * is_valid_condition() should reject anything that could break the media query.
 	 *
+	 * @dataProvider provide_invalid_conditions
+	 *
 	 * @param string $condition The media condition to check.
 	 */
-	#[DataProvider( 'provide_invalid_conditions' )]
 	public function test_is_valid_condition_rejects_invalid_conditions( string $condition ): void {
 		$this->assertFalse( Viewport::is_valid_condition( $condition ) );
 	}
