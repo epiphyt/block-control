@@ -21,44 +21,20 @@ Additionally, you can set an inline formatting to display certain text only for 
 PHP: 8.0<br>
 WordPress: 6.8
 
-## Installation
+## Testing
 
-1. Upload the plugin files to the `/wp-content/plugins/block-control` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Now you can use the “Visibility” panel, Block Control adds to every block withing the Gutenberg editor.
+### Manual e2e testing
 
+End-to-end testing is done via each PHP version. If you want to test a specific version manually and access it interactively, you can run the following command:
 
-## Frequently Asked Questions
-
-### How do I use Block Control?
-
-After you install and activate Block Control, you will find a new panel “Visibility” added to every blocks right hand side sidebar. Open the panel to choose a condition for the display of a given block.
-
-Conditional blocks configured this way will only be displayed under certain circumstances chosen by you. Please note, these conditions will only take effect in the front end of your site, not inside the editor itself.
-
-### Does Block Control work with page caching plugins?
-
-As Block Control removes content completely from the source code and not just hides it via CSS, it is mostly incompatible to any caching plugin because it may generate different HTML for every user.
-
-### How to disable post type X from showing up?
-
-Since version 1.1.0 you can hide blocks based on post type. Since you maybe have post types that don't make sense in this context, you can use the filter `block_control_ignored_post_types` to remove them.
-
-E.g. if your post type slug is called `my_post_type`, you can use it like this:
-
-```php
-function my_filter_block_control_post_types( $post_types ) {
-	unset( $post_types['my_post_type'];
-	
-	return $post_types;
-}
-
-add_filter( 'block_control_ignored_post_types', 'my_filter_block_control_post_types' );
+```
+node -e "require('./tests/e2e/blueprint').writeBlueprint('8.0','latest','artifacts/php-8.0')" && \
+npx wp-playground-cli server --port=9400 \
+  --mount=.:/wordpress/wp-content/plugins/block-control \
+  --blueprint=artifacts/php-8.0/blueprint.json
 ```
 
-### Who are you folks?
-
-We are [Epiph.yt](https://epiph.yt/en/), your friendly neighborhood WordPress plugin shop from southern Germany.
+Replace each `8.0` with your desired PHP version.
 
 ## License
 

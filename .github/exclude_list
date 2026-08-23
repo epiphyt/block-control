@@ -1,10 +1,15 @@
+artifacts/
 node_modules/
 src/
+tests/
 package.json
 package-lock.json
+phpunit.xml
+playwright.config.js
 ruleset.xml
 webpack.config.js
 *scss/
 .git*
+.nvmrc
 .phpcs.xml
 .prettier*

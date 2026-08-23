@@ -4,12 +4,14 @@
 .git
 .github
 .gitignore
+.nvmrc
 .phpcs.xml
 .phpunit.cache
 .prettierignore
 .prettierrc.js
 .wordpress-org
 *scss/
+artifacts/
 composer.json
 composer.lock
 DOCKER_ENV
@@ -21,6 +23,7 @@ package-lock.json
 package.json
 phpstan.neon.dist
 phpunit.xml
+playwright.config.js
 ruleset.xml
 src/
 tests/
