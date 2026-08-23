@@ -2,7 +2,6 @@ parameters:
   level: 9
   paths:
     - inc/
+    - block-control.php
   scanDirectories:
     - vendor/php-stubs
-  scanFiles:
-    - block-control.php
