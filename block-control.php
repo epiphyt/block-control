@@ -6,7 +6,7 @@ namespace epiphyt\Block_Control;
 /*
 Plugin Name:		Block Control
 Description:		Control the visibility of your Gutenberg blocks by conditions.
-Version:			2.0.0
+Version:			2.0.1
 Author URI:			https://epiph.yt/en/
 Author:				Epiphyt
 Domain Path:		/languages
@@ -46,7 +46,7 @@ if ( ! \defined( 'EPI_BLOCK_CONTROL_BASE' ) ) {
 
 \define( 'EPI_BLOCK_CONTROL_FILE', \EPI_BLOCK_CONTROL_BASE . \basename( __FILE__ ) );
 \define( 'EPI_BLOCK_CONTROL_URL', \plugin_dir_url( \EPI_BLOCK_CONTROL_FILE ) );
-\define( 'EPI_BLOCK_CONTROL_VERSION', '2.0.0' );
+\define( 'EPI_BLOCK_CONTROL_VERSION', '2.0.1' );
 
 /**
  * Autoload all necessary classes.

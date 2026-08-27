@@ -89,6 +89,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 2.0.1 =
+* Fixed: A missing dependency during release
+
 = 2.0.0 =
 * Added: Hide blocks at certain viewports/CSS breakpoints, either by the breakpoints of your theme or by your own media queries
 * Added: Blocks with visibility settings are now marked in the document overview and the block itself
