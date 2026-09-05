@@ -205,4 +205,6 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Screenshots ==
 
-1. Block Control settings in the block's sidebar
+1. Block Control settings in the block's sidebar and its active state also visible in the document overview
+2. Inline formatting to show certain text for screen reader users only
+3. Block settings highlighted to hide a block for a certain viewport (here: below 1200px)
